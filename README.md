@@ -2,3 +2,6 @@
 
 # fhv-os
 A monolithic operating system
+
+## Project status
+[![Throughput Graph](https://graphs.waffle.io/flomath/fhv-os/throughput.svg)](https://waffle.io/flomath/fhv-os/metrics)
