@@ -54,3 +54,4 @@ redcarpet:
         'with_toc_data',
         'tables',
         'hardwrap'
+  ]
