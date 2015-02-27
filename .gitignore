@@ -4,6 +4,10 @@
 *.obj
 *.elf
 
+# dir
+_pages/*
+_site/
+
 # Precompiled Headers
 *.gch
 *.pch
