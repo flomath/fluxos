@@ -1,5 +1,5 @@
 ---
-This is the title
+title: This is the title
 ---
 
 # This is a H1
