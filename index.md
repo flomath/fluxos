@@ -1,18 +1,14 @@
 ---
 layout: default
-title: "SpeakerOS - a project at fhv"
+title: "Speaker OS - a project at fhv"
 ---
 
-### Get Started
+## fhv-os
+FHV-OS is a monolithic operating system for audio applications on a beagleboard.
 
-Start by [creating a new post](http://jekyllrb.com/docs/posts/) one of the categories listed in `_config.yml`. It will appear in the navigation on the left once recompiled. Or use the supplied script to make creating pages easier:
+#### Jekyl Documentation
+Keep this command here in case it gets forgotten. 
 
 ```bash
 ruby bin/jekyll-page "Some Page Title" ref
 ```
-
-#### Don't Forget
-
-- Add your own content to this page (i.e. `index.md`) and change the `title`
-- Change `title` and `subtitle` defined in `config.yml` for your site
-- Set the `baseurl` in `_config.yml` for your repo if deploying to GitHub pages
