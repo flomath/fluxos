@@ -1,10 +1,10 @@
 ---
 layout: default
-title: "Speaker OS - a project at fhv"
+title: "fluxos - a project at fhv"
 ---
 
-## fhv-os
-FHV-OS is a monolithic operating system for audio applications on a beagleboard.
+# fluxos
+Fluxos is a monolithic operating system for audio applications on the beagleboard.
 
 #### Jekyl Documentation
 Keep this command here in case it gets forgotten. 

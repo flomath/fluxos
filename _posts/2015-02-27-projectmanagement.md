@@ -2,7 +2,7 @@
 layout: page
 title: "Projectmanagement"
 category: doc
-date: 2015-02-27 10:39:52
+date: 2015-11-27 10:39:52
 ---
 
 For this project we are using a trimmed version of SCRUM. As toolset we are relying on the github internal capabilities like issues and milestones.
