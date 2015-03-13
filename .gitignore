@@ -34,3 +34,7 @@ Release
 .xdchelp
 .config
 .launches
+.idea/.name
+.idea/fhv-os.iml
+.idea/modules.xml
+.idea/vcs.xml
