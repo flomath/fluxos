@@ -7,4 +7,4 @@ before_install:
 
 script:
     - echo "skipped build, just here for my doxygen..." 
-    - travis-doxygen.sh
+    - bash travis-doxygen.sh
