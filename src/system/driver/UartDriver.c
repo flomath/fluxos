@@ -20,7 +20,7 @@ void uart_driver_init(uint32_t baud_rate) {
 	config.parity_type = UART_PARITY_NONE;
 	config.stop_bit = 0x0;
 
-	uart_init(UART1);
+	uart_init(UART1, &config);
 }
 
 void uart_driver_write(char* data, size_t size) {
@@ -32,10 +32,10 @@ void uart_driver_read(char* buffer, size_t size) {
 }
 
 void uart_driver_reset() {
-
+	uart_software_reset(UART1);
 }
 
-void uart_driver_register_callback(void *callback(void))) {
+void uart_driver_register_callback(void *callback(void)) {
 
 }
 

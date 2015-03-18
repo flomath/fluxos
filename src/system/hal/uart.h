@@ -52,21 +52,21 @@
 /**
  * LCR_REG Parity Options
  */
-typedef enum uart_parity_type {
+typedef enum {
 	UART_PARITY_NONE,	///< Parity disabled
 	UART_PARITY_0,		///< Paritybit 0 forced
 	UART_PARITY_1		///< Paritybit 1 forced
-} uart_parity_type;
+} uart_parity_type_t;
 
 /**
  * LCR_REG character length
  */
-typedef enum uart_char_length {
+typedef enum {
 	UART_LENGTH_5 = 0x0,	///< 5 Bits
 	UART_LENGTH_6 = 0x1,	///< 6 Bits
 	UART_LENGTH_7 = 0x2,	///< 7 Bits
 	UART_LENGTH_8 = 0x3		///< 8 Bits
-} uart_char_length;
+} uart_char_length_t;
 
 /**
  * Configuration struct
@@ -74,8 +74,8 @@ typedef enum uart_char_length {
 typedef struct {
 	uint8_t stop_bit;				///< If 0 one stop bit regardless of the word length, otherwise 1.5 stop bits for word length 5 and 2 stop bits for word length 6, 7, 8
 	uint32_t baude_rate;			///< The baude rate
-	uart_parity_type parity_type;	///< Disabled, odd or even parity bit
-	uart_char_length char_length;	///< The word size of the data (5, 6, 7 or 8 bit)
+	uart_parity_type_t parity_type;	///< Disabled, odd or even parity bit
+	uart_char_length_t char_length;	///< The word size of the data (5, 6, 7 or 8 bit)
 } UARTConfiguration_t;
 
 /**

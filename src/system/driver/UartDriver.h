@@ -8,6 +8,9 @@
 #ifndef SRC_SYSTEM_DRIVER_UARTDRIVER_H_
 #define SRC_SYSTEM_DRIVER_UARTDRIVER_H_
 
+#include <inttypes.h>
+#include <cstdlib>
+
 /**
  * Initialize the uart with the given configuration
  * @param baud_rate The baud rate to use
@@ -36,7 +39,7 @@ void uart_driver_reset();
 /**
  * Register a callback method t
  */
-void uart_driver_register_callback(void *callback(void)));
+void uart_driver_register_callback(void *callback(void));
 
 /**
  * Will be called by the Interrupt Service Routine (ISR).
