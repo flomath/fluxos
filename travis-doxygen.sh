@@ -56,12 +56,12 @@ doxygen_install()
 doxygen_run()
 {
 	cd "${TRAVIS_BUILD_DIR}";
-	doxygen ${TRAVIS_BUILD_DIR}/build/doc/Fluxos.doxyfile;
+	doxygen ${TRAVIS_BUILD_DIR}/doc/Fluxos.doxyfile;
 }
 
 gh_pages_prepare()
 {
-	cd "${TRAVIS_BUILD_DIR}/build/doc";
+	cd "${TRAVIS_BUILD_DIR}/doc";
 	[ ! -d "html" ] || \
 		abort "Doxygen target directory already exists."
 	git --version
@@ -76,7 +76,7 @@ gh_pages_prepare()
 }
 
 gh_pages_commit() {
-	cd "${TRAVIS_BUILD_DIR}/build/doc/html";
+	cd "${TRAVIS_BUILD_DIR}/doc/html";
 	git add --all;
 	git diff-index --quiet HEAD || git commit -m "Automatic doxygen build";
 }
@@ -100,7 +100,7 @@ gh_pages_push() {
 	[ "${#GH_TOKEN}" -eq 40 ] || \
 		abort "GitHub token invalid: found ${#GH_TOKEN} characters, expected 40."
 
-	cd "${TRAVIS_BUILD_DIR}/build/doc/html";
+	cd "${TRAVIS_BUILD_DIR}/doc/html";
 	# setup credentials (hide in "set -x" mode)
 	git remote set-url --push origin "${GITHUB_URL}"
 	git config credential.helper 'store'
@@ -112,6 +112,7 @@ gh_pages_push() {
 	git push origin gh-pages
 }
 
+ls
 doxygen_install
 gh_pages_prepare
 doxygen_run
