@@ -11,7 +11,7 @@
  * enable and configure rx/tx FIFO and DMA mode
  * and set protocol and baude rate
  */
-void init_uart(uint32_t port, UARTConfiguration_t* config)
+void init_uart(uint32_t port, UARTConfiguration_t* conf)
 {
 	// Reset the UART
 	uart_software_reset(port);
@@ -80,7 +80,7 @@ void init_uart(uint32_t port, UARTConfiguration_t* config)
 
 	// 7. Load new divisor value
 	// DLL_REG.CLOCK_LSB and DLH_REG.CLOCK_MSB
-	uint16_t divisor = CLK_UART / config->baude_rate;
+	uint16_t divisor = CLK_UART / conf->baude_rate;
 	uart_write(port, UART_DLL_REG, divisor); // LSB
 	uart_write(port, UART_DLH_REG, (divisor >> 8)); // MSB
 
@@ -124,7 +124,7 @@ void init_uart(uint32_t port, UARTConfiguration_t* config)
 	}
 
 	// set char length
-	uart_write(port, UART_LCR_REG, uart_get_value(port, UART_LCR_REG) | conf->char_length);
+	uart_write(port, UART_LCR_REG, uart_get_value(port, UART_LCR_REG) | conf->char_length);
 
 	// 13. Load new UART mode (set to UART 16x mode)
 	uart_clear(port, UART_MDR1_REG, 0x7);

@@ -49,7 +49,35 @@
 #define UART_SCR_TX_TRIG_GRAN	BV(6)
 #define UART_SCR_DMA_MODE_CTL	BV(0)
 
-void init_uart(uint32_t port);
+/**
+ * LCR_REG Parity Options
+ * UART_PARITY_NONE: Parity disabled
+ * UART_PARITY_0: Paritybit 0 forced
+ * UART_PARITY_1: Paritybit 1 forced
+ */
+typedef enum uart_parity_type {
+	UART_PARITY_NONE,
+	UART_PARITY_0,
+	UART_PARITY_1
+} uart_parity_type;
+/*
+ * LCR_REG character length
+ */
+typedef enum uart_char_length {
+	UART_LENGTH_5 = 0x0,
+	UART_LENGTH_6 = 0x1,
+	UART_LENGTH_7 = 0x2,
+	UART_LENGTH_8 = 0x3
+} uart_char_length;
+
+typedef struct {
+	uint8_t stop_bit;
+	uint32_t baude_rate;
+	uart_parity_type parity_type;
+	uart_char_length char_length;
+} UARTConfiguration_t;
+
+void init_uart(uint32_t port, UARTConfiguration_t* conf);
 void uart_enable_uart1(void);
 void uart_disable_uart1(void);
 
@@ -60,33 +88,5 @@ uint8_t uart_get_value(uint32_t port, uint8_t offset);
 void uart_software_reset(uint32_t port);
 
 mmio_t uart_get_register(uint32_t port, uint8_t offset); // get register address
-
-/**
- * LCR_REG Parity Options
- * UART_PARITY_NONE: Parity disabled
- * UART_PARITY_0: Paritybit 0 forced
- * UART_PARITY_1: Paritybit 1 forced
- */
-enum uart_parity_type {
-	UART_PARITY_NONE,
-	UART_PARITY_0,
-	UART_PARITY_1
-};
-/*
- * LCR_REG character length
- */
-enum uart_char_length {
-	UART_LENGTH_5 = 0x0,
-	UART_LENGTH_6 = 0x1,
-	UART_LENGTH_7 = 0x2,
-	UART_LENGTH_8 = 0x3
-};
-
-typedef struct {
-	uint8_t stop_bit;
-	uint32_t baude_rate;
-	uart_parity_type parity_type;
-	uart_char_length char_length;
-} UARTConfiguration_t;
 
 #endif /* SRC_SYSTEM_HAL_UART_H_ */

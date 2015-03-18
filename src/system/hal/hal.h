@@ -8,6 +8,8 @@
 #ifndef SRC_SYSTEM_HAL_HAL_H_
 #define SRC_SYSTEM_HAL_HAL_H_
 
+#include <inttypes.h>
+
 #define	BV(x)	(0x01 << x)	// generic bitshift
 
 typedef volatile uint32_t* mmio_t; // Memory Mapped IO address
