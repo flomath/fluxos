@@ -57,6 +57,7 @@ doxygen_run()
 {
 	cd "${TRAVIS_BUILD_DIR}";
 	doxygen ${TRAVIS_BUILD_DIR}/doc/Fluxos.doxyfile;
+	cp out/html/* html/
 }
 
 gh_pages_prepare()
@@ -70,9 +71,6 @@ gh_pages_prepare()
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
 	git config user.email "${GIT_EMAIL-"travis@localhost"}"
-	# clean working dir
-	rm -f .git/index
-	git clean -df
 }
 
 gh_pages_commit() {
