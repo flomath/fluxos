@@ -91,9 +91,6 @@ EOF
 }
 
 gh_pages_push() {
-	# check for secure variables
-	[ "${TRAVIS_SECURE_ENV_VARS}" = "true" ] || \
-		skip "Secure variables not available, not updating GitHub pages."
 	# check for GitHub access token
 	[ "${GH_TOKEN+set}" = set ] || \
 		skip "GitHub access token not available, not updating GitHub pages."
@@ -112,7 +109,6 @@ gh_pages_push() {
 	git push origin gh-pages
 }
 
-ls
 doxygen_install
 gh_pages_prepare
 doxygen_run
