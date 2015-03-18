@@ -7,11 +7,7 @@
 
 #include "uart.h"
 
-/**
- * enable and configure rx/tx FIFO and DMA mode
- * and set protocol and baude rate
- */
-void init_uart(uint32_t port, UARTConfiguration_t* conf)
+void uart_init(uint32_t port, UARTConfiguration_t* conf)
 {
 	// Reset the UART
 	uart_software_reset(port);
@@ -130,9 +126,6 @@ void init_uart(uint32_t port, UARTConfiguration_t* conf)
 	uart_clear(port, UART_MDR1_REG, 0x7);
 }
 
-/**
- * Software reset
- */
 void uart_software_reset(uint32_t port)
 {
 	uart_set(port, UART_SYSC_REG, BV(1));
@@ -146,18 +139,14 @@ mmio_t uart_get_register(uint32_t port, uint8_t offset)
 	return (mmio_t)(port + offset);
 }
 
-/**
- * Get value of given address
- */
+
 uint8_t uart_get_value(uint32_t port, uint8_t offset) 
 {
 	mmio_t reg = uart_get_register(port, offset);
 	return *reg;
 }
 
-/**
- * Write mask into address
- */
+
 uint8_t uart_write(uint32_t port, uint8_t offset, uint8_t mask)
 {
 	mmio_t reg = uart_get_register(port, offset);
@@ -167,9 +156,7 @@ uint8_t uart_write(uint32_t port, uint8_t offset, uint8_t mask)
 	return value;
 }
 
-/**
- * Enable a bit(mask) of given port and offset
- */
+
 uint8_t uart_set(uint32_t port, uint8_t offset, uint8_t mask)
 {
 	mmio_t reg = uart_get_register(port, offset);
@@ -179,9 +166,7 @@ uint8_t uart_set(uint32_t port, uint8_t offset, uint8_t mask)
 	return value;
 }
 
-/**
- * Clear a bit(mask) of given port and offset
- */
+
 uint8_t uart_clear(uint32_t port, uint8_t offset, uint8_t mask)
 {
 	mmio_t reg = uart_get_register(port, offset);

@@ -44,6 +44,8 @@ encoding//Debug/optimizerAssistant/opt_for_speed__5/src/system/hal/subdir_vars.m
 encoding//Debug/optimizerAssistant/opt_for_speed__5/subdir_rules.mk=UTF-8
 encoding//Debug/optimizerAssistant/opt_for_speed__5/subdir_vars.mk=UTF-8
 encoding//Debug/sources.mk=UTF-8
+encoding//Debug/src/system/driver/subdir_rules.mk=UTF-8
+encoding//Debug/src/system/driver/subdir_vars.mk=UTF-8
 encoding//Debug/src/system/hal/subdir_rules.mk=UTF-8
 encoding//Debug/src/system/hal/subdir_vars.mk=UTF-8
 encoding//Debug/subdir_rules.mk=UTF-8
