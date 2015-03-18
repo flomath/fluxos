@@ -121,7 +121,7 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 
 	// 7. Load new divisor value
 	// DLL_REG.CLOCK_LSB and DLH_REG.CLOCK_MSB
-	uint16_t divisor = CLK_UART / conf->baude_rate;
+	uint16_t divisor = CLK_UART / (16 * conf->baude_rate);
 	uart_write(port, UART_DLL_REG, divisor); // LSB
 	uart_write(port, UART_DLH_REG, (divisor >> 8)); // MSB
 
@@ -141,7 +141,7 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	// 12. Load new protocol formatting
 	// DIV_EN to operational mode
 	// BREAK_EN to normal operating condition
-	uart_write(port, UART_LCR_REG, 0x00); // clear register
+	uart_clear(port, UART_LCR_REG, 0xFF); // clear register
 
 	// set stop bit
 	if ( conf->stop_bit ) uart_set(port, UART_LCR_REG, BV(2));

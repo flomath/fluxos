@@ -13,11 +13,10 @@ int main(void) {
 			UART_LENGTH_8
 	};
 
-	init_uart(UART1, &conf);
-
-	while(1) {
-
-	}
+	uart_init(UART1, &conf);
 	
+	while(1)
+	{}
+
 	return 0;
 }
