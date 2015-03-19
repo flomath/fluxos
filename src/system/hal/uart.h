@@ -10,10 +10,6 @@
 
 #include "hal.h"
 
-#define UART1			0x4806A000 ///< UART 1 address [17-38]
-#define UART2			0x4806C000 ///< UART 2 address [17-38]
-#define UART3			0x49020000 ///< UART 3 address [17-38]
-
 /**
  * LCR_REG Parity Options
  */
@@ -52,45 +48,26 @@ typedef struct {
 void uart_init(uint32_t port, UARTConfiguration_t* conf);
 
 /**
- * Enable the uart
- */
-void uart_enable_uart1(void);
-
-/**
- * Disable the uart
- */
-void uart_disable_uart1(void);
-
-/**
- * Write mask into address
- */
-uint8_t uart_write(uint32_t port, uint8_t offset, uint8_t mask);
-
-/**
- * Enable a bit(mask) of given port and offset
- */
-uint8_t uart_set(uint32_t port, uint8_t offset, uint8_t mask);
-
-/**
- * Clear a bit(mask) of given port and offset
- */
-uint8_t uart_clear(uint32_t port, uint8_t offset, uint8_t mask);
-
-/**
- * Get value of given address
- */
-uint8_t uart_get_value(uint32_t port, uint8_t offset);
-
-/**
  * Software reset
+ *
+ * @param port The address of the port to reset. Possible params are UART1, UART2 and UART3
  */
 void uart_software_reset(uint32_t port);
 
 /**
- * Returns the register address
+ * Write character to the uart
  *
- * @internal
+ * @param port The address of the port to write to. Possible params are UART1, UART2 and UART3
+ * @param buffer Buffer which contains the data to write to the uart
  */
-mmio_t uart_get_register(uint32_t port, uint8_t offset);
+void uart_write(uint32_t port, uint8_t* buffer);
+
+/**
+ * Reads character from the uart
+ *
+ * @param port The address of the port to read from. Possible params are UART1, UART2 and UART3
+ * @param buffer Buffer which is filled with data from the uart
+ */
+void uart_read(uint32_t port, uint8_t* buffer);
 
 #endif /* SRC_SYSTEM_HAL_UART_H_ */

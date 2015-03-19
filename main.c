@@ -2,7 +2,7 @@
  * main.c
  */
 
-#include "src/system/hal/uart.h"
+#include "src/system/hal/arch/omap3530/uart/uart.h"
 
 int main(void) {
 

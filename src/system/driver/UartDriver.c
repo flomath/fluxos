@@ -6,7 +6,7 @@
  */
 
 #include "UartDriver.h"
-#include "../hal/uart.h"
+#include "../hal/arch/omap3530/uart/uart.h"
 
 
 void uart_driver_init(uint32_t baud_rate) {
