@@ -16,7 +16,7 @@ navigation: 2
 
 # URL to source code, used in _includes/footer.html
 codeurl: 'https://github.com/flomath/fluxos/tree/gh-pages'
-# include: ['doxygen/*']
+include: ['_*.html']
 
 # Default categories (in order) to appear in the navigation
 sections: [
@@ -58,4 +58,4 @@ redcarpet:
   ]
 
 # Keep all files in doxygen
-keep_files: ['doxygen', '../doxygen']
+keep_files: ['doxygen']
