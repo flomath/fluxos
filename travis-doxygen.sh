@@ -14,6 +14,8 @@ GITHUB_HOST="github.com"
 GITHUB_CLONE="git://${GITHUB_HOST}/${GITHUB_REPO}"
 GITHUB_URL="https://${GITHUB_HOST}/${GITHUB_PUSH-${GITHUB_REPO}}"
 
+PAGES="${TRAVIS_BUILD_DIR}/gh-pages";
+
 # if not set, ignore password
 #GIT_ASKPASS="${TRAVIS_BUILD_DIR}/gh_ignore_askpass.sh"
 
@@ -55,11 +57,11 @@ doxygen_install()
 
 doxygen_run()
 {
-	cd "${TRAVIS_BUILD_DIR}"/doc;
+	cd "${TRAVIS_BUILD_DIR}/doc";
 	doxygen Fluxos.doxyfile;
 	
 	# Copy files to branch gh-pages into the doxygen folder
-	cp -R out/html/* "${TRAVIS_BUILD_DIR}/doc/pages/doxygen"
+	cp -p -R out/html/* "${PAGES}/doxygen/"
 }
 
 gh_pages_prepare()
@@ -68,17 +70,16 @@ gh_pages_prepare()
 	[ ! -d "pages" ] || \
 		abort "Doxygen target directory already exists."
 	git --version
-	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" pages
+	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" "${PAGES}"
+	mkdir -p "${PAGES}/doxygen"
 	cd pages
-	[ ! -d "doxygen" ] || \
-		mkdir doxygen || echo "creating doxygen folder..."
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
 	git config user.email "${GIT_EMAIL-"travis@localhost"}"
 }
 
 gh_pages_commit() {
-	cd "${TRAVIS_BUILD_DIR}/doc/pages";
+	cd "${PAGES}";
 	git add --all;
 	git diff-index --quiet HEAD || git commit -m "Automatic doxygen build";
 }
@@ -99,7 +100,7 @@ gh_pages_push() {
 	[ "${#GH_TOKEN}" -eq 40 ] || \
 		abort "GitHub token invalid: found ${#GH_TOKEN} characters, expected 40."
 
-	cd "${TRAVIS_BUILD_DIR}/doc/pages";
+	cd "${PAGES}";
 	# setup credentials (hide in "set -x" mode)
 	git remote set-url --push origin "${GITHUB_URL}"
 	git config credential.helper 'store'
