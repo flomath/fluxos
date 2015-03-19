@@ -80,6 +80,9 @@ gh_pages_prepare()
 
 gh_pages_commit() {
 	cd "${PAGES}";
+	# Ensure nojekyll file so that files which begin with _ are not ignored
+	touch .nojekyll
+	
 	git add --all;
 	git diff-index --quiet HEAD || git commit -m "Automatic doxygen build";
 }
@@ -101,8 +104,7 @@ gh_pages_push() {
 		abort "GitHub token invalid: found ${#GH_TOKEN} characters, expected 40."
 
 	cd "${PAGES}";
-	# Ensure nojekyll file so that files which begin with _ are not ignored
-	touch .nojekyll
+	
 	# setup credentials (hide in "set -x" mode)
 	git remote set-url --push origin "${GITHUB_URL}"
 	git config credential.helper 'store'
