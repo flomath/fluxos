@@ -55,9 +55,11 @@ doxygen_install()
 
 doxygen_run()
 {
-	cd "${TRAVIS_BUILD_DIR}";
-	doxygen ${TRAVIS_BUILD_DIR}/doc/Fluxos.doxyfile;
-	cp -R out/html/* doc/pages/doxygen/
+	cd "${TRAVIS_BUILD_DIR}"/doc;
+	doxygen Fluxos.doxyfile;
+	
+	# Copy files to branch gh-pages into the doxygen folder
+	cp -R out/html/* "${TRAVIS_BUILD_DIR}/doc/pages/doxygen"
 }
 
 gh_pages_prepare()
@@ -69,7 +71,7 @@ gh_pages_prepare()
 	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" pages
 	cd pages
 	[ ! -d "doxygen" ] || \
-		mkdir doxygen
+		mkdir doxygen || echo "creating doxygen folder..."
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
 	git config user.email "${GIT_EMAIL-"travis@localhost"}"
