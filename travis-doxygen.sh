@@ -67,12 +67,12 @@ doxygen_run()
 gh_pages_prepare()
 {
 	cd "${TRAVIS_BUILD_DIR}/doc";
-	[ ! -d "pages" ] || \
+	[ ! -d "${PAGES}" ] || \
 		abort "Doxygen target directory already exists."
 	git --version
 	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" "${PAGES}"
 	mkdir -p "${PAGES}/doxygen"
-	cd pages
+	cd "${PAGES}"
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
 	git config user.email "${GIT_EMAIL-"travis@localhost"}"
