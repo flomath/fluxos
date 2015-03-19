@@ -58,4 +58,4 @@ redcarpet:
   ]
 
 # Keep all files in doxygen
-keep_files: [doxygen, ../doxygen]
+keep_files: ['doxygen']
