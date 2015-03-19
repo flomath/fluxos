@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['parity_5ftype',['parity_type',['../struct_u_a_r_t_configuration__t.html#aef001e001ebc868aaa72d7ee27e79cfa',1,'UARTConfiguration_t']]]
+  ['mmio_5ft',['mmio_t',['../hal_8h.html#a88eb76b411d187997612c7d2eafac931',1,'hal.h']]]
 ];

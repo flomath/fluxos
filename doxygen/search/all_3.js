@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['hal_2ec',['hal.c',['../hal_8c.html',1,'']]],
-  ['hal_2eh',['hal.h',['../hal_8h.html',1,'']]],
-  ['hal_5fbitmask_5fclear',['hal_bitmask_clear',['../hal_8c.html#ae3af0fb89481d5f70d8100aacc947377',1,'hal_bitmask_clear(uint32_t port, uint8_t offset, uint8_t mask):&#160;hal.c'],['../hal_8h.html#ae3af0fb89481d5f70d8100aacc947377',1,'hal_bitmask_clear(uint32_t port, uint8_t offset, uint8_t mask):&#160;hal.c']]],
-  ['hal_5fbitmask_5fset',['hal_bitmask_set',['../hal_8c.html#a8debe127d03f852ca173c26e7c20853a',1,'hal_bitmask_set(uint32_t port, uint8_t offset, uint8_t mask):&#160;hal.c'],['../hal_8h.html#a8debe127d03f852ca173c26e7c20853a',1,'hal_bitmask_set(uint32_t port, uint8_t offset, uint8_t mask):&#160;hal.c']]],
-  ['hal_5fbitmask_5fwrite',['hal_bitmask_write',['../hal_8c.html#a31cb8e3795e3a66a56695de6c6e9f31a',1,'hal_bitmask_write(uint32_t port, uint8_t offset, uint8_t mask):&#160;hal.c'],['../hal_8h.html#a31cb8e3795e3a66a56695de6c6e9f31a',1,'hal_bitmask_write(uint32_t port, uint8_t offset, uint8_t mask):&#160;hal.c']]],
-  ['hal_5fget_5faddress_5fvalue',['hal_get_address_value',['../hal_8c.html#a80e3d3fad944461d5b9b7f9508e5dcfa',1,'hal_get_address_value(uint32_t port, uint8_t offset):&#160;hal.c'],['../hal_8h.html#a80e3d3fad944461d5b9b7f9508e5dcfa',1,'hal_get_address_value(uint32_t port, uint8_t offset):&#160;hal.c']]],
-  ['hal_5fget_5fregister',['hal_get_register',['../hal_8c.html#ad177b1979f179610225cf168650800c0',1,'hal_get_register(uint32_t port, uint8_t offset):&#160;hal.c'],['../hal_8h.html#ad177b1979f179610225cf168650800c0',1,'hal_get_register(uint32_t port, uint8_t offset):&#160;hal.c']]]
+  ['gpt_5ftimer1',['GPT_TIMER1',['../timer_8h.html#af2de1bf2f5e6649a06c60480e8e370ee',1,'timer.h']]],
+  ['gpt_5ftimer10',['GPT_TIMER10',['../timer_8h.html#a08b9ff7f080ccdd215b04451d7980f6b',1,'timer.h']]],
+  ['gpt_5ftimer11',['GPT_TIMER11',['../timer_8h.html#a258677c280c050bc193389452642027d',1,'timer.h']]],
+  ['gpt_5ftimer2',['GPT_TIMER2',['../timer_8h.html#a190b662da7af084742d187b7d510b396',1,'timer.h']]],
+  ['gpt_5ftimer3',['GPT_TIMER3',['../timer_8h.html#a0da5037f556cd0c9927b79cb3e4d236e',1,'timer.h']]],
+  ['gpt_5ftimer4',['GPT_TIMER4',['../timer_8h.html#ad192e71c3ea42d7f5fd79c2d47ae84f5',1,'timer.h']]],
+  ['gpt_5ftimer5',['GPT_TIMER5',['../timer_8h.html#ab9f9527e037d95d6b7f782626ba7f799',1,'timer.h']]],
+  ['gpt_5ftimer6',['GPT_TIMER6',['../timer_8h.html#a15e48da0e4de44d96d0de26d57a1f22c',1,'timer.h']]],
+  ['gpt_5ftimer7',['GPT_TIMER7',['../timer_8h.html#aa3b3834ab6b2341cee914048e08d2e6e',1,'timer.h']]],
+  ['gpt_5ftimer8',['GPT_TIMER8',['../timer_8h.html#a8bd7e54bb60d22e0213af08c404562b1',1,'timer.h']]],
+  ['gpt_5ftimer9',['GPT_TIMER9',['../timer_8h.html#a19758889da39e67eb5de48120026f2bf',1,'timer.h']]]
 ];
