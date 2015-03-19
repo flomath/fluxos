@@ -56,3 +56,6 @@ redcarpet:
         'tables',
         'hardwrap'
   ]
+
+# Keep all files in doxygen
+keep_files: [doxygen]
