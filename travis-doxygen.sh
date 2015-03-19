@@ -57,17 +57,19 @@ doxygen_run()
 {
 	cd "${TRAVIS_BUILD_DIR}";
 	doxygen ${TRAVIS_BUILD_DIR}/doc/Fluxos.doxyfile;
-	cp out/html/* html/
+	cp -R out/html/* doc/pages/doc
 }
 
 gh_pages_prepare()
 {
 	cd "${TRAVIS_BUILD_DIR}/doc";
-	[ ! -d "html" ] || \
+	[ ! -d "pages" ] || \
 		abort "Doxygen target directory already exists."
 	git --version
-	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" html
-	cd html
+	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" pages
+	cd pages
+	[ ! -d "doc" ] || \
+		mkdir doc
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
 	git config user.email "${GIT_EMAIL-"travis@localhost"}"
@@ -95,7 +97,7 @@ gh_pages_push() {
 	[ "${#GH_TOKEN}" -eq 40 ] || \
 		abort "GitHub token invalid: found ${#GH_TOKEN} characters, expected 40."
 
-	cd "${TRAVIS_BUILD_DIR}/doc/html";
+	cd "${TRAVIS_BUILD_DIR}/doc/pages";
 	# setup credentials (hide in "set -x" mode)
 	git remote set-url --push origin "${GITHUB_URL}"
 	git config credential.helper 'store'
