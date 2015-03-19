@@ -8,7 +8,7 @@
 #ifndef SRC_SYSTEM_HAL_ARCH_OMAP3530_UART_H_
 #define SRC_SYSTEM_HAL_ARCH_OMAP3530_UART_H_
 
-#include "../../../uart.h"
+#include "../../common/uart.h"
 
 #define UART1			0x4806A000 ///< UART 1 address [17-38]
 #define UART2			0x4806C000 ///< UART 2 address [17-38]

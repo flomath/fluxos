@@ -26,8 +26,8 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	uint8_t mcrValue = hal_bitmask_set(port, UART_MCR_REG, UART_MCR_TCR_TLR);
 
 	// 5. Enable FIFO, load new FIFO Triggers 1/3 and set DMA-Mode 1/2
-	uint8_t fifoMask = 0b01011001; // 16 char Trigger (RX/TX), DMA-Mode 1, FIFO-Enable
-	hal_bitmask_set(port, UART_FCR_REG, fifoMask);
+	uint8_t fifoMask = 0b00001001; // 8 char Trigger (RX/TX), DMA-Mode 1, FIFO-Enable
+	hal_bitmask_write(port, UART_FCR_REG, fifoMask);
 
 	// 6. Switch to config mode B
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B);
@@ -36,24 +36,31 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	hal_bitmask_clear(port, UART_TLR_REG, 0xFF); // reset RX_FIFO_TRIG_DMA and TX_FIFO_TRIG_DMA to 0
 
 	// 8. load new FIFO triggers 3/3 and set DMA-MODE 2/2
-	hal_bitmask_set(port, UART_SCR_REG, UART_SCR_RX_TRIG_GRAN);
+	//hal_bitmask_set(port, UART_SCR_REG, UART_SCR_RX_TRIG_GRAN);
 	hal_bitmask_set(port, UART_SCR_REG, UART_SCR_TX_TRIG_GRAN);
-	hal_bitmask_clear(port, UART_SCR_REG, BV(2)); 	// DMA-Mode 1 (RX and TX)
-	hal_bitmask_set(port, UART_SCR_REG, BV(1));	// DMA-Mode 1 (RX and TX)
-	hal_bitmask_set(port, UART_SCR_REG, UART_SCR_DMA_MODE_CTL);
+	//hal_bitmask_clear(port, UART_SCR_REG, BV(2)); 	// DMA-Mode 1 (RX and TX)
+	//hal_bitmask_set(port, UART_SCR_REG, BV(1));	// DMA-Mode 1 (RX and TX)
+	//hal_bitmask_set(port, UART_SCR_REG, UART_SCR_DMA_MODE_CTL);
 
 	// 9. restore enable register
-	hal_bitmask_write(port, UART_EFR_REG, efrValue);
+	if(efrValue & UART_EFR_ENHANCED_EN == 1) {
+		hal_bitmask_set(port, UART_EFR_REG, UART_EFR_ENHANCED_EN);
+	} else {
+		hal_bitmask_clear(port, UART_EFR_REG, UART_EFR_ENHANCED_EN);
+	}
 
 	// 10. Switch to config mode A
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_A);
 
 	// 11. Restore MCR Reg
-	hal_bitmask_write(port, UART_MCR_REG, mcrValue);
+	if(mcrValue & UART_MCR_TCR_TLR) {
+		hal_bitmask_set(port, UART_MCR_REG, UART_MCR_TCR_TLR);
+	} else {
+		hal_bitmask_clear(port, UART_MCR_REG, UART_MCR_TCR_TLR);
+	}
 
 	// 12. Restore LCR Reg
 	hal_bitmask_write(port, UART_LCR_REG, lcrValue);
-
 
 	// Protocol, Baud Rate, and Interrupt Settings
 	// 1. Disable UART
@@ -85,13 +92,17 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 
 	// 9. Load new interrupt configuration
 	// no other interrupts are enabled at this time
-	hal_bitmask_set(port, UART_IER_REG, BV(0)); // RHR_IT enable (Data ready)
+	hal_bitmask_set(port, UART_IER_REG, BV(1)); // THR_IT enable (Data ready)
 
 	// 10. Switch to config mode B
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B);
 
 	// 11. Restore Enhanced_Enable saved in step 3
-	hal_bitmask_write(port, UART_EFR_REG, efrValue2);
+	if(efrValue2 & UART_EFR_ENHANCED_EN == 1) {
+		hal_bitmask_set(port, UART_EFR_REG, efrValue2);
+	} else {
+		hal_bitmask_clear(port, UART_EFR_REG, efrValue2);
+	}
 
 	// 12. Load new protocol formatting
 	// DIV_EN to operational mode
@@ -137,12 +148,12 @@ void uart_software_reset(uint32_t port)
 
 void uart_write(uint32_t port, uint8_t* buffer)
 {
-	mmio_t reg = uart_get_register(port, UART_THR_REG);
+	mmio_t reg = hal_get_register(port, UART_THR_REG);
 	*reg = *buffer;
 }
 
 void uart_read(uint32_t port, uint8_t* buffer)
 {
-	mmio_t reg = uart_get_register(port, UART_RHR_REG);
+	mmio_t reg = hal_get_register(port, UART_RHR_REG);
 	*buffer = *reg;
 }

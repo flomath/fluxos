@@ -6,13 +6,10 @@
  */
 
 #include "UartDriver.h"
-#include "../hal/arch/omap3530/uart/uart.h"
+#include "../../hal/omap3530/uart/uart.h"
 
 
 void uart_driver_init(uint32_t baud_rate) {
-	// Enable the uart 1
-	uart_enable_uart1();
-
 	// Create configuration
 	UARTConfiguration_t config;
 	config.baude_rate = baud_rate;
