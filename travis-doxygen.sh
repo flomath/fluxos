@@ -72,6 +72,10 @@ gh_pages_prepare()
 	git --version
 	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" "${PAGES}"
 	mkdir -p "${PAGES}/doxygen"
+	
+	# Ensure nojekyll file so that files which begin with _ are not ignored
+	touch "${PAGES}/doxygen/.nojekyll"
+	
 	cd "${PAGES}"
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
@@ -80,8 +84,6 @@ gh_pages_prepare()
 
 gh_pages_commit() {
 	cd "${PAGES}";
-	# Ensure nojekyll file so that files which begin with _ are not ignored
-	touch .nojekyll
 	
 	git add --all;
 	git diff-index --quiet HEAD || git commit -m "Automatic doxygen build";
