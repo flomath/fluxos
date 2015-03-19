@@ -57,7 +57,7 @@ doxygen_run()
 {
 	cd "${TRAVIS_BUILD_DIR}";
 	doxygen ${TRAVIS_BUILD_DIR}/doc/Fluxos.doxyfile;
-	cp -R out/html/* doc/pages/doc
+	cp -R out/html/* doc/pages/doxygen/
 }
 
 gh_pages_prepare()
@@ -68,8 +68,8 @@ gh_pages_prepare()
 	git --version
 	git clone --single-branch -b gh-pages "${GITHUB_CLONE}" pages
 	cd pages
-	[ ! -d "doc" ] || \
-		mkdir doc
+	[ ! -d "doxygen" ] || \
+		mkdir doxygen
 	# setup git config (with defaults)
 	git config user.name "${GIT_NAME-travis}"
 	git config user.email "${GIT_EMAIL-"travis@localhost"}"
