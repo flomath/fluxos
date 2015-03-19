@@ -4,7 +4,7 @@
 
 set -e
 
-DOXYGEN_VER=doxygen-1.8.7
+DOXYGEN_VER=doxygen-1.8.9.1
 DOXYGEN_TAR=${DOXYGEN_VER}.linux.bin.tar.gz
 DOXYGEN_URL="http://ftp.stack.nl/pub/users/dimitri/${DOXYGEN_TAR}"
 DOXYGEN_BIN="/usr/local/bin/doxygen"
