@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>Fluxos: /home/travis/build/flomath/fluxos/src/system/hal/omap3530/uart/uart.c File Reference</title>
+<title>Fluxos: /home/travis/build/flomath/fluxos/src/system/hal/common/uart.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -80,29 +80,104 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5d8ef43cc1a8ddd0d3ff97ad61cca1fe.html">src</a></li><li class="navelem"><a class="el" href="dir_273057130add0ac733a89b1df953db8b.html">system</a></li><li class="navelem"><a class="el" href="dir_1938b1ac32f73d80ea359d4b4811d550.html">hal</a></li><li class="navelem"><a class="el" href="dir_500c0da1a5118f391f20c2048ceaebc2.html">omap3530</a></li><li class="navelem"><a class="el" href="dir_5487355f53e8525e15cc46ae270c5b24.html">uart</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_5d8ef43cc1a8ddd0d3ff97ad61cca1fe.html">src</a></li><li class="navelem"><a class="el" href="dir_273057130add0ac733a89b1df953db8b.html">system</a></li><li class="navelem"><a class="el" href="dir_1938b1ac32f73d80ea359d4b4811d550.html">hal</a></li><li class="navelem"><a class="el" href="dir_8fd5045951e41eead7071cb9753b4a90.html">common</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">uart.c File Reference</div>  </div>
+<div class="title">uart.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="omap3530_2uart_2uart_8h_source.html">uart.h</a>&quot;</code><br />
-</div><table class="memberdecls">
+<div class="textblock"><code>#include &quot;<a class="el" href="hal_8h_source.html">hal.h</a>&quot;</code><br />
+</div>
+<p><a href="common_2uart_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_u_a_r_t_configuration__t.html">UARTConfiguration_t</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:a0f52facf1b1e98f657d602943e6f4552"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2uart_8h.html#a0f52facf1b1e98f657d602943e6f4552">uart_parity_type_t</a> { <a class="el" href="common_2uart_8h.html#a0f52facf1b1e98f657d602943e6f4552aa80d2d8ea61454045ebe71d155e85b3d">UART_PARITY_NONE</a>, 
+<a class="el" href="common_2uart_8h.html#a0f52facf1b1e98f657d602943e6f4552a14e129e746d0e0327ba3f3f38ee415fd">UART_PARITY_0</a>, 
+<a class="el" href="common_2uart_8h.html#a0f52facf1b1e98f657d602943e6f4552a329bbbcb088234db731ff89fd6740c00">UART_PARITY_1</a>
+ }</td></tr>
+<tr class="separator:a0f52facf1b1e98f657d602943e6f4552"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7d4024e8d3699cbe110a9f5451e8df6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2uart_8h.html#af7d4024e8d3699cbe110a9f5451e8df6">uart_char_length_t</a> { <a class="el" href="common_2uart_8h.html#af7d4024e8d3699cbe110a9f5451e8df6a5fb7fcc11624055dc08dff0d31e3bb82">UART_LENGTH_5</a> = 0x0, 
+<a class="el" href="common_2uart_8h.html#af7d4024e8d3699cbe110a9f5451e8df6a5f2ad53bc04bb575baec35790fd7ba02">UART_LENGTH_6</a> = 0x1, 
+<a class="el" href="common_2uart_8h.html#af7d4024e8d3699cbe110a9f5451e8df6a781cd5351d8b3be2ff08bc3dfa8205f0">UART_LENGTH_7</a> = 0x2, 
+<a class="el" href="common_2uart_8h.html#af7d4024e8d3699cbe110a9f5451e8df6ac1efdd5fd8e1a48394fde79b9f02cbc2">UART_LENGTH_8</a> = 0x3
+ }</td></tr>
+<tr class="separator:af7d4024e8d3699cbe110a9f5451e8df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a2c908226ce3e5a14dfc358d669494f64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uart_8c.html#a2c908226ce3e5a14dfc358d669494f64">uart_init</a> (uint32_t port, <a class="el" href="struct_u_a_r_t_configuration__t.html">UARTConfiguration_t</a> *conf)</td></tr>
+<tr class="memitem:a2c908226ce3e5a14dfc358d669494f64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2uart_8h.html#a2c908226ce3e5a14dfc358d669494f64">uart_init</a> (uint32_t port, <a class="el" href="struct_u_a_r_t_configuration__t.html">UARTConfiguration_t</a> *conf)</td></tr>
 <tr class="separator:a2c908226ce3e5a14dfc358d669494f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7169c47a58099ba94d4b4e29b19e9d7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uart_8c.html#a7169c47a58099ba94d4b4e29b19e9d7a">uart_software_reset</a> (uint32_t port)</td></tr>
+<tr class="memitem:a7169c47a58099ba94d4b4e29b19e9d7a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2uart_8h.html#a7169c47a58099ba94d4b4e29b19e9d7a">uart_software_reset</a> (uint32_t port)</td></tr>
 <tr class="separator:a7169c47a58099ba94d4b4e29b19e9d7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7edc60fd66a05bd66fb8ead4de7be10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uart_8c.html#ae7edc60fd66a05bd66fb8ead4de7be10">uart_write</a> (uint32_t port, uint8_t *buffer)</td></tr>
+<tr class="memitem:ae7edc60fd66a05bd66fb8ead4de7be10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2uart_8h.html#ae7edc60fd66a05bd66fb8ead4de7be10">uart_write</a> (uint32_t port, uint8_t *buffer)</td></tr>
 <tr class="separator:ae7edc60fd66a05bd66fb8ead4de7be10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60ba99deaa7736ca9db607be83a10b07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="uart_8c.html#a60ba99deaa7736ca9db607be83a10b07">uart_read</a> (uint32_t port, uint8_t *buffer)</td></tr>
+<tr class="memitem:a60ba99deaa7736ca9db607be83a10b07"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2uart_8h.html#a60ba99deaa7736ca9db607be83a10b07">uart_read</a> (uint32_t port, uint8_t *buffer)</td></tr>
 <tr class="separator:a60ba99deaa7736ca9db607be83a10b07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a class="anchor" id="af7d4024e8d3699cbe110a9f5451e8df6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="common_2uart_8h.html#af7d4024e8d3699cbe110a9f5451e8df6">uart_char_length_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>LCR_REG character length </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="af7d4024e8d3699cbe110a9f5451e8df6a5fb7fcc11624055dc08dff0d31e3bb82"></a>UART_LENGTH_5&#160;</td><td class="fielddoc">
+<p>5 Bits </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af7d4024e8d3699cbe110a9f5451e8df6a5f2ad53bc04bb575baec35790fd7ba02"></a>UART_LENGTH_6&#160;</td><td class="fielddoc">
+<p>6 Bits </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af7d4024e8d3699cbe110a9f5451e8df6a781cd5351d8b3be2ff08bc3dfa8205f0"></a>UART_LENGTH_7&#160;</td><td class="fielddoc">
+<p>7 Bits </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="af7d4024e8d3699cbe110a9f5451e8df6ac1efdd5fd8e1a48394fde79b9f02cbc2"></a>UART_LENGTH_8&#160;</td><td class="fielddoc">
+<p>8 Bits </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<a class="anchor" id="a0f52facf1b1e98f657d602943e6f4552"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="common_2uart_8h.html#a0f52facf1b1e98f657d602943e6f4552">uart_parity_type_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>LCR_REG Parity Options </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="a0f52facf1b1e98f657d602943e6f4552aa80d2d8ea61454045ebe71d155e85b3d"></a>UART_PARITY_NONE&#160;</td><td class="fielddoc">
+<p>Parity disabled. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0f52facf1b1e98f657d602943e6f4552a14e129e746d0e0327ba3f3f38ee415fd"></a>UART_PARITY_0&#160;</td><td class="fielddoc">
+<p>Paritybit 0 forced. </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="a0f52facf1b1e98f657d602943e6f4552a329bbbcb088234db731ff89fd6740c00"></a>UART_PARITY_1&#160;</td><td class="fielddoc">
+<p>Paritybit 1 forced. </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a2c908226ce3e5a14dfc358d669494f64"></a>
 <div class="memitem">
