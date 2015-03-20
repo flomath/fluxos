@@ -8,8 +8,8 @@ int main(void) {
 
 	UARTConfiguration_t conf = {
 			0x0,
-			115200,
-			UART_PARITY_0,
+			9600,
+			UART_PARITY_NONE,
 			UART_LENGTH_8
 	};
 

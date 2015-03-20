@@ -70,10 +70,10 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B);
 
 	// 3. Enable access to IER_REG
-	uint8_t efrValue2 = hal_bitmask_set(port, UART_EFR_REG, UART_EFR_ENHANCED_EN);
+	uint8_t ifrValue = hal_bitmask_set(port, UART_IER_REG, UART_IER_ENHANCED_EN);
 
 	// 4. Switch to register operational mode
-	hal_bitmask_set(port, UART_LCR_REG, 0x00);
+	hal_bitmask_write(port, UART_LCR_REG, 0x00);
 
 	// 5. Clear IER_REG
 	hal_bitmask_write(port, UART_IER_REG, 0x00);
@@ -88,7 +88,7 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	hal_bitmask_write(port, UART_DLH_REG, (divisor >> 8)); // MSB
 
 	// 8. Switch to register operational mode
-	hal_bitmask_set(port, UART_LCR_REG, 0x00);
+	hal_bitmask_write(port, UART_LCR_REG, 0x00);
 
 	// 9. Load new interrupt configuration
 	// no other interrupts are enabled at this time
@@ -98,10 +98,10 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B);
 
 	// 11. Restore Enhanced_Enable saved in step 3
-	if(efrValue2 & UART_EFR_ENHANCED_EN == 1) {
-		hal_bitmask_set(port, UART_EFR_REG, efrValue2);
+	if(ifrValue & UART_IER_ENHANCED_EN == 1) {
+		hal_bitmask_set(port, UART_EFR_REG, UART_IER_ENHANCED_EN);
 	} else {
-		hal_bitmask_clear(port, UART_EFR_REG, efrValue2);
+		hal_bitmask_clear(port, UART_EFR_REG, UART_IER_ENHANCED_EN);
 	}
 
 	// 12. Load new protocol formatting
