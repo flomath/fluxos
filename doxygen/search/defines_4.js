@@ -8,6 +8,7 @@ var searchData=
   ['uart_5fefr_5fenhanced_5fen',['UART_EFR_ENHANCED_EN',['../omap3530_2uart_2uart_8h.html#a56b5185c4e3a2ead7f4fac5758b46d3a',1,'uart.h']]],
   ['uart_5fefr_5freg',['UART_EFR_REG',['../omap3530_2uart_2uart_8h.html#a556c04aa11e174f82814806683585d0f',1,'uart.h']]],
   ['uart_5ffcr_5freg',['UART_FCR_REG',['../omap3530_2uart_2uart_8h.html#a300d5b93d9fa263c1db5293296d8e722',1,'uart.h']]],
+  ['uart_5fier_5fenhanced_5fen',['UART_IER_ENHANCED_EN',['../omap3530_2uart_2uart_8h.html#a0270c935836f230cd621a42bdf86f416',1,'uart.h']]],
   ['uart_5fier_5freg',['UART_IER_REG',['../omap3530_2uart_2uart_8h.html#a6477b4989778c53de9bff4fc4a1fb8f4',1,'uart.h']]],
   ['uart_5flcr_5fbreak_5fen',['UART_LCR_BREAK_EN',['../omap3530_2uart_2uart_8h.html#a2f83aa82aecd63cf457ea423be643d57',1,'uart.h']]],
   ['uart_5flcr_5fdiv_5fen',['UART_LCR_DIV_EN',['../omap3530_2uart_2uart_8h.html#a90e0aa47cce460de5ae36d97edcc4063',1,'uart.h']]],
