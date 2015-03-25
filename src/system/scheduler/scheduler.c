@@ -13,10 +13,10 @@ Scheduler_t* scheduler_init(SchedulerAlgorithm_t algorithm)
 	Scheduler_t* sched;
 	sched = (Scheduler_t*)malloc(sizeof(Scheduler_t));
 
-	sched->algorithm = algorithm;
+	//sched->algorithm = algorithm;
 	sched->processList = list_create();
 
-	return 0;
+	return sched;
 }
 
 void scheduler_run(Scheduler_t* scheduler)
