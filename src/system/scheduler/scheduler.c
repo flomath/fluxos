@@ -8,27 +8,82 @@
 
 #include "scheduler.h"
 
-Scheduler_t* scheduler_init(SchedulerAlgorithm_t algorithm)
+void scheduler_addProcess(ProcFunc fct)
 {
-	Scheduler_t* sched;
-	sched = (Scheduler_t*)malloc(sizeof(Scheduler_t));
+	mutex_lock();
 
-	//sched->algorithm = algorithm;
-	sched->processList = list_create();
+	int newProcessID = scheduler_getFreeProcessID();
+	if (newProcessID == INVALID_THREAD_ID) 
+	{
+		mutex_release();
+	}
 
-	return sched;
+	SchedulerProcesses[newProcessID].ProcessID = newProcessID;
+	SchedulerProcesses[newProcessID].state = PROCESS_READY;
+	SchedulerProcesses[newProcessID].func = fct;
 }
 
-void scheduler_run(Scheduler_t* scheduler)
+void scheduler_run() 
 {
-	Process_t* proc = list_first(scheduler->processList); // nextAvailableProcess
-	proc->task();
+	mutex_lock();
+
+	int nextProcess = scheduler_getNextProcess();
+
+	switch(SchedulerProcesses[nextProcess].state) {
+		case PROCESS_RUNNING: break;
+
+		case PROCESS_READY: 
+		{
+			// speicher Context für Thread
+			/*if(setjmp(SchedulerProcesses[runningThread].context) == 0) {
+				if(SchedulerProcesses[runningThread].state == THREAD_RUN)
+					SchedulerProcesses[runningThread].state = THREAD_READY;
+
+				runningThread = nextProcess;
+				SchedulerProcesses[runningThread].state = THREAD_RUN;
+				longjmp(SchedulerProcesses[runningThread].context, 1);
+			}*/
+		} break;
+
+		default: break;
+	}
+
+	mutex_release();
 }
 
-void scheduler_addprocess(Scheduler_t* scheduler, Process_t* process)
+int scheduler_getNextProcess()
 {
-	if(scheduler == NULL)
-		return;
+	int nextProcess = SchedulerRunningProcess + 1;
 
-	list_push(scheduler->processList, process);
+	while (nextProcess < SCHEDULER_MAX_PROCESSES && nextProcess != SchedulerRunningProcess) 
+	{
+		if (SchedulerProcesses[nextProcess].state == PROCESS_READY) 
+		{
+			return nextProcess;
+		}
+
+		nextProcess = nextProcess + 1;
+		nextProcess = nextProcess % SCHEDULER_MAX_PROCESSES;
+	}
+
+	return SCHEDULER_INVALID_ID;
+}
+
+void scheduler_killProcess(int processID)
+{
+	SchedulerProcesses[newProcessID].state = PROCESS_TERMINATED;
+	SchedulerProcesses[newProcessID].func = NULL;
+}
+
+int scheduler_getFreeProcessID() 
+{
+	int i;
+	for (i=0; i < SCHEDULER_MAX_PROCESSES; i++) 
+	{
+		if (SchedulerProcesses[i].state == PROCESS_CREATED) 
+		{
+			return i;
+		}
+	}
+	return SCHEDULER_INVALID_ID;
 }

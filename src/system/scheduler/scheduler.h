@@ -9,28 +9,33 @@
 #define SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_
 
 #include "process.h"
-#include "../../tools/list.h"
+#include "../../tools/mutex.h"
 
-typedef void (*SchedulerAlgorithm_t)();
+#define		SCHEDULER_MAX_PROCESSES 10
+#define		SCHEDULER_INVALID_ID	-1
 
-typedef struct {
-	SchedulerAlgorithm_t algorithm;
-	List_t* processList;
-} Scheduler_t;
+typedef void (*ProcFunc)();
 
-/**
- * Initialize the scheduler
- */
-Scheduler_t* scheduler_init(SchedulerAlgorithm_t algorithm);
-
-/**
- * Run scheduler
- */
-void scheduler_run(Scheduler_t* scheduler);
+static Process_t SchedulerProcesses[SCHEDULER_MAX_PROCESSES];
+static int SchedulerRunningProcess = SCHEDULER_INVALID_ID;
 
 /**
  * Add a new process to the scheduler
  */
-void scheduler_addprocess(Scheduler_t* scheduler, Process_t* process);
+void scheduler_addProcess(ProcFunc fct);
+
+/**
+ * Get a free process id slot
+ */
+int scheduler_getFreeProcessID();
+
+int scheduler_getNextProcess();
+
+void scheduler_run();
+
+/**
+ * Kill a process and release its resources
+ */
+void scheduler_killProcess(int processID);
 
 #endif /* SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_ */

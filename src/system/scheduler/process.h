@@ -9,7 +9,6 @@
 #define SRC_SYSTEM_SCHEDULER_PROCESS_H_
 
 #include <stdint.h>
-#include <stdlib.h>
 
 typedef enum {
 	PROCESS_CREATED = 0,
@@ -20,20 +19,9 @@ typedef enum {
 } ProcessState_t;
 
 typedef struct {
-	uint8_t id;
+	uint8_t ProcessID;
 	ProcessState_t state;
-	void (*task)(void); // ptr to task function
+	void (*func)(void);
 } Process_t;
-
-
-/**
- * Get next unique process id
- */
-uint8_t process_next_id();
-
-/**
- * Create a new process
- */
-Process_t* process_create();
 
 #endif /* SRC_SYSTEM_SCHEDULER_PROCESS_H_ */
