@@ -9,6 +9,8 @@
 #include "../../common/hal.h"
 #include "interrupt.h"
 
+static interrupt_listener irq_callbacks[IRQ_NUMBER];
+
 void interrupt_init(void) {
 
 	// 1. Program the MPU_INTC.INTCPS_SYSCONFIG register:
@@ -33,7 +35,8 @@ void interrupt_init(void) {
 	// Enable interrupts (by default, all interrupt lines are masked).
 
 	// Unmask
-	hal_bitmask_write(MPU_INTC, MPU_INTC_INTCPS_MIR(0), ~0x10000000); // Enable GIO1
+	//hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_MIR(0), BV(29)); // Enable GPIO1
+	//hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_MIR(1), BV(14)); // Enable GPT10
 }
 
 void interrupt_enable(void) {
@@ -47,7 +50,10 @@ void interrupt_disable(void) {
 }
 
 void interrupt_add_listener(uint32_t irq, interrupt_listener listener) {
-	// Todo Add the listener and set the registers, Clear all interrupts in init
+	irq_callbacks[irq] = listener;
+
+	// Enable IRQ
+	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_MIR((uint8_t)irq / 32), BV(irq % 32));
 }
 
 #pragma INTERRUPT(dabt_handler, DABT)

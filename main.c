@@ -10,6 +10,12 @@ int main(void) {
 
 	// Set up interrupts
 	interrupt_init();
+
+	// Add IRQ handler
+	// Notice: Handler won't be called right now -> Todo
+	// Notice: Still needed for enabling the IRQ
+	interrupt_add_listener(46, NULL);
+
 	interrupt_enable();
 
 	// Set up UART

@@ -17,6 +17,6 @@
 #define MPU_INTC_INTCPS_MIR(n)		(0x084 + (0x20 * n))	//< This register contains the interrupt mask [10-32] n = 0...2
 #define MPU_INTC_INTCPS_CONTROL		0x048					//< This register contains the new interrupt agreement bits
 
-#define IRQ_NUMBER	96;
+#define IRQ_NUMBER	96
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_INTERRUPT_INTERRUPT_H_ */
