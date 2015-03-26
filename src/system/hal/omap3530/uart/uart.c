@@ -17,13 +17,16 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	uint8_t lcrValue = hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B);
 
 	// 2. Enable register submode 1/2
-	uint8_t efrValue = hal_bitmask_set(port, UART_EFR_REG, UART_EFR_ENHANCED_EN);
+	uint8_t efrValue = hal_get_address_value(port, UART_EFR_REG);
+	hal_bitmask_set(port, UART_EFR_REG, UART_EFR_ENHANCED_EN);
 
 	// 3. Switch to config mode A
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_A);
 
 	// 4. enable register submode 2/2
-	uint8_t mcrValue = hal_bitmask_set(port, UART_MCR_REG, UART_MCR_TCR_TLR);
+
+	uint8_t mcrValue = hal_get_address_value(port, UART_MCR_REG);
+	hal_bitmask_set(port, UART_MCR_REG, UART_MCR_TCR_TLR);
 
 	// 5. Enable FIFO, load new FIFO Triggers 1/3 and set DMA-Mode 1/2
 	uint8_t fifoMask = 0b00001001; // 8 char Trigger (RX/TX), DMA-Mode 1, FIFO-Enable
@@ -70,7 +73,8 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B);
 
 	// 3. Enable access to IER_REG
-	uint8_t ifrValue = hal_bitmask_set(port, UART_IER_REG, UART_IER_ENHANCED_EN);
+	uint8_t ifrValue = hal_get_address_value(port, UART_IER_REG);
+	hal_bitmask_set(port, UART_IER_REG, UART_IER_ENHANCED_EN);
 
 	// 4. Switch to register operational mode
 	hal_bitmask_write(port, UART_LCR_REG, 0x00);
