@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_
 
 #include "process.h"
+#include <stdlib.h>
 #include "../../tools/mutex.h"
 
 #define		SCHEDULER_MAX_PROCESSES 10
@@ -17,7 +18,7 @@
 typedef void (*ProcFunc)();
 
 static Process_t SchedulerProcesses[SCHEDULER_MAX_PROCESSES];
-static int SchedulerRunningProcess = SCHEDULER_INVALID_ID;
+static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
 
 /**
  * Add a new process to the scheduler
@@ -29,8 +30,14 @@ void scheduler_addProcess(ProcFunc fct);
  */
 int scheduler_getFreeProcessID();
 
+/**
+ * Get the next process by a scheduling algorithm
+ */
 int scheduler_getNextProcess();
 
+/**
+ * Run the scheduler
+ */
 void scheduler_run();
 
 /**

@@ -13,7 +13,7 @@ void scheduler_addProcess(ProcFunc fct)
 	mutex_lock();
 
 	int newProcessID = scheduler_getFreeProcessID();
-	if (newProcessID == INVALID_THREAD_ID) 
+	if (newProcessID == SCHEDULER_INVALID_ID)
 	{
 		mutex_release();
 	}
@@ -35,14 +35,14 @@ void scheduler_run()
 		case PROCESS_READY: 
 		{
 			// speicher Context für Thread
-			/*if(setjmp(SchedulerProcesses[runningThread].context) == 0) {
-				if(SchedulerProcesses[runningThread].state == THREAD_RUN)
-					SchedulerProcesses[runningThread].state = THREAD_READY;
+			/*if(setjmp(SchedulerProcesses[runningThread].context) == 0) {*/
+			if(SchedulerProcesses[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
+				SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_READY;
 
-				runningThread = nextProcess;
-				SchedulerProcesses[runningThread].state = THREAD_RUN;
-				longjmp(SchedulerProcesses[runningThread].context, 1);
-			}*/
+			SchedulerCurrentRunningProcess = nextProcess;
+			SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
+			//longjmp(SchedulerProcesses[runningThread].context, 1);
+			/*}*/
 		} break;
 
 		default: break;
@@ -53,13 +53,18 @@ void scheduler_run()
 
 int scheduler_getNextProcess()
 {
-	int nextProcess = SchedulerRunningProcess + 1;
+	int nextProcess = SchedulerCurrentRunningProcess + 1;
 
-	while (nextProcess < SCHEDULER_MAX_PROCESSES && nextProcess != SchedulerRunningProcess) 
+	while (nextProcess < SCHEDULER_MAX_PROCESSES && nextProcess != SchedulerCurrentRunningProcess)
 	{
 		if (SchedulerProcesses[nextProcess].state == PROCESS_READY) 
 		{
 			return nextProcess;
+		}
+		// found a terminated process, remove it
+		else if (SchedulerProcesses[nextProcess].state == PROCESS_TERMINATED)
+		{
+			// TODO FlorianM: what do we need to do here?
 		}
 
 		nextProcess = nextProcess + 1;
@@ -71,8 +76,8 @@ int scheduler_getNextProcess()
 
 void scheduler_killProcess(int processID)
 {
-	SchedulerProcesses[newProcessID].state = PROCESS_TERMINATED;
-	SchedulerProcesses[newProcessID].func = NULL;
+	SchedulerProcesses[processID].state = PROCESS_TERMINATED;
+	SchedulerProcesses[processID].func = NULL;
 }
 
 int scheduler_getFreeProcessID() 
