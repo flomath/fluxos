@@ -10,7 +10,9 @@
 void gpt_timer_init(uint32_t timer)
 {
     int ticks = 50;
+
     gpt_timer_stop(timer);
+    gpt_disable_interrupts(timer);
 
     // 1-ms Tick Generation (only suitable for timer 1, 2 and 10 [16.2.4.2.1]
     if(timer == GPT_TIMER1 || timer == GPT_TIMER2 || timer == GPT_TIMER10)
@@ -24,7 +26,7 @@ void gpt_timer_init(uint32_t timer)
         hal_bitmask_write(timer, GPT_TNIR, negativeIncValue);
 
         // reset TOCR and TOWR
-        hal_bitmask_write(timer, GPT_TOCR, 0); // TODO FlorianM: check for correct values
+        hal_bitmask_write(timer, GPT_TOCR, 0x00); // TODO FlorianM: check for correct values
         hal_bitmask_write(timer, GPT_TOWR, ticks); // TODO FlorianM: check for correct values
 
         // Enable optional features
@@ -37,8 +39,13 @@ void gpt_timer_init(uint32_t timer)
         // Enable Interrupt
         hal_bitmask_set(timer, GPT_TIER, BV(1)); ///< OVF_IT_ENA, enable overflow interrupt
         hal_bitmask_set(timer, GPT_TWER, BV(1)); ///< OVF_WUP_ENA, enable overflow wake-up
-
     }
+}
+
+void gpt_disable_interrupts(uint32_t timer)
+{
+    // disable interrupts
+    hal_bitmask_write(timer, GPT_TIER, 0x00);
 }
 
 void gpt_timer_start(uint32_t timer)

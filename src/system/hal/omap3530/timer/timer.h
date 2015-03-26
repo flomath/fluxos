@@ -10,6 +10,7 @@
 
 #include<stdint.h>
 #include "../../common/hal.h"
+#include "../../common/timer.h"
 
 // General Purpose Timers, each 4K bytes [16.3.1.1]
 // all timers are mmaped to the L4 memory space
@@ -38,23 +39,8 @@
 #define GPT_TOWR        0x058    ///< number of masked overflow interrupts [16-54]
 #define GPT_TWER        0x020    ///< controls the wake-up feature on spec. interrupt events [16-26]
 
-#define GPT_FCLK        32.768  ///< timer input clock is 32.768 Hz [16.2.4.2.1]
-#define GPT_TICK        1       ///< Interupt period 1ms [16.2.4.2.1]
-#define GPT_LRGNR     1000000 ///< Large Number (1e6)
-
-/**
- * Initialise the timer
- */
-void gpt_timer_init(uint32_t timer);
-
-/**
- * Timer can be started at any time [16.2.4.2]
- */
-void gpt_timer_start(uint32_t timer);
-
-/**
- * Timer can be stopped at any time [16.2.4.2]
- */
-void gpt_timer_stop(uint32_t timer);
+#define GPT_FCLK        32.768   ///< timer input clock is 32.768 Hz [16.2.4.2.1]
+#define GPT_TICK        1        ///< Interupt period 1ms [16.2.4.2.1]
+#define GPT_LRGNR       1000000  ///< Large Number (1e6)
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_TIMER_TIMER_H_ */
