@@ -36,6 +36,7 @@
 #define GPT_TNIR        0x04C    ///< value of negative increment for 1ms tick generation [16-48]
 #define GPT_TOCR        0x054    ///< mask the tick interrupt for a selected number of ticks [16-52]
 #define GPT_TOWR        0x058    ///< number of masked overflow interrupts [16-54]
+#define GPT_TWER        0x020    ///< controls the wake-up feature on spec. interrupt events [16-26]
 
 #define GPT_FCLK        32.768  ///< timer input clock is 32.768 Hz [16.2.4.2.1]
 #define GPT_TICK        1       ///< Interupt period 1ms [16.2.4.2.1]
