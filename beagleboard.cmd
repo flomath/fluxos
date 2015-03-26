@@ -7,15 +7,16 @@
 
 MEMORY
 {
-	SRAM:           o = 0x40200000  l = 0x00010000  /* 64kB Internal SRAM */
+	SRAM:           o = 0x40200000  l = 0x0000FFC8  /* 64kB Internal SRAM */
 	DDR0:           o = 0x80000000  l = 0x40000000	/* 1GB external DDR Bank 0 */
+	EXCEPTIONS:		o = 0x4020FFC8	l = 0x00000037	/* RAM exception vectors */
 }
 
 stackSize = 0x20000;
 
 SECTIONS
 {
-
+   .intvecs    > EXCEPTIONS
 
    .const      > SRAM
    .bss        > SRAM
