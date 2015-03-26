@@ -5,7 +5,7 @@
 A monolithic operating system for audio applications.
 
 ## Project status
-[![Throughput Graph](https://graphs.waffle.io/flomath/fhv-os/throughput.svg)](https://waffle.io/flomath/fhv-os/metrics)
+[![Throughput Graph](https://graphs.waffle.io/flomath/fluxos/throughput.svg)](https://waffle.io/flomath/fhv-os/metrics)
 
 ## Documentation
 Find a detailed documentation of this project on the github pages [http://flomath.github.io/fluxos/](http://flomath.github.io/fluxos/).

@@ -13,19 +13,22 @@
 
 /**
  * Initialize the uart with the given configuration
+ *
  * @param baud_rate The baud rate to use
  */
 void uart_driver_init(uint32_t baud_rate);
 
 /**
  * Send data through the uart port
+ *
  * @param data The data to send
  * @param size The size of the data
  */
 void uart_driver_write(char* data, size_t size);
 
 /**
- * Get data from the uart port
+ * Get data from the uart port. This method will stop as soon there is no data to receive or the buffer is full.
+ *
  * @param buffer The data in which the data will be saved in
  * @param size The maximum size to write. All data after this will be omitted.
  */
