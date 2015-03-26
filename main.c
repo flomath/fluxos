@@ -25,9 +25,16 @@ int main(void) {
 	* Timer Tests
 	*/
 	printf("Test timer\n");
-	gpt_timer_init(GPT_TIMER1);
-	gpt_timer_start(GPT_TIMER1);
+	gpt_timer_init(GPT_TIMER10);
+	gpt_timer_start(GPT_TIMER10);
 
+	int i=0;
+	while (1)
+	{
+		for(i = 0; i < 500; i++);
+		printf("Coutner: %x\n", hal_get_address_value(GPT_TIMER10, GPT_TCRR));
+		printf("OCR: %i\n", hal_get_address_value(GPT_TIMER10, GPT_TOCR));
+	}
 
 	return 0;
 }
