@@ -96,22 +96,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Functions</h2></td></tr>
 <tr class="memitem:ad177b1979f179610225cf168650800c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#ad177b1979f179610225cf168650800c0">hal_get_register</a> (uint32_t port, uint8_t offset)</td></tr>
 <tr class="separator:ad177b1979f179610225cf168650800c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e3d3fad944461d5b9b7f9508e5dcfa"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a80e3d3fad944461d5b9b7f9508e5dcfa">hal_get_address_value</a> (uint32_t port, uint8_t offset)</td></tr>
-<tr class="separator:a80e3d3fad944461d5b9b7f9508e5dcfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31cb8e3795e3a66a56695de6c6e9f31a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a31cb8e3795e3a66a56695de6c6e9f31a">hal_bitmask_write</a> (uint32_t port, uint8_t offset, uint8_t mask)</td></tr>
-<tr class="separator:a31cb8e3795e3a66a56695de6c6e9f31a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8debe127d03f852ca173c26e7c20853a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a8debe127d03f852ca173c26e7c20853a">hal_bitmask_set</a> (uint32_t port, uint8_t offset, uint8_t mask)</td></tr>
-<tr class="separator:a8debe127d03f852ca173c26e7c20853a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3af0fb89481d5f70d8100aacc947377"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#ae3af0fb89481d5f70d8100aacc947377">hal_bitmask_clear</a> (uint32_t port, uint8_t offset, uint8_t mask)</td></tr>
-<tr class="separator:ae3af0fb89481d5f70d8100aacc947377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7501e0431addaf00f53fd7536d4fd7d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#aa7501e0431addaf00f53fd7536d4fd7d">hal_get_address_value</a> (uint32_t port, uint8_t offset)</td></tr>
+<tr class="separator:aa7501e0431addaf00f53fd7536d4fd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a5a57ee6290036b3cb768530a9d2563"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a1a5a57ee6290036b3cb768530a9d2563">hal_bitmask_write</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
+<tr class="separator:a1a5a57ee6290036b3cb768530a9d2563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a249461662e4968aeb232c79073fe4767"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a249461662e4968aeb232c79073fe4767">hal_bitmask_set</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
+<tr class="separator:a249461662e4968aeb232c79073fe4767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bcf0889832c179d4f63189da959ca55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a7bcf0889832c179d4f63189da959ca55">hal_bitmask_clear</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
+<tr class="separator:a7bcf0889832c179d4f63189da959ca55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ae3af0fb89481d5f70d8100aacc947377"></a>
+<a class="anchor" id="a7bcf0889832c179d4f63189da959ca55"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t hal_bitmask_clear </td>
+          <td class="memname">void hal_bitmask_clear </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>port</em>, </td>
@@ -125,7 +125,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>mask</em>&#160;</td>
         </tr>
         <tr>
@@ -139,12 +139,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8debe127d03f852ca173c26e7c20853a"></a>
+<a class="anchor" id="a249461662e4968aeb232c79073fe4767"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t hal_bitmask_set </td>
+          <td class="memname">void hal_bitmask_set </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>port</em>, </td>
@@ -158,7 +158,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>mask</em>&#160;</td>
         </tr>
         <tr>
@@ -172,12 +172,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a31cb8e3795e3a66a56695de6c6e9f31a"></a>
+<a class="anchor" id="a1a5a57ee6290036b3cb768530a9d2563"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t hal_bitmask_write </td>
+          <td class="memname">uint32_t hal_bitmask_write </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>port</em>, </td>
@@ -191,7 +191,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>mask</em>&#160;</td>
         </tr>
         <tr>
@@ -205,12 +205,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a80e3d3fad944461d5b9b7f9508e5dcfa"></a>
+<a class="anchor" id="aa7501e0431addaf00f53fd7536d4fd7d"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t hal_get_address_value </td>
+          <td class="memname">uint32_t hal_get_address_value </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>port</em>, </td>
@@ -262,7 +262,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 25 2015 09:00:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 26 2015 12:25:27 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

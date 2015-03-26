@@ -122,7 +122,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initialize the uart with the given configuration </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Initialize the uart with the given configuration</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">baud_rate</td><td>The baud rate to use </td></tr>
   </table>
@@ -170,7 +171,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Get data from the uart port </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Get data from the uart port. This method will stop as soon there is no data to receive or the buffer is full.</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">buffer</td><td>The data in which the data will be saved in </td></tr>
     <tr><td class="paramname">size</td><td>The maximum size to write. All data after this will be omitted. </td></tr>
@@ -236,7 +238,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Send data through the uart port </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Send data through the uart port</p>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>The data to send </td></tr>
     <tr><td class="paramname">size</td><td>The size of the data </td></tr>
@@ -249,7 +252,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Mar 25 2015 09:00:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Mar 26 2015 12:25:27 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
