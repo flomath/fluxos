@@ -34,6 +34,8 @@ SECTIONS
    .stackArea > DDR0 {
        . = align(4);
        . = . + stackSize;
+       __stackIrq = .;
+       . = . + stackSize;
        __stackSvc = .;
        . = . + stackSize;
    }
