@@ -31,14 +31,16 @@ void gpt_timer_init(uint32_t timer)
 
         // Enable optional features
         hal_bitmask_clear(timer, GPT_TCLR, 0xFF); ///< clear all settings
-        hal_bitmask_set(timer, GPT_TCLR, BV(11) + BV(10) + BV(1) + BV(6)); ///< enable overflow trigger, autoreload mode and compare
+        hal_bitmask_set(timer, GPT_TCLR, BV(11) + BV(1) + BV(6)); ///< enable overflow trigger, autoreload mode and compare
 
         // For 1-ms tick with a 32.768 Hz clock
         hal_bitmask_write(timer, GPT_TLDR, 0xFFFFFFE0); ///< set to reload value
 
+        hal_bitmask_set(timer, GPT_TMAR, 5000);
+
         // Enable Interrupt
-        hal_bitmask_set(timer, GPT_TIER, BV(1)); ///< OVF_IT_ENA, enable overflow interrupt
-        hal_bitmask_set(timer, GPT_TWER, BV(1)); ///< OVF_WUP_ENA, enable overflow wake-up
+        hal_bitmask_set(timer, GPT_TIER, BV(0)); ///< OVF_IT_ENA, enable overflow interrupt
+        hal_bitmask_set(timer, GPT_TWER, BV(0)); ///< OVF_WUP_ENA, enable overflow wake-up
     }
 }
 

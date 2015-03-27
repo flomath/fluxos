@@ -7,7 +7,8 @@
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
 #include "src/system/hal/omap3530/timer/timer.h"
 
-int main(void) {
+#pragma TASK(main)
+void main(void) {
 
 	// Set up interrupts
 	interrupt_init();
@@ -36,10 +37,8 @@ int main(void) {
 	while(1)
 	{
 		uint8_t a = 0x55;
-		uint8_t b;
+		//uint8_t b;
 		uart_write(UART3, &a);
 		//uart_read(UART1, &b);
 	}
-
-	return 0;
 }

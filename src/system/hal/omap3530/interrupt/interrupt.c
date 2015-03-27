@@ -9,6 +9,9 @@
 #include "../../common/hal.h"
 #include "interrupt.h"
 
+
+#include "../timer/timer.h"
+
 static interrupt_listener irq_callbacks[IRQ_NUMBER];
 
 void interrupt_init(void) {
@@ -67,9 +70,11 @@ interrupt void fiq_handler(void) {
 	printf("Not implemented!\n");
 }
 
+
 #pragma INTERRUPT(irq_handler, IRQ)
 #pragma TASK(irq_handler)
 void irq_handler(void) {
+	*((mmio_t)(GPT_TIMER10 + GPT_TISR)) |= BV(0) + BV(1) + BV(2);
 	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 }
 
