@@ -70,14 +70,6 @@ interrupt void fiq_handler(void) {
 #pragma INTERRUPT(irq_handler, IRQ)
 #pragma TASK(irq_handler)
 void irq_handler(void) {
-//	asm(" SUB R14, R14, #4"); // calculate address where we come from
-//	asm(" STMFD R13!, {R12, R14}"); // store R12 and R14 on stack (R12 in case of tramping)
-//
-//	asm(" LDMFD R13!, {R12, R14}"); // restore R12 and R14 from stack
-
-	int x = 0;
-	x++;
-
 	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 }
 

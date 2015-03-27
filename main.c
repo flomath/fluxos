@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "src/system/hal/omap3530/uart/uart.h"
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
+#include "src/system/hal/omap3530/timer/timer.h"
 
 int main(void) {
 
@@ -17,6 +18,9 @@ int main(void) {
 	interrupt_add_listener(46, NULL);
 
 	interrupt_enable();
+
+	gpt_timer_init(GPT_TIMER10);
+	gpt_timer_start(GPT_TIMER10);
 
 	// Set up UART
 	UARTConfiguration_t conf = {
