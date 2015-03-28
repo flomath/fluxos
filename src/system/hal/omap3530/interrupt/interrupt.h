@@ -16,6 +16,7 @@
 #define MPU_INTC_INTCPS_ILR(m)		(0x100 + (0x4 * (m)))		//< These registers contain the priority for the interrupts and the FIQ/IRQ steering [10-46] m = 0...95
 #define MPU_INTC_INTCPS_MIR(n)		(0x084 + (0x20 * (n)))	//< This register contains the interrupt mask [10-32] n = 0...2
 #define MPU_INTC_INTCPS_CONTROL		0x048					//< This register contains the new interrupt agreement bits
+#define MPU_INTC_INTCPS_SIR_IRQ		0x040					//<	This register supplies the currently active IRQ interrupt number [10-14]
 
 #define IRQ_NUMBER	96
 

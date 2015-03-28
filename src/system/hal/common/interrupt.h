@@ -8,8 +8,7 @@
 #ifndef SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_
 #define SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_
 
-
-typedef void (*interrupt_listener)(void);
+typedef void interrupt_callback(void);
 
 /**
  * Initializes the IRQ environment.
@@ -30,8 +29,8 @@ void interrupt_disable();
  * Registers a new listener to an IRQ
  *
  * @param irq The IQR to listen on
- * @param listener The listener function, which will be called when an interrupt occurs
+ * @param callback The callback function, which will be executed when an interrupt occurs
  */
-void interrupt_add_listener(uint32_t irq, interrupt_listener listener);
+void interrupt_add_listener(uint32_t irq, interrupt_callback* callback);
 
 #endif /* SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_ */

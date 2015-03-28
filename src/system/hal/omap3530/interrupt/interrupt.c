@@ -12,7 +12,7 @@
 
 #include "../timer/timer.h"
 
-static interrupt_listener irq_callbacks[IRQ_NUMBER];
+static interrupt_callback* irq_callbacks[IRQ_NUMBER] = { NULL };
 
 void interrupt_init(void) {
 
@@ -52,7 +52,7 @@ void interrupt_disable(void) {
 	_disable_interrupts();
 }
 
-void interrupt_add_listener(uint32_t irq, interrupt_listener listener) {
+void interrupt_add_listener(uint32_t irq, interrupt_callback* listener) {
 	irq_callbacks[irq] = listener;
 
 	// Enable IRQ
@@ -61,7 +61,7 @@ void interrupt_add_listener(uint32_t irq, interrupt_listener listener) {
 
 #pragma INTERRUPT(dabt_handler, DABT)
 interrupt void dabt_handler(void) {
-	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress
+	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
 	printf("Data Abort Exception!\n");
 }
 
@@ -74,8 +74,17 @@ interrupt void fiq_handler(void) {
 #pragma INTERRUPT(irq_handler, IRQ)
 #pragma TASK(irq_handler)
 void irq_handler(void) {
-	*((mmio_t)(GPT_TIMER10 + GPT_TISR)) |= BV(0) + BV(1) + BV(2);
+	// Clear the IRQ
 	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+
+	// Get the rightmost 6 bits: Active IRQ
+	uint8_t irq = BIT_TRIM_LEFT(*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_SIR_IRQ)), 6);
+	printf("Interrupt: %d\n", irq);
+
+	// Call the callback
+	if ( irq_callbacks[irq] != NULL ) {
+		irq_callbacks[irq]();
+	}
 }
 
 #pragma INTERRUPT(pabt_handler, PABT)

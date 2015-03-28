@@ -16,6 +16,16 @@
 #define	BV(x) (0x01 << x)
 
 /**
+ * Return the right-most N bits, meaning it trims the left-most 1-N bits
+ */
+#define BIT_TRIM_LEFT(value, N)	(value & ((1 << N) - 1))
+
+/**
+ * Return the left-most 1-N bits, meaning it trims the right-most N bits
+ */
+#define BIT_TRIM_RIGHT(value, N) (value >> N)
+
+/**
  * Memory Mapped IO address
  */
 typedef volatile uint32_t* mmio_t;
