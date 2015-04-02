@@ -25,22 +25,25 @@ void gpt_timer_init(uint32_t timer)
         hal_bitmask_write(timer, GPT_TPIR, positiveIncValue);
         hal_bitmask_write(timer, GPT_TNIR, negativeIncValue);
 
+        // Reset pending interrupt
+        hal_bitmask_set(timer, GPT_TISR, 0x00)
+
         // reset TOCR and TOWR
-        hal_bitmask_write(timer, GPT_TOCR, 0x00); // TODO FlorianM: check for correct values
-        hal_bitmask_write(timer, GPT_TOWR, ticks); // TODO FlorianM: check for correct values
+        //hal_bitmask_write(timer, GPT_TOCR, 0x00); // TODO FlorianM: check for correct values
+        //hal_bitmask_write(timer, GPT_TOWR, ticks); // TODO FlorianM: check for correct values
 
         // Enable optional features
         hal_bitmask_clear(timer, GPT_TCLR, 0xFF); ///< clear all settings
         hal_bitmask_set(timer, GPT_TCLR, BV(11) + BV(1) + BV(6)); ///< enable overflow trigger, autoreload mode and compare
 
-        // For 1-ms tick with a 32.768 Hz clock
-        hal_bitmask_write(timer, GPT_TLDR, 0xFFFFFFE0); ///< set to reload value
-
-        hal_bitmask_set(timer, GPT_TMAR, 5000);
+        // For 1-ms tick with a 32.768 Hz clock (GPT_FCLK)
+        // Timer Counting Rate [16.2.4.7] with prescaler=1
+        // (0xFFFFFFFF - TLDR + 1) * clockPeriod * prescaler
+        hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 5000 + 1) * (1/GPT_FCLK)); ///< set to reload value
 
         // Enable Interrupt
         hal_bitmask_set(timer, GPT_TIER, BV(0)); ///< OVF_IT_ENA, enable overflow interrupt
-        hal_bitmask_set(timer, GPT_TWER, BV(0)); ///< OVF_WUP_ENA, enable overflow wake-up
+        //hal_bitmask_set(timer, GPT_TWER, BV(0)); ///< OVF_WUP_ENA, enable overflow wake-up
     }
 }
 
