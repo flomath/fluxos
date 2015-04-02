@@ -26,6 +26,11 @@
 #define BIT_TRIM_RIGHT(value, N) (value >> N)
 
 /**
+ * Return the bit range
+ */
+#define BIT_RANGE(value, upper, lower) ((value >> lower) & ~(~0 << (upper - lower + 1)))
+
+/**
  * Memory Mapped IO address
  */
 typedef volatile uint32_t* mmio_t;

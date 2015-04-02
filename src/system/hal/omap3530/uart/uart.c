@@ -28,7 +28,7 @@ void uart_init(uint32_t port, UARTConfiguration_t* conf)
 	hal_bitmask_set(port, UART_MCR_REG, UART_MCR_TCR_TLR);
 
 	// 5. Enable FIFO, load new FIFO Triggers 1/3 and set DMA-Mode 1/2
-	hal_bitmask_set(port, UART_FCR_REG, BV(6) + BV(0)); // 16 char Trigger (RX/TX), DMA-Mode off, FIFO-Enable
+	hal_bitmask_set(port, UART_FCR_REG, BV(6) + BV(0)); // 16 char Trigger RX, 8 char TX, DMA-Mode off, FIFO-Enable
 
 	// 6. Switch to config mode B
 	hal_bitmask_write(port, UART_LCR_REG, UART_LCR_MODE_CONF_B, 8);

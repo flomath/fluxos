@@ -78,7 +78,8 @@ void irq_handler(void) {
 	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 
 	// Get the rightmost 6 bits: Active IRQ
-	uint8_t irq = BIT_TRIM_LEFT(*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_SIR_IRQ)), 6);
+	mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
+	uint8_t irq = BIT_TRIM_LEFT(*address, 7);
 	printf("Interrupt: %d\n", irq);
 
 	// Call the callback
