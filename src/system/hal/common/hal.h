@@ -32,8 +32,13 @@ typedef volatile uint32_t* mmio_t;
 
 /**
  * Write a bitmask into address
+ *
+ * @param port		The register base address
+ * @param offset	The offset of the register
+ * @param mask		The value to write
+ * @param size		The size of the register
  */
-uint32_t hal_bitmask_write(uint32_t port, uint8_t offset, uint32_t mask);
+uint32_t hal_bitmask_write(uint32_t port, uint8_t offset, uint32_t mask, uint8_t size);
 
 /**
  * Enable a bit(mask) of given port and offset

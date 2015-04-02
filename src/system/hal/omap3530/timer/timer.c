@@ -22,19 +22,19 @@ void gpt_timer_init(uint32_t timer)
         // Negative increment value = (INTEGER[ Fclk * Ttick] * 1e6) - (Fclk * Ttick * 1e6)
         int positiveIncValue = ( ( ((int)(GPT_FCLK * GPT_TICK)) + 1 ) * GPT_LRGNR ) - (GPT_FCLK * GPT_TICK * GPT_LRGNR);
         int negativeIncValue = ( ((int)(GPT_FCLK * GPT_TICK)) * GPT_LRGNR ) - (GPT_FCLK * GPT_TICK * GPT_LRGNR);
-        hal_bitmask_write(timer, GPT_TPIR, positiveIncValue);
-        hal_bitmask_write(timer, GPT_TNIR, negativeIncValue);
+        hal_bitmask_write(timer, GPT_TPIR, positiveIncValue, 32);
+        hal_bitmask_write(timer, GPT_TNIR, negativeIncValue, 32);
 
         // reset TOCR and TOWR
-        hal_bitmask_write(timer, GPT_TOCR, 0x00); // TODO FlorianM: check for correct values
-        hal_bitmask_write(timer, GPT_TOWR, ticks); // TODO FlorianM: check for correct values
+        hal_bitmask_write(timer, GPT_TOCR, 0x00, 32); // TODO FlorianM: check for correct values
+        hal_bitmask_write(timer, GPT_TOWR, ticks, 32); // TODO FlorianM: check for correct values
 
         // Enable optional features
         hal_bitmask_clear(timer, GPT_TCLR, 0xFF); ///< clear all settings
         hal_bitmask_set(timer, GPT_TCLR, BV(11) + BV(1) + BV(6)); ///< enable overflow trigger, autoreload mode and compare
 
         // For 1-ms tick with a 32.768 Hz clock
-        hal_bitmask_write(timer, GPT_TLDR, 0xFFFFFFE0); ///< set to reload value
+        hal_bitmask_write(timer, GPT_TLDR, 0xFFFFFFE0, 32); ///< set to reload value
 
         hal_bitmask_set(timer, GPT_TMAR, 5000);
 
@@ -47,7 +47,7 @@ void gpt_timer_init(uint32_t timer)
 void gpt_disable_interrupts(uint32_t timer)
 {
     // disable interrupts
-    hal_bitmask_write(timer, GPT_TIER, 0x00);
+    hal_bitmask_write(timer, GPT_TIER, 0x00, 32);
 }
 
 void gpt_timer_start(uint32_t timer)
