@@ -18,3 +18,9 @@ The board is accessible via [https://waffle.io/flomath/fhv-os](https://waffle.io
 
 #### Sprint 1 - Ideas, Brainstorming and Kickoff
 The first sprint is to define the basic concept of our operating system and the possible application area. It also contains the very basic architecture thoughts which will be refined in the following sprints.
+
+#### Sprint 2 - UART and Scheduler
+In the second sprint the UART is implemented as generic and omap specific code. It is possible to send or receive data via UART to the RS232 interface. A generic driver allows the usage of UART by any process. A very basic scheduler foundation is available to enqueue processes or tasks and provide a interface to enable interrupt-based scheduling on the basis of a simple scheduling algorithm. 
+
+#### Sprint 3 - Timer, Interrupt, MMU
+It is possible to trigger an interrupt via a timer by adding the timer to the generic interrupt handler. A simple task can be scheduled, for example every 10 seconds using the scheduler, interrupt and timer. The first steps towards an MMU is done by writing a guide and documentation on how to use and implement it. 
