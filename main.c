@@ -70,8 +70,10 @@ void uart_irq(void)
 	case 0x6:
 		// Timeout
 		received = hal_get_address_value(UART3, UART_RHR_REG);
-		hal_bitmask_set(UART3, UART_FCR_REG, BV(1));
+		//hal_bitmask_set(UART3, UART_FCR_REG, BV(1));
 		printf("UART Timeout (%c)\n", received);
+
+		uart_write(UART3, &received);
 		break;
 	default:
 		printf("Unsupported UART IRQ Type: %d\n", type);
