@@ -11,6 +11,7 @@
 #include<stdint.h>
 #include "../../common/hal.h"
 #include "../../common/timer.h"
+#include "../prcm/percm.h"
 
 // General Purpose Timers, each 4K bytes [16.3.1.1]
 // all timers are mmaped to the L4 memory space

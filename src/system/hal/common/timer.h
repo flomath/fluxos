@@ -30,4 +30,9 @@ void gpt_timer_stop(uint32_t timer);
  */
 void gpt_disable_interrupts(uint32_t timer);
 
+/**
+ * Reset the timer on each irq handler call!
+ */
+void gpt_timer_reset(uint32_t timer);
+
 #endif /* SRC_SYSTEM_HAL_COMMON_TIMER_TIMER_H_ */
