@@ -100,6 +100,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Macros</h2></td></tr>
 <tr class="memitem:a663d8c125655d41622b1e6bc96e5d63d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a663d8c125655d41622b1e6bc96e5d63d">BV</a>(x)&#160;&#160;&#160;(0x01 &lt;&lt; x)</td></tr>
 <tr class="separator:a663d8c125655d41622b1e6bc96e5d63d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a578376fc585025dafcbdde96cf197850"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a578376fc585025dafcbdde96cf197850">BIT_TRIM_LEFT</a>(value,  N)&#160;&#160;&#160;(value &amp; ((1 &lt;&lt; N) - 1))</td></tr>
+<tr class="separator:a578376fc585025dafcbdde96cf197850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ff4d39726eae3470af326404c9873b2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a0ff4d39726eae3470af326404c9873b2">BIT_TRIM_RIGHT</a>(value,  N)&#160;&#160;&#160;(value &gt;&gt; N)</td></tr>
+<tr class="separator:a0ff4d39726eae3470af326404c9873b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b55ebeabdc14bc65cd4c53d4d7d087d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a7b55ebeabdc14bc65cd4c53d4d7d087d">BIT_RANGE</a>(value,  upper,  lower)&#160;&#160;&#160;((value &gt;&gt; lower) &amp; ~(~0 &lt;&lt; (upper - lower + 1)))</td></tr>
+<tr class="separator:a7b55ebeabdc14bc65cd4c53d4d7d087d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -108,8 +114,8 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a1a5a57ee6290036b3cb768530a9d2563"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a1a5a57ee6290036b3cb768530a9d2563">hal_bitmask_write</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
-<tr class="separator:a1a5a57ee6290036b3cb768530a9d2563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff44a732b939e031ef81b40f55e7e178"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#aff44a732b939e031ef81b40f55e7e178">hal_bitmask_write</a> (uint32_t port, uint8_t offset, uint32_t mask, uint8_t size)</td></tr>
+<tr class="separator:aff44a732b939e031ef81b40f55e7e178"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a249461662e4968aeb232c79073fe4767"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a249461662e4968aeb232c79073fe4767">hal_bitmask_set</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
 <tr class="separator:a249461662e4968aeb232c79073fe4767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bcf0889832c179d4f63189da959ca55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8h.html#a7bcf0889832c179d4f63189da959ca55">hal_bitmask_clear</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
@@ -120,6 +126,93 @@ Functions</h2></td></tr>
 <tr class="separator:ad177b1979f179610225cf168650800c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a7b55ebeabdc14bc65cd4c53d4d7d087d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BIT_RANGE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">upper, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">lower&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;((value &gt;&gt; lower) &amp; ~(~0 &lt;&lt; (upper - lower + 1)))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the bit range </p>
+
+</div>
+</div>
+<a class="anchor" id="a578376fc585025dafcbdde96cf197850"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BIT_TRIM_LEFT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">N&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(value &amp; ((1 &lt;&lt; N) - 1))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the right-most N bits, meaning it trims the left-most 1-N bits </p>
+
+</div>
+</div>
+<a class="anchor" id="a0ff4d39726eae3470af326404c9873b2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BIT_TRIM_RIGHT</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">value, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">N&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;(value &gt;&gt; N)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Return the left-most 1-N bits, meaning it trims the right-most N bits </p>
+
+</div>
+</div>
 <a class="anchor" id="a663d8c125655d41622b1e6bc96e5d63d"></a>
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +311,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1a5a57ee6290036b3cb768530a9d2563"></a>
+<a class="anchor" id="aff44a732b939e031ef81b40f55e7e178"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -238,7 +331,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mask</em>&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -247,7 +346,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Write a bitmask into address </p>
+<p>Write a bitmask into address</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>The register base address </td></tr>
+    <tr><td class="paramname">offset</td><td>The offset of the register </td></tr>
+    <tr><td class="paramname">mask</td><td>The value to write </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the register </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -308,7 +416,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 26 2015 12:25:27 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Apr 9 2015 09:28:24 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
