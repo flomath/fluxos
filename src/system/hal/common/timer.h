@@ -35,4 +35,9 @@ void gpt_disable_interrupts(uint32_t timer);
  */
 void gpt_timer_reset(uint32_t timer);
 
+/**
+ * Select the clock for given timer (either system or 32k)
+ */
+void gpt_select_clock(uint32_t timer);
+
 #endif /* SRC_SYSTEM_HAL_COMMON_TIMER_TIMER_H_ */

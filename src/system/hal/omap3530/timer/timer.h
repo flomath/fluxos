@@ -43,5 +43,6 @@
 #define GPT_FCLK        32.768   ///< timer input clock is 32.768 Hz [16.2.4.2.1]
 #define GPT_TICK        1        ///< Interupt period 1ms [16.2.4.2.1]
 #define GPT_LRGNR       1000000  ///< Large Number (1e6)
+#define GPT_TIOCP_CFG	0x010	 ///< Register controls various parameters of GP timer L4 interface
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_TIMER_TIMER_H_ */

@@ -28,7 +28,7 @@ void main(void) {
 	gpt_timer_start(GPT_TIMER4);
 
 	// Set up UART
-	UARTConfiguration_t conf = {
+	/*UARTConfiguration_t conf = {
 			0x0,
 			9600,
 			UART_PARITY_NONE,
@@ -43,11 +43,17 @@ void main(void) {
 		//uint8_t b;
 		uart_write(UART3, &a);
 		//uart_read(UART1, &b);
+	}*/
+
+	while(1) {
+		printf("looping to death\n");
 	}
 }
 
 void timer_irq(void) {
+	gpt_timer_stop(GPT_TIMER4);
 	gpt_timer_reset(GPT_TIMER4);
+	gpt_timer_start(GPT_TIMER4);
 	timerCounter++;
 	printf("timer count: %u\n", timerCounter);
 	//*((mmio_t)(GPT_TIMER10 + GPT_TISR)) |= BV(0) + BV(1) + BV(2);

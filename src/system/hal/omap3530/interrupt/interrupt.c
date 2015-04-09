@@ -72,8 +72,9 @@ interrupt void fiq_handler(void) {
 
 
 #pragma INTERRUPT(irq_handler, IRQ)
-#pragma TASK(irq_handler)
 void irq_handler(void) {
+	interrupt_disable();
+
 	// Clear the IRQ
 	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 
@@ -85,6 +86,8 @@ void irq_handler(void) {
 	if ( irq_callbacks[irq] != NULL ) {
 		irq_callbacks[irq]();
 	}
+
+	interrupt_enable();
 }
 
 #pragma INTERRUPT(pabt_handler, PABT)
