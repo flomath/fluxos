@@ -40,4 +40,6 @@ void gpt_timer_reset(uint32_t timer);
  */
 void gpt_select_clock(uint32_t timer);
 
+void gpt_enable_features(uint32_t timer);
+
 #endif /* SRC_SYSTEM_HAL_COMMON_TIMER_TIMER_H_ */

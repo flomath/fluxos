@@ -67,7 +67,7 @@ interrupt void dabt_handler(void) {
 
 #pragma INTERRUPT(fiq_handler, FIQ)
 interrupt void fiq_handler(void) {
-	printf("Not implemented!\n");
+	printf("Not implemented: FIQ!\n");
 }
 
 
@@ -75,11 +75,9 @@ interrupt void fiq_handler(void) {
 void irq_handler(void) {
 	interrupt_disable();
 
-	// Clear the IRQ
-	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
-
 	// Get the rightmost 6 bits: Active IRQ
-	uint8_t irq = BIT_TRIM_LEFT(*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_SIR_IRQ)), 6);
+	mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
+	uint8_t irq = BIT_TRIM_LEFT(*address, 7);
 	printf("Interrupt: %d\n", irq);
 
 	// Call the callback
@@ -87,20 +85,21 @@ void irq_handler(void) {
 		irq_callbacks[irq]();
 	}
 
-	interrupt_enable();
+	// Clear the IRQ
+	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 }
 
 #pragma INTERRUPT(pabt_handler, PABT)
 interrupt void pabt_handler(void) {
-	printf("Not implemented!\n");
+	printf("Not implemented: PABT\n");
 }
 
 #pragma INTERRUPT(swi_handler, SWI)
 interrupt void swi_handler(void) {
-	printf("Not implemented!\n");
+	printf("Not implemented: SWI\n");
 }
 
 #pragma INTERRUPT(udef_handler, UDEF)
 interrupt void udef_handler(void) {
-	printf("Not implemented!\n");
+	printf("Not implemented: UDEF\n");
 }

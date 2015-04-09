@@ -30,6 +30,7 @@
 #define UART_SYSS_REG	0x058 ///< System status register [17-126]
 #define UART_THR_REG 	0x000 ///< Transmit holding register [17-44]
 #define UART_RHR_REG 	0x000 ///< Receive holding register [17-42]
+#define UART_IIR_REG	0x008 ///< Interrupt identification register [17-56]
 
 #define EN_UART1		BV(13)
 #define EN_UART2		BV(14)

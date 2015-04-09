@@ -22,8 +22,8 @@ void gpt_timer_init(uint32_t timer)
         // Negative increment value = (INTEGER[ Fclk * Ttick] * 1e6) - (Fclk * Ttick * 1e6)
         int positiveIncValue = ( ( ((int)(GPT_FCLK * GPT_TICK)) + 1 ) * GPT_LRGNR ) - (GPT_FCLK * GPT_TICK * GPT_LRGNR);
         int negativeIncValue = ( ((int)(GPT_FCLK * GPT_TICK)) * GPT_LRGNR ) - (GPT_FCLK * GPT_TICK * GPT_LRGNR);
-        hal_bitmask_write(timer, GPT_TPIR, positiveIncValue);
-        hal_bitmask_write(timer, GPT_TNIR, negativeIncValue);
+        hal_bitmask_write(timer, GPT_TPIR, positiveIncValue, 32);
+        hal_bitmask_write(timer, GPT_TNIR, negativeIncValue, 32);
 
         // Reset pending interrupts
         //hal_bitmask_set(timer, GPT_TISR, BV(0) + BV(1) + BV(2));
@@ -38,8 +38,8 @@ void gpt_timer_init(uint32_t timer)
         // (0xFFFFFFFF - TLDR + 1) * clockPeriod * prescaler
         //hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 5000 + 1)); ///< set to reload value
         //hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 5000 + 1) * (1/GPT_FCLK));
-        hal_bitmask_write(timer, GPT_TLDR, 0xFFFF0000);
-        hal_bitmask_write(timer, GPT_TCRR, 0xFFFF0000);
+        hal_bitmask_write(timer, GPT_TLDR, 0xFFFF0000, 32);
+        hal_bitmask_write(timer, GPT_TCRR, 0xFFFF0000, 32);
         //see page 2614
 
         // Enable optional features
@@ -56,19 +56,24 @@ void gpt_timer_init(uint32_t timer)
     {
     	hal_bitmask_set(timer, GPT_TIOCP_CFG, BV(1)); ///< softreset
 
-    	hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 8000)); //(0xFFFFFFFF - 500 + 1) * (1/GPT_FCLK)
-		hal_bitmask_write(timer, GPT_TCRR, (0xFFFFFFFF - 8000));
+    	hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 8000), 32); //(0xFFFFFFFF - 500 + 1) * (1/GPT_FCLK)
+		hal_bitmask_write(timer, GPT_TCRR, (0xFFFFFFFF - 8000), 32);
 
 		hal_bitmask_set(timer, GPT_TTGR, BV(1));
 
 		gpt_select_clock(timer);
 
 		// Enable optional features
-		hal_bitmask_clear(timer, GPT_TCLR, 0xFF); ///< clear all settings
-		hal_bitmask_set(timer, GPT_TCLR, BV(1) + BV(12) + BV(5) + BV(4)); ///< set autoreload mode and toggle emulation
+		gpt_enable_features(timer);
 
 		hal_bitmask_set(timer, GPT_TIER, BV(1)); ///< OVF_IT_ENA, enable overflow interrupt
     }
+}
+
+void gpt_enable_features(uint32_t timer)
+{
+	hal_bitmask_clear(timer, GPT_TCLR, 0xFF); ///< clear all settings
+	hal_bitmask_set(timer, GPT_TCLR, BV(1) + BV(12) + BV(5) + BV(4)); ///< set autoreload mode and toggle emulation
 }
 
 void gpt_select_clock(uint32_t timer)
@@ -78,7 +83,7 @@ void gpt_select_clock(uint32_t timer)
 
 void gpt_disable_interrupts(uint32_t timer)
 {
-    hal_bitmask_write(timer, GPT_TIER, 0x00);
+    hal_bitmask_write(timer, GPT_TIER, 0x00, 32);
 }
 
 void gpt_timer_start(uint32_t timer)
@@ -88,7 +93,8 @@ void gpt_timer_start(uint32_t timer)
 
 void gpt_timer_reset(uint32_t timer)
 {
-	hal_bitmask_set(timer, GPT_TISR, BV(0) + BV(1) + BV(2));
+	gpt_timer_stop(timer);
+	hal_bitmask_write(timer, GPT_TISR, 0x3, 8);
 }
 
 void gpt_timer_stop(uint32_t timer)

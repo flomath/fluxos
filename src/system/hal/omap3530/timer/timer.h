@@ -31,7 +31,7 @@
 #define GPT_TCLR        0x024    ///< optional features specific to timer functionality [16-28]
 #define GPT_TCRR        0x028    ///< value of internal counter [16-30]
 #define GPT_TLDR        0x02C    ///< timer load values [16-32]
-#define GPT_TISR        0x02C    ///< shows which interrupt events are pending inside module [16-22]
+#define GPT_TISR        0x018    ///< shows which interrupt events are pending inside module [16-22]
 #define GPT_TTGR        0x030    ///< triggers a counter reload of timer by writing any value in it [16-34]
 #define GPT_TPIR        0x048    ///< value of positive increment for 1ms tick generation [16-46]
 #define GPT_TNIR        0x04C    ///< value of negative increment for 1ms tick generation [16-48]
