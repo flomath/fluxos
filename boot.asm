@@ -16,8 +16,10 @@
 ;*-------------------------------------------------------
 
 		.global __stackSvc
+		.global __stackIrq
 
 stackSvc	.long	__stackSvc
+stackIrq	.long	__stackIrq
 
 ;*-----------------------	--------------------------------
 ;* FunctionDef for c_int00
@@ -29,6 +31,9 @@ _c_int00: .asmfunc
 	;*-------------------------------------------------------
 	;	r0, c_mf_sp
 	;STR	sp, [r0]
+
+	CPS		0x12 ; IRQ Mode
+	LDR		sp,	stackIrq
 
 	;*-------------------------------------------------------
 	;* Set KernelStack
