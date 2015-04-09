@@ -13,7 +13,7 @@
 /**
  * Initialise the timer
  */
-void gpt_timer_init(uint32_t timer);
+void gpt_timer_init(uint32_t timer, int timeInMs);
 
 /**
  * Timer can be started at any time [16.2.4.2]
@@ -38,7 +38,7 @@ void gpt_timer_reset(uint32_t timer);
 /**
  * Select the clock for given timer (either system or 32k)
  */
-void gpt_select_clock(uint32_t timer);
+void gpt_select_clock();
 
 void gpt_enable_features(uint32_t timer);
 

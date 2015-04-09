@@ -8,7 +8,7 @@
 #include "timer.h"
 #include <stdio.h>
 
-void gpt_timer_init(uint32_t timer)
+void gpt_timer_init(uint32_t timer, int timeInMs)
 {
     gpt_timer_stop(timer);
     gpt_disable_interrupts(timer);
@@ -34,34 +34,29 @@ void gpt_timer_init(uint32_t timer)
         //hal_bitmask_write(timer, GPT_TOWR, ticks); // TODO FlorianM: check for correct values
 
         // For 1-ms tick with a 32.768 Hz clock (GPT_FCLK)
-        // Timer Counting Rate [16.2.4.7] with prescaler=1
-        // (0xFFFFFFFF - TLDR + 1) * clockPeriod * prescaler
-        //hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 5000 + 1)); ///< set to reload value
-        //hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 5000 + 1) * (1/GPT_FCLK));
         hal_bitmask_write(timer, GPT_TLDR, 0xFFFF0000, 32);
         hal_bitmask_write(timer, GPT_TCRR, 0xFFFF0000, 32);
         //see page 2614
 
         // Enable optional features
-        //hal_bitmask_clear(timer, GPT_TCLR, 0xFF); ///< clear all settings
-        hal_bitmask_set(timer, GPT_TCLR, BV(0) + BV(10) + BV(1)); ///< enable overflow trigger, autoreload mode and compare
+        gpt_enable_features(timer);
 
         hal_bitmask_set(timer, GPT_TTGR, BV(1));
 
         // Enable Interrupt
         hal_bitmask_set(timer, GPT_TIER, BV(1)); ///< OVF_IT_ENA, enable overflow interrupt
-        //hal_bitmask_set(timer, GPT_TWER, BV(0)); ///< OVF_WUP_ENA, enable overflow wake-up
     }
     else
     {
     	hal_bitmask_set(timer, GPT_TIOCP_CFG, BV(1)); ///< softreset
 
-    	hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - 8000), 32); //(0xFFFFFFFF - 500 + 1) * (1/GPT_FCLK)
-		hal_bitmask_write(timer, GPT_TCRR, (0xFFFFFFFF - 8000), 32);
+    	//
+    	hal_bitmask_write(timer, GPT_TLDR, (0xFFFFFFFF - timeInMs), 32);
+		hal_bitmask_write(timer, GPT_TCRR, (0xFFFFFFFF - timeInMs), 32);
 
 		hal_bitmask_set(timer, GPT_TTGR, BV(1));
 
-		gpt_select_clock(timer);
+		gpt_select_clock();
 
 		// Enable optional features
 		gpt_enable_features(timer);
@@ -76,9 +71,13 @@ void gpt_enable_features(uint32_t timer)
 	hal_bitmask_set(timer, GPT_TCLR, BV(1) + BV(12) + BV(5) + BV(4)); ///< set autoreload mode and toggle emulation
 }
 
-void gpt_select_clock(uint32_t timer)
+void gpt_select_clock()
 {
-	hal_bitmask_clear(PER_CM, CM_CLKSEL_PER, BV(2)); // set gpt4 to 32k
+	int i=0;
+	for(i=0; i < 7; i++)
+	{
+		hal_bitmask_clear(PER_CM, CM_CLKSEL_PER, BV(i)); // set all clocks to 32k
+	}
 }
 
 void gpt_disable_interrupts(uint32_t timer)

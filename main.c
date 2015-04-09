@@ -7,10 +7,14 @@
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
 #include "src/system/hal/omap3530/timer/timer.h"
 #include "src/system/hal/omap3530/prcm/percm.h"
+#include "src/system/scheduler/scheduler.h"
 
 interrupt_callback timer_irq;
 static uint16_t timerCounter;
 interrupt_callback uart_irq;
+
+void test(void);
+void test2(void);
 
 #pragma TASK(main)
 void main(void) {
@@ -25,8 +29,11 @@ void main(void) {
 	interrupt_add_listener(40, &timer_irq);
 	//interrupt_add_listener(74, &uart_irq);
 
-	gpt_timer_init(GPT_TIMER4);
+	gpt_timer_init(GPT_TIMER4, 3000);
 	gpt_timer_start(GPT_TIMER4);
+
+	scheduler_addProcess(test);
+	scheduler_addProcess(test2);
 
 	// Set up UART
 	UARTConfiguration_t conf = {
@@ -41,18 +48,30 @@ void main(void) {
 	interrupt_enable();
 
 	// Execute
-
 	while(1) {
-		printf("looping to death\n");
+		printf("..idle\n");
 	}
+}
+
+void test(void) {
+	//while(1) {
+		printf("[1] task test\n");
+	//}
+}
+void test2(void) {
+	//while(1) {
+		printf("[2] task test\n");
+	//}
 }
 
 void timer_irq(void) {
 	gpt_timer_reset(GPT_TIMER4);
 	gpt_timer_start(GPT_TIMER4);
+
+	scheduler_run();
+
 	timerCounter++;
 	printf("timer count: %u\n", timerCounter);
-	//*((mmio_t)(GPT_TIMER10 + GPT_TISR)) |= BV(0) + BV(1) + BV(2);
 }
 
 void uart_irq(void)
