@@ -100,7 +100,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include&lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#a184c7f99a4b10946a19fd3fc20dcf706">gpt_timer_init</a>(uint32_t timer);</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#aed13f22bac6a8f92fe5d6171f9bd24f6">gpt_timer_init</a>(uint32_t timer, <span class="keywordtype">int</span> timeInMs);</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#aafd58497cdcf50cece430cc27afdda12">gpt_timer_start</a>(uint32_t timer);</div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
@@ -108,15 +108,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#a66f6287a5bb1fb85b762e45c4e937df7">gpt_disable_interrupts</a>(uint32_t timer);</div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_TIMER_TIMER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="common_2timer_8h_html_aafd58497cdcf50cece430cc27afdda12"><div class="ttname"><a href="common_2timer_8h.html#aafd58497cdcf50cece430cc27afdda12">gpt_timer_start</a></div><div class="ttdeci">void gpt_timer_start(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:53</div></div>
-<div class="ttc" id="common_2timer_8h_html_a184c7f99a4b10946a19fd3fc20dcf706"><div class="ttname"><a href="common_2timer_8h.html#a184c7f99a4b10946a19fd3fc20dcf706">gpt_timer_init</a></div><div class="ttdeci">void gpt_timer_init(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:10</div></div>
-<div class="ttc" id="common_2timer_8h_html_a3c0152b570ef679ab62693eed6b8c686"><div class="ttname"><a href="common_2timer_8h.html#a3c0152b570ef679ab62693eed6b8c686">gpt_timer_stop</a></div><div class="ttdeci">void gpt_timer_stop(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:59</div></div>
-<div class="ttc" id="common_2timer_8h_html_a66f6287a5bb1fb85b762e45c4e937df7"><div class="ttname"><a href="common_2timer_8h.html#a66f6287a5bb1fb85b762e45c4e937df7">gpt_disable_interrupts</a></div><div class="ttdeci">void gpt_disable_interrupts(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:47</div></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#a1c8582eb6e1ed3c2c9210a35ea4741f5">gpt_timer_reset</a>(uint32_t timer);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#a505188fdad19f7f744e2b5d752723183">gpt_select_clock</a>();</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2timer_8h.html#a984921950f94b4377044edd5485a27a9">gpt_enable_features</a>(uint32_t timer);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_TIMER_TIMER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="common_2timer_8h_html_aafd58497cdcf50cece430cc27afdda12"><div class="ttname"><a href="common_2timer_8h.html#aafd58497cdcf50cece430cc27afdda12">gpt_timer_start</a></div><div class="ttdeci">void gpt_timer_start(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:88</div></div>
+<div class="ttc" id="common_2timer_8h_html_a505188fdad19f7f744e2b5d752723183"><div class="ttname"><a href="common_2timer_8h.html#a505188fdad19f7f744e2b5d752723183">gpt_select_clock</a></div><div class="ttdeci">void gpt_select_clock()</div><div class="ttdef"><b>Definition:</b> timer.c:74</div></div>
+<div class="ttc" id="common_2timer_8h_html_aed13f22bac6a8f92fe5d6171f9bd24f6"><div class="ttname"><a href="common_2timer_8h.html#aed13f22bac6a8f92fe5d6171f9bd24f6">gpt_timer_init</a></div><div class="ttdeci">void gpt_timer_init(uint32_t timer, int timeInMs)</div><div class="ttdef"><b>Definition:</b> timer.c:11</div></div>
+<div class="ttc" id="common_2timer_8h_html_a984921950f94b4377044edd5485a27a9"><div class="ttname"><a href="common_2timer_8h.html#a984921950f94b4377044edd5485a27a9">gpt_enable_features</a></div><div class="ttdeci">void gpt_enable_features(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:68</div></div>
+<div class="ttc" id="common_2timer_8h_html_a1c8582eb6e1ed3c2c9210a35ea4741f5"><div class="ttname"><a href="common_2timer_8h.html#a1c8582eb6e1ed3c2c9210a35ea4741f5">gpt_timer_reset</a></div><div class="ttdeci">void gpt_timer_reset(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:93</div></div>
+<div class="ttc" id="common_2timer_8h_html_a3c0152b570ef679ab62693eed6b8c686"><div class="ttname"><a href="common_2timer_8h.html#a3c0152b570ef679ab62693eed6b8c686">gpt_timer_stop</a></div><div class="ttdeci">void gpt_timer_stop(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:99</div></div>
+<div class="ttc" id="common_2timer_8h_html_a66f6287a5bb1fb85b762e45c4e937df7"><div class="ttname"><a href="common_2timer_8h.html#a66f6287a5bb1fb85b762e45c4e937df7">gpt_disable_interrupts</a></div><div class="ttdeci">void gpt_disable_interrupts(uint32_t timer)</div><div class="ttdef"><b>Definition:</b> timer.c:83</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 9 2015 09:28:24 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 10 2015 08:15:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

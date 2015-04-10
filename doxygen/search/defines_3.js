@@ -17,6 +17,7 @@ var searchData=
   ['gpt_5ftimer7',['GPT_TIMER7',['../omap3530_2timer_2timer_8h.html#aa3b3834ab6b2341cee914048e08d2e6e',1,'timer.h']]],
   ['gpt_5ftimer8',['GPT_TIMER8',['../omap3530_2timer_2timer_8h.html#a8bd7e54bb60d22e0213af08c404562b1',1,'timer.h']]],
   ['gpt_5ftimer9',['GPT_TIMER9',['../omap3530_2timer_2timer_8h.html#a19758889da39e67eb5de48120026f2bf',1,'timer.h']]],
+  ['gpt_5ftiocp_5fcfg',['GPT_TIOCP_CFG',['../omap3530_2timer_2timer_8h.html#a214ac744c73af11f1e29825090f0b4fe',1,'timer.h']]],
   ['gpt_5ftisr',['GPT_TISR',['../omap3530_2timer_2timer_8h.html#a2166afc81aae26dece30eb9fb9902c79',1,'timer.h']]],
   ['gpt_5ftldr',['GPT_TLDR',['../omap3530_2timer_2timer_8h.html#a529cf0d77ab863bfacd70c35932f8d99',1,'timer.h']]],
   ['gpt_5ftmar',['GPT_TMAR',['../omap3530_2timer_2timer_8h.html#afdc80f7ae3dc1ac125748f40fe5928bc',1,'timer.h']]],

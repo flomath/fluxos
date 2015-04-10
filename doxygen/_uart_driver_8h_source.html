@@ -100,32 +100,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;inttypes.h&gt;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;cstdlib&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a51e71d5e1e074c790ecb2c0e15e2cdb4">uart_driver_init</a>(uint32_t baud_rate);</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a258097dfaffb3af7dc896dabb789a049">uart_driver_write</a>(<span class="keywordtype">char</span>* data, <span class="keywordtype">size_t</span> size);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#ab1bfc2012ac44b08bca635eba8f5a620">uart_driver_read</a>(<span class="keywordtype">char</span>* buffer, <span class="keywordtype">size_t</span> size);</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a6fb4f3c63c696b01730f56dc446a3fe1">uart_driver_reset</a>();</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a1b3f8cb75f6d4f4a646396e8c969c40c">uart_driver_register_callback</a>(<span class="keywordtype">void</span> *callback(<span class="keywordtype">void</span>));</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#af4791e8c4060342d951fa2f41974f41b">uart_driver_interrupt</a>();</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;../../hal/omap3530/interrupt/interrupt.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a51e71d5e1e074c790ecb2c0e15e2cdb4">uart_driver_init</a>(uint32_t baud_rate);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a258097dfaffb3af7dc896dabb789a049">uart_driver_write</a>(<span class="keywordtype">char</span>* data, <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#ab1bfc2012ac44b08bca635eba8f5a620">uart_driver_read</a>(<span class="keywordtype">char</span>* buffer, <span class="keywordtype">size_t</span> size);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">int</span> <a class="code" href="_uart_driver_8h.html#a15b52fd97f8ae492d5642523fde13f76">uart_driver_count</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#a6fb4f3c63c696b01730f56dc446a3fe1">uart_driver_reset</a>();</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#af24718309571cf9afc406b15951e38ae">uart_driver_register_callback</a>(<span class="keywordtype">void</span> (*callback)(<span class="keywordtype">void</span>));</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_DRIVER_UARTDRIVER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="_uart_driver_8h_html_a1b3f8cb75f6d4f4a646396e8c969c40c"><div class="ttname"><a href="_uart_driver_8h.html#a1b3f8cb75f6d4f4a646396e8c969c40c">uart_driver_register_callback</a></div><div class="ttdeci">void uart_driver_register_callback(void *callback(void))</div><div class="ttdef"><b>Definition:</b> UartDriver.c:44</div></div>
-<div class="ttc" id="_uart_driver_8h_html_ab1bfc2012ac44b08bca635eba8f5a620"><div class="ttname"><a href="_uart_driver_8h.html#ab1bfc2012ac44b08bca635eba8f5a620">uart_driver_read</a></div><div class="ttdeci">void uart_driver_read(char *buffer, size_t size)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:31</div></div>
-<div class="ttc" id="_uart_driver_8h_html_a6fb4f3c63c696b01730f56dc446a3fe1"><div class="ttname"><a href="_uart_driver_8h.html#a6fb4f3c63c696b01730f56dc446a3fe1">uart_driver_reset</a></div><div class="ttdeci">void uart_driver_reset()</div><div class="ttdef"><b>Definition:</b> UartDriver.c:40</div></div>
-<div class="ttc" id="_uart_driver_8h_html_a51e71d5e1e074c790ecb2c0e15e2cdb4"><div class="ttname"><a href="_uart_driver_8h.html#a51e71d5e1e074c790ecb2c0e15e2cdb4">uart_driver_init</a></div><div class="ttdeci">void uart_driver_init(uint32_t baud_rate)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:12</div></div>
-<div class="ttc" id="_uart_driver_8h_html_a258097dfaffb3af7dc896dabb789a049"><div class="ttname"><a href="_uart_driver_8h.html#a258097dfaffb3af7dc896dabb789a049">uart_driver_write</a></div><div class="ttdeci">void uart_driver_write(char *data, size_t size)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:23</div></div>
-<div class="ttc" id="_uart_driver_8h_html_af4791e8c4060342d951fa2f41974f41b"><div class="ttname"><a href="_uart_driver_8h.html#af4791e8c4060342d951fa2f41974f41b">uart_driver_interrupt</a></div><div class="ttdeci">void uart_driver_interrupt()</div><div class="ttdef"><b>Definition:</b> UartDriver.c:48</div></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_uart_driver_8h.html#af4791e8c4060342d951fa2f41974f41b">uart_driver_interrupt</a>();</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_DRIVER_UARTDRIVER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="_uart_driver_8h_html_a15b52fd97f8ae492d5642523fde13f76"><div class="ttname"><a href="_uart_driver_8h.html#a15b52fd97f8ae492d5642523fde13f76">uart_driver_count</a></div><div class="ttdeci">int uart_driver_count(void)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:62</div></div>
+<div class="ttc" id="_uart_driver_8h_html_ab1bfc2012ac44b08bca635eba8f5a620"><div class="ttname"><a href="_uart_driver_8h.html#ab1bfc2012ac44b08bca635eba8f5a620">uart_driver_read</a></div><div class="ttdeci">void uart_driver_read(char *buffer, size_t size)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:42</div></div>
+<div class="ttc" id="_uart_driver_8h_html_a6fb4f3c63c696b01730f56dc446a3fe1"><div class="ttname"><a href="_uart_driver_8h.html#a6fb4f3c63c696b01730f56dc446a3fe1">uart_driver_reset</a></div><div class="ttdeci">void uart_driver_reset()</div><div class="ttdef"><b>Definition:</b> UartDriver.c:66</div></div>
+<div class="ttc" id="_uart_driver_8h_html_a51e71d5e1e074c790ecb2c0e15e2cdb4"><div class="ttname"><a href="_uart_driver_8h.html#a51e71d5e1e074c790ecb2c0e15e2cdb4">uart_driver_init</a></div><div class="ttdeci">void uart_driver_init(uint32_t baud_rate)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:20</div></div>
+<div class="ttc" id="_uart_driver_8h_html_af24718309571cf9afc406b15951e38ae"><div class="ttname"><a href="_uart_driver_8h.html#af24718309571cf9afc406b15951e38ae">uart_driver_register_callback</a></div><div class="ttdeci">void uart_driver_register_callback(void(*callback)(void))</div><div class="ttdef"><b>Definition:</b> UartDriver.c:70</div></div>
+<div class="ttc" id="_uart_driver_8h_html_a258097dfaffb3af7dc896dabb789a049"><div class="ttname"><a href="_uart_driver_8h.html#a258097dfaffb3af7dc896dabb789a049">uart_driver_write</a></div><div class="ttdeci">void uart_driver_write(char *data, size_t size)</div><div class="ttdef"><b>Definition:</b> UartDriver.c:34</div></div>
+<div class="ttc" id="_uart_driver_8h_html_af4791e8c4060342d951fa2f41974f41b"><div class="ttname"><a href="_uart_driver_8h.html#af4791e8c4060342d951fa2f41974f41b">uart_driver_interrupt</a></div><div class="ttdeci">void uart_driver_interrupt()</div><div class="ttdef"><b>Definition:</b> UartDriver.c:74</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 9 2015 09:28:24 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 10 2015 08:15:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

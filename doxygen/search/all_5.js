@@ -1,8 +1,10 @@
 var searchData=
 [
   ['gpt_5fdisable_5finterrupts',['gpt_disable_interrupts',['../common_2timer_8h.html#a66f6287a5bb1fb85b762e45c4e937df7',1,'gpt_disable_interrupts(uint32_t timer):&#160;timer.c'],['../timer_8c.html#a66f6287a5bb1fb85b762e45c4e937df7',1,'gpt_disable_interrupts(uint32_t timer):&#160;timer.c']]],
+  ['gpt_5fenable_5ffeatures',['gpt_enable_features',['../common_2timer_8h.html#a984921950f94b4377044edd5485a27a9',1,'gpt_enable_features(uint32_t timer):&#160;timer.c'],['../timer_8c.html#a984921950f94b4377044edd5485a27a9',1,'gpt_enable_features(uint32_t timer):&#160;timer.c']]],
   ['gpt_5ffclk',['GPT_FCLK',['../omap3530_2timer_2timer_8h.html#a828058ca1c56c5140512aabd3274b332',1,'timer.h']]],
   ['gpt_5flrgnr',['GPT_LRGNR',['../omap3530_2timer_2timer_8h.html#a3a2cac210bfb3cd92b3b487523d19a82',1,'timer.h']]],
+  ['gpt_5fselect_5fclock',['gpt_select_clock',['../common_2timer_8h.html#a505188fdad19f7f744e2b5d752723183',1,'gpt_select_clock():&#160;timer.c'],['../timer_8c.html#a505188fdad19f7f744e2b5d752723183',1,'gpt_select_clock():&#160;timer.c']]],
   ['gpt_5ftclr',['GPT_TCLR',['../omap3530_2timer_2timer_8h.html#a175e3e965043e1fbf471f7a062110fed',1,'timer.h']]],
   ['gpt_5ftcrr',['GPT_TCRR',['../omap3530_2timer_2timer_8h.html#a62558ab873e92353649ad77b4abbba8d',1,'timer.h']]],
   ['gpt_5ftick',['GPT_TICK',['../omap3530_2timer_2timer_8h.html#ae36d65ccc972aadee0b3f471b0baadf4',1,'timer.h']]],
@@ -18,9 +20,11 @@ var searchData=
   ['gpt_5ftimer7',['GPT_TIMER7',['../omap3530_2timer_2timer_8h.html#aa3b3834ab6b2341cee914048e08d2e6e',1,'timer.h']]],
   ['gpt_5ftimer8',['GPT_TIMER8',['../omap3530_2timer_2timer_8h.html#a8bd7e54bb60d22e0213af08c404562b1',1,'timer.h']]],
   ['gpt_5ftimer9',['GPT_TIMER9',['../omap3530_2timer_2timer_8h.html#a19758889da39e67eb5de48120026f2bf',1,'timer.h']]],
-  ['gpt_5ftimer_5finit',['gpt_timer_init',['../common_2timer_8h.html#a184c7f99a4b10946a19fd3fc20dcf706',1,'gpt_timer_init(uint32_t timer):&#160;timer.c'],['../timer_8c.html#a184c7f99a4b10946a19fd3fc20dcf706',1,'gpt_timer_init(uint32_t timer):&#160;timer.c']]],
+  ['gpt_5ftimer_5finit',['gpt_timer_init',['../common_2timer_8h.html#aed13f22bac6a8f92fe5d6171f9bd24f6',1,'gpt_timer_init(uint32_t timer, int timeInMs):&#160;timer.c'],['../timer_8c.html#aed13f22bac6a8f92fe5d6171f9bd24f6',1,'gpt_timer_init(uint32_t timer, int timeInMs):&#160;timer.c']]],
+  ['gpt_5ftimer_5freset',['gpt_timer_reset',['../common_2timer_8h.html#a1c8582eb6e1ed3c2c9210a35ea4741f5',1,'gpt_timer_reset(uint32_t timer):&#160;timer.c'],['../timer_8c.html#a1c8582eb6e1ed3c2c9210a35ea4741f5',1,'gpt_timer_reset(uint32_t timer):&#160;timer.c']]],
   ['gpt_5ftimer_5fstart',['gpt_timer_start',['../common_2timer_8h.html#aafd58497cdcf50cece430cc27afdda12',1,'gpt_timer_start(uint32_t timer):&#160;timer.c'],['../timer_8c.html#aafd58497cdcf50cece430cc27afdda12',1,'gpt_timer_start(uint32_t timer):&#160;timer.c']]],
   ['gpt_5ftimer_5fstop',['gpt_timer_stop',['../common_2timer_8h.html#a3c0152b570ef679ab62693eed6b8c686',1,'gpt_timer_stop(uint32_t timer):&#160;timer.c'],['../timer_8c.html#a3c0152b570ef679ab62693eed6b8c686',1,'gpt_timer_stop(uint32_t timer):&#160;timer.c']]],
+  ['gpt_5ftiocp_5fcfg',['GPT_TIOCP_CFG',['../omap3530_2timer_2timer_8h.html#a214ac744c73af11f1e29825090f0b4fe',1,'timer.h']]],
   ['gpt_5ftisr',['GPT_TISR',['../omap3530_2timer_2timer_8h.html#a2166afc81aae26dece30eb9fb9902c79',1,'timer.h']]],
   ['gpt_5ftldr',['GPT_TLDR',['../omap3530_2timer_2timer_8h.html#a529cf0d77ab863bfacd70c35932f8d99',1,'timer.h']]],
   ['gpt_5ftmar',['GPT_TMAR',['../omap3530_2timer_2timer_8h.html#afdc80f7ae3dc1ac125748f40fe5928bc',1,'timer.h']]],

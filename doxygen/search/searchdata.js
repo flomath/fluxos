@@ -4,7 +4,7 @@ var indexSectionsWithContent =
   1: "mpu",
   2: "chimpstu",
   3: "dfghimpsu",
-  4: "bcfps",
+  4: "bcfpsu",
   5: "imp",
   6: "pu",
   7: "pu",

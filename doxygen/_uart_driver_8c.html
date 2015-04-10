@@ -85,14 +85,26 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">UartDriver.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_uart_driver_8h_source.html">UartDriver.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="omap3530_2uart_2uart_8h_source.html">../../hal/omap3530/uart/uart.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="common_2interrupt_8h_source.html">../../hal/common/interrupt.h</a>&quot;</code><br />
 </div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a4c1fbb83bca2d5ce4c3f81fceb9ca008"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a4c1fbb83bca2d5ce4c3f81fceb9ca008">UART_DRIVER_DEVICE</a>&#160;&#160;&#160;<a class="el" href="omap3530_2uart_2uart_8h.html#a961726a611b38bcaf61f3d598b0a59ec">UART3</a></td></tr>
+<tr class="separator:a4c1fbb83bca2d5ce4c3f81fceb9ca008"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b9ff96917ee72b536ae6ec1677d25c7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a6b9ff96917ee72b536ae6ec1677d25c7">UART_DRIVER_IRQ</a>&#160;&#160;&#160;74</td></tr>
+<tr class="separator:a6b9ff96917ee72b536ae6ec1677d25c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dd0b7a48037a20ba3d29f8f260109bd"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a2dd0b7a48037a20ba3d29f8f260109bd">UART_DRIVER_BUFFER_SIZE</a>&#160;&#160;&#160;16</td></tr>
+<tr class="separator:a2dd0b7a48037a20ba3d29f8f260109bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a51e71d5e1e074c790ecb2c0e15e2cdb4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a51e71d5e1e074c790ecb2c0e15e2cdb4">uart_driver_init</a> (uint32_t baud_rate)</td></tr>
@@ -101,14 +113,76 @@ Functions</h2></td></tr>
 <tr class="separator:a258097dfaffb3af7dc896dabb789a049"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1bfc2012ac44b08bca635eba8f5a620"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#ab1bfc2012ac44b08bca635eba8f5a620">uart_driver_read</a> (char *buffer, size_t size)</td></tr>
 <tr class="separator:ab1bfc2012ac44b08bca635eba8f5a620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2104cf506bdc921c573c2630b6a388b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a2104cf506bdc921c573c2630b6a388b9">uart_driver_count</a> ()</td></tr>
+<tr class="separator:a2104cf506bdc921c573c2630b6a388b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fb4f3c63c696b01730f56dc446a3fe1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a6fb4f3c63c696b01730f56dc446a3fe1">uart_driver_reset</a> ()</td></tr>
 <tr class="separator:a6fb4f3c63c696b01730f56dc446a3fe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b3f8cb75f6d4f4a646396e8c969c40c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a1b3f8cb75f6d4f4a646396e8c969c40c">uart_driver_register_callback</a> (void *callback(void))</td></tr>
-<tr class="separator:a1b3f8cb75f6d4f4a646396e8c969c40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af24718309571cf9afc406b15951e38ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#af24718309571cf9afc406b15951e38ae">uart_driver_register_callback</a> (void(*callback)(void))</td></tr>
+<tr class="separator:af24718309571cf9afc406b15951e38ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4791e8c4060342d951fa2f41974f41b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#af4791e8c4060342d951fa2f41974f41b">uart_driver_interrupt</a> ()</td></tr>
 <tr class="separator:af4791e8c4060342d951fa2f41974f41b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a5f1926a1299cd0581077d63eaf94d036"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_uart_driver_8c.html#a5f1926a1299cd0581077d63eaf94d036">uart_driver_callback_method</a> )(void) = NULL</td></tr>
+<tr class="separator:a5f1926a1299cd0581077d63eaf94d036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a2dd0b7a48037a20ba3d29f8f260109bd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UART_DRIVER_BUFFER_SIZE&#160;&#160;&#160;16</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a4c1fbb83bca2d5ce4c3f81fceb9ca008"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UART_DRIVER_DEVICE&#160;&#160;&#160;<a class="el" href="omap3530_2uart_2uart_8h.html#a961726a611b38bcaf61f3d598b0a59ec">UART3</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a6b9ff96917ee72b536ae6ec1677d25c7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define UART_DRIVER_IRQ&#160;&#160;&#160;74</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a2104cf506bdc921c573c2630b6a388b9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int uart_driver_count </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Gets the number of buffered data</p>
+<dl class="section return"><dt>Returns</dt><dd>The number of buffered data </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a51e71d5e1e074c790ecb2c0e15e2cdb4"></a>
 <div class="memitem">
 <div class="memproto">
@@ -182,15 +256,15 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1b3f8cb75f6d4f4a646396e8c969c40c"></a>
+<a class="anchor" id="af24718309571cf9afc406b15951e38ae"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void uart_driver_register_callback </td>
           <td>(</td>
-          <td class="paramtype">void *&#160;</td>
-          <td class="paramname"><em>callback</em>void</td><td>)</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -249,10 +323,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a5f1926a1299cd0581077d63eaf94d036"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* uart_driver_callback_method) (void) = NULL</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 9 2015 09:28:24 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 10 2015 08:15:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

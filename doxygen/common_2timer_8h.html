@@ -96,14 +96,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a184c7f99a4b10946a19fd3fc20dcf706"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#a184c7f99a4b10946a19fd3fc20dcf706">gpt_timer_init</a> (uint32_t timer)</td></tr>
-<tr class="separator:a184c7f99a4b10946a19fd3fc20dcf706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed13f22bac6a8f92fe5d6171f9bd24f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#aed13f22bac6a8f92fe5d6171f9bd24f6">gpt_timer_init</a> (uint32_t timer, int timeInMs)</td></tr>
+<tr class="separator:aed13f22bac6a8f92fe5d6171f9bd24f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafd58497cdcf50cece430cc27afdda12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#aafd58497cdcf50cece430cc27afdda12">gpt_timer_start</a> (uint32_t timer)</td></tr>
 <tr class="separator:aafd58497cdcf50cece430cc27afdda12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3c0152b570ef679ab62693eed6b8c686"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#a3c0152b570ef679ab62693eed6b8c686">gpt_timer_stop</a> (uint32_t timer)</td></tr>
 <tr class="separator:a3c0152b570ef679ab62693eed6b8c686"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66f6287a5bb1fb85b762e45c4e937df7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#a66f6287a5bb1fb85b762e45c4e937df7">gpt_disable_interrupts</a> (uint32_t timer)</td></tr>
 <tr class="separator:a66f6287a5bb1fb85b762e45c4e937df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c8582eb6e1ed3c2c9210a35ea4741f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#a1c8582eb6e1ed3c2c9210a35ea4741f5">gpt_timer_reset</a> (uint32_t timer)</td></tr>
+<tr class="separator:a1c8582eb6e1ed3c2c9210a35ea4741f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a505188fdad19f7f744e2b5d752723183"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#a505188fdad19f7f744e2b5d752723183">gpt_select_clock</a> ()</td></tr>
+<tr class="separator:a505188fdad19f7f744e2b5d752723183"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a984921950f94b4377044edd5485a27a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2timer_8h.html#a984921950f94b4377044edd5485a27a9">gpt_enable_features</a> (uint32_t timer)</td></tr>
+<tr class="separator:a984921950f94b4377044edd5485a27a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a66f6287a5bb1fb85b762e45c4e937df7"></a>
@@ -123,12 +129,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a184c7f99a4b10946a19fd3fc20dcf706"></a>
+<a class="anchor" id="a984921950f94b4377044edd5485a27a9"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void gpt_timer_init </td>
+          <td class="memname">void gpt_enable_features </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>timer</em></td><td>)</td>
@@ -136,12 +142,72 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Initialise the timer </p>
 <p>&lt; clear all settings</p>
-<p>&lt; enable overflow trigger, autoreload mode and compare</p>
-<p>&lt; set to reload value</p>
+<p>&lt; set autoreload mode and toggle emulation </p>
+
+</div>
+</div>
+<a class="anchor" id="a505188fdad19f7f744e2b5d752723183"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gpt_select_clock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Select the clock for given timer (either system or 32k) </p>
+
+</div>
+</div>
+<a class="anchor" id="aed13f22bac6a8f92fe5d6171f9bd24f6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gpt_timer_init </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeInMs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Initialise the timer </p>
+<p>&lt; clear all pending interrupts</p>
 <p>&lt; OVF_IT_ENA, enable overflow interrupt</p>
-<p>&lt; OVF_WUP_ENA, enable overflow wake-up </p>
+<p>&lt; softreset</p>
+<p>&lt; OVF_IT_ENA, enable overflow interrupt </p>
+
+</div>
+</div>
+<a class="anchor" id="a1c8582eb6e1ed3c2c9210a35ea4741f5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gpt_timer_reset </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Reset the timer on each irq handler call! </p>
 
 </div>
 </div>
@@ -182,7 +248,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 9 2015 09:28:24 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 10 2015 08:15:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

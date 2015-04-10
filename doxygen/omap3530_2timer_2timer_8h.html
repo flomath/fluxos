@@ -93,6 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;stdint.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="hal_8h_source.html">../../common/hal.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="common_2timer_8h_source.html">../../common/timer.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="percm_8h_source.html">../prcm/percm.h</a>&quot;</code><br />
 </div>
 <p><a href="omap3530_2timer_2timer_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -132,7 +133,7 @@ Macros</h2></td></tr>
 <tr class="memitem:a529cf0d77ab863bfacd70c35932f8d99"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2timer_2timer_8h.html#a529cf0d77ab863bfacd70c35932f8d99">GPT_TLDR</a>&#160;&#160;&#160;0x02C</td></tr>
 <tr class="memdesc:a529cf0d77ab863bfacd70c35932f8d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">timer load values [16-32]  <a href="#a529cf0d77ab863bfacd70c35932f8d99">More...</a><br /></td></tr>
 <tr class="separator:a529cf0d77ab863bfacd70c35932f8d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2166afc81aae26dece30eb9fb9902c79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2timer_2timer_8h.html#a2166afc81aae26dece30eb9fb9902c79">GPT_TISR</a>&#160;&#160;&#160;0x02C</td></tr>
+<tr class="memitem:a2166afc81aae26dece30eb9fb9902c79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2timer_2timer_8h.html#a2166afc81aae26dece30eb9fb9902c79">GPT_TISR</a>&#160;&#160;&#160;0x018</td></tr>
 <tr class="memdesc:a2166afc81aae26dece30eb9fb9902c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">shows which interrupt events are pending inside module [16-22]  <a href="#a2166afc81aae26dece30eb9fb9902c79">More...</a><br /></td></tr>
 <tr class="separator:a2166afc81aae26dece30eb9fb9902c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fc05fb10da7ab1ba94f36ef09612382"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2timer_2timer_8h.html#a4fc05fb10da7ab1ba94f36ef09612382">GPT_TTGR</a>&#160;&#160;&#160;0x030</td></tr>
@@ -165,6 +166,9 @@ Macros</h2></td></tr>
 <tr class="memitem:a3a2cac210bfb3cd92b3b487523d19a82"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2timer_2timer_8h.html#a3a2cac210bfb3cd92b3b487523d19a82">GPT_LRGNR</a>&#160;&#160;&#160;1000000</td></tr>
 <tr class="memdesc:a3a2cac210bfb3cd92b3b487523d19a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Large Number (1e6)  <a href="#a3a2cac210bfb3cd92b3b487523d19a82">More...</a><br /></td></tr>
 <tr class="separator:a3a2cac210bfb3cd92b3b487523d19a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a214ac744c73af11f1e29825090f0b4fe"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2timer_2timer_8h.html#a214ac744c73af11f1e29825090f0b4fe">GPT_TIOCP_CFG</a>&#160;&#160;&#160;0x010</td></tr>
+<tr class="memdesc:a214ac744c73af11f1e29825090f0b4fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Register controls various parameters of GP timer L4 interface.  <a href="#a214ac744c73af11f1e29825090f0b4fe">More...</a><br /></td></tr>
+<tr class="separator:a214ac744c73af11f1e29825090f0b4fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a828058ca1c56c5140512aabd3274b332"></a>
@@ -383,12 +387,26 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a214ac744c73af11f1e29825090f0b4fe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GPT_TIOCP_CFG&#160;&#160;&#160;0x010</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Register controls various parameters of GP timer L4 interface. </p>
+
+</div>
+</div>
 <a class="anchor" id="a2166afc81aae26dece30eb9fb9902c79"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define GPT_TISR&#160;&#160;&#160;0x02C</td>
+          <td class="memname">#define GPT_TISR&#160;&#160;&#160;0x018</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -512,7 +530,7 @@ Macros</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Apr 9 2015 09:28:24 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Apr 10 2015 08:15:12 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
