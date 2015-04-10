@@ -7,7 +7,7 @@
 
 #include "hal.h"
 
-mmio_t hal_get_register(uint32_t port, uint8_t offset)
+inline mmio_t hal_get_register(uint32_t port, uint8_t offset)
 {
 	return (mmio_t)(port + offset);
 }

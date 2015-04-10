@@ -10,6 +10,7 @@
 
 #include <inttypes.h>
 #include <cstdlib>
+#include "../../hal/omap3530/interrupt/interrupt.h"
 
 /**
  * Initialize the uart with the given configuration
@@ -35,6 +36,13 @@ void uart_driver_write(char* data, size_t size);
 void uart_driver_read(char* buffer, size_t size);
 
 /**
+ * Gets the number of buffered data
+ *
+ * @return The number of buffered data
+ */
+int uart_driver_count(void);
+
+/**
  * Resets the uart
  */
 void uart_driver_reset();
@@ -42,7 +50,7 @@ void uart_driver_reset();
 /**
  * Register a callback method t
  */
-void uart_driver_register_callback(void *callback(void));
+void uart_driver_register_callback(void (*callback)(void));
 
 /**
  * Will be called by the Interrupt Service Routine (ISR).

@@ -73,6 +73,8 @@ interrupt void fiq_handler(void) {
 
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
+	interrupt_disable();
+
 	// Get the rightmost 6 bits: Active IRQ
 	mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
 	uint8_t irq = BIT_TRIM_LEFT(*address, 7);

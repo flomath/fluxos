@@ -11,6 +11,7 @@
 #include<stdint.h>
 #include "../../common/hal.h"
 #include "../../common/timer.h"
+#include "../prcm/percm.h"
 
 // General Purpose Timers, each 4K bytes [16.3.1.1]
 // all timers are mmaped to the L4 memory space
@@ -30,7 +31,7 @@
 #define GPT_TCLR        0x024    ///< optional features specific to timer functionality [16-28]
 #define GPT_TCRR        0x028    ///< value of internal counter [16-30]
 #define GPT_TLDR        0x02C    ///< timer load values [16-32]
-#define GPT_TISR        0x02C    ///< shows which interrupt events are pending inside module [16-22]
+#define GPT_TISR        0x018    ///< shows which interrupt events are pending inside module [16-22]
 #define GPT_TTGR        0x030    ///< triggers a counter reload of timer by writing any value in it [16-34]
 #define GPT_TPIR        0x048    ///< value of positive increment for 1ms tick generation [16-46]
 #define GPT_TNIR        0x04C    ///< value of negative increment for 1ms tick generation [16-48]
@@ -42,5 +43,6 @@
 #define GPT_FCLK        32.768   ///< timer input clock is 32.768 Hz [16.2.4.2.1]
 #define GPT_TICK        1        ///< Interupt period 1ms [16.2.4.2.1]
 #define GPT_LRGNR       1000000  ///< Large Number (1e6)
+#define GPT_TIOCP_CFG	0x010	 ///< Register controls various parameters of GP timer L4 interface
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_TIMER_TIMER_H_ */
