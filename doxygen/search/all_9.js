@@ -2,7 +2,7 @@ var searchData=
 [
   ['pabt_5fhandler',['pabt_handler',['../interrupt_8c.html#a60934e0d343fa80b2d4808dfc773a328',1,'interrupt.c']]],
   ['parity_5ftype',['parity_type',['../struct_u_a_r_t_configuration__t.html#aef001e001ebc868aaa72d7ee27e79cfa',1,'UARTConfiguration_t']]],
-  ['per_5fcm',['PER_CM',['../percm_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'percm.h']]],
+  ['per_5fcm',['PER_CM',['../omap3530_2clock_2clock_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'PER_CM():&#160;clock.h'],['../percm_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'PER_CM():&#160;percm.h']]],
   ['percm_2eh',['percm.h',['../percm_8h.html',1,'']]],
   ['process_2ec',['process.c',['../process_8c.html',1,'']]],
   ['process_2eh',['process.h',['../process_8h.html',1,'']]],
