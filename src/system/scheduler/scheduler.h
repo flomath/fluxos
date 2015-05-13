@@ -12,13 +12,24 @@
 #include <stdlib.h>
 #include "../../tools/mutex.h"
 
-#define		SCHEDULER_MAX_PROCESSES 10
+#define		SCHEDULER_MAX_PROCESSES 64
 #define		SCHEDULER_INVALID_ID	-1
 
 typedef void (*ProcFunc)();
 
-static Process_t SchedulerProcesses[SCHEDULER_MAX_PROCESSES];
+
+/**
+ * Array with all PCBs
+ */
+static PCB_t SchedulerProcesses[SCHEDULER_MAX_PROCESSES];
 static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
+
+/**
+ * Temporary Current Registers
+ *
+ * This variable will be used for saving the context, when the IRQ Handler is processing.
+ */
+Registers_t __context_current;
 
 /**
  * Add a new process to the scheduler

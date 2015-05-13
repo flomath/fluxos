@@ -20,4 +20,6 @@
 
 #define IRQ_NUMBER	96
 
+extern void __context_save_tmp(void);
+
 #endif /* SRC_SYSTEM_HAL_OMAP3530_INTERRUPT_INTERRUPT_H_ */

@@ -73,7 +73,13 @@ interrupt void fiq_handler(void) {
 
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
+
+	// Save the context of the interrupted process
+	// This must happen, because the registers may get altered
+	__context_save_tmp();
+
 	interrupt_disable();
+
 
 	// Get the rightmost 6 bits: Active IRQ
 	mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);

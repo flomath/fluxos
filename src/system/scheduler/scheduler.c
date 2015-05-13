@@ -18,7 +18,7 @@ void scheduler_addProcess(ProcFunc fct)
 		mutex_release();
 	}
 
-	SchedulerProcesses[newProcessID].ProcessID = newProcessID;
+	SchedulerProcesses[newProcessID].processID = newProcessID;
 	SchedulerProcesses[newProcessID].state = PROCESS_READY;
 	SchedulerProcesses[newProcessID].func = fct;
 }
