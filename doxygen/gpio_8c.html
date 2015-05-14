@@ -96,6 +96,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Functions</h2></td></tr>
 <tr class="memitem:a43f1d57218ced46fa49f432b0c4ef3d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#a43f1d57218ced46fa49f432b0c4ef3d8">gpio_enable_input</a> (uint32_t port, uint8_t pin)</td></tr>
 <tr class="separator:a43f1d57218ced46fa49f432b0c4ef3d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5880a79e286db97eb2831475fc675ede"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#a5880a79e286db97eb2831475fc675ede">gpio_enable_irq</a> (uint32_t port, uint32_t irq, uint8_t pin)</td></tr>
+<tr class="separator:a5880a79e286db97eb2831475fc675ede"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae95c346d18d1a07c244506f74f77e4db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#ae95c346d18d1a07c244506f74f77e4db">gpio_enable_output</a> (uint32_t port, uint8_t pin)</td></tr>
 <tr class="separator:ae95c346d18d1a07c244506f74f77e4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5f393a6b847a30128bf343562b2ce05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#ab5f393a6b847a30128bf343562b2ce05">gpio_disable</a> (uint32_t port)</td></tr>
@@ -104,8 +106,8 @@ Functions</h2></td></tr>
 <tr class="separator:a6526bb60f86f9f3e2bd83c007d89280b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b8106957b3e32abac1dddedc6661bd"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#a42b8106957b3e32abac1dddedc6661bd">gpio_read</a> (uint32_t port, uint8_t pin)</td></tr>
 <tr class="separator:a42b8106957b3e32abac1dddedc6661bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac491e137c184fba6a2629518632b1673"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#ac491e137c184fba6a2629518632b1673">gpio_write</a> (uint32_t port, uint8_t pin)</td></tr>
-<tr class="separator:ac491e137c184fba6a2629518632b1673"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c1c1c18ff28c99dbcacbb8663ff1977"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="gpio_8c.html#a1c1c1c18ff28c99dbcacbb8663ff1977">gpio_write</a> (uint32_t port, uint8_t pin, int32_t value)</td></tr>
+<tr class="separator:a1c1c1c18ff28c99dbcacbb8663ff1977"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ab5f393a6b847a30128bf343562b2ce05"></a>
@@ -148,6 +150,40 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>enable input GPIO </p>
+<p>&lt; ENWAKEUP </p>
+
+</div>
+</div>
+<a class="anchor" id="a5880a79e286db97eb2831475fc675ede"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void gpio_enable_irq </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>irq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pin</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>enable GPIO interrupt </p>
 
 </div>
 </div>
@@ -174,6 +210,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+<p>&lt; ENWAKEUP </p>
 
 </div>
 </div>
@@ -219,7 +256,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ac491e137c184fba6a2629518632b1673"></a>
+<a class="anchor" id="a1c1c1c18ff28c99dbcacbb8663ff1977"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -233,7 +270,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>pin</em>&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -248,7 +291,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed May 13 2015 09:50:38 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 14 2015 11:50:52 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
