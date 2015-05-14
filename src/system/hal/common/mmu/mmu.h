@@ -10,43 +10,42 @@
 
 #include "../hal.h"
 
-typedef struct {
-    uint32_t ptAddress;
-    uint32_t masterPtAddress;
-} mmu_pt_t;
+#define MAX_PROCESSES       128         ///< Max proccess count
+#define MAX_L2_PT           1024        ///< Max L2 page entries
+
+typedef uint32_t* mmu_pageTableP_t;
 
 /**
- * Table 3.2. First-level descriptor bits
+ * Table 3.2. First-level descriptor bits + address
  */
 typedef struct {
-    uint32_t type;              ///< Page size and validity
-    uint32_t CB;                ///< Cacheable and buffered
-    uint32_t domain;            ///< Domain control
-    uint32_t AP;                ///< Access permission
-    uint32_t vAddress;          ///< Virtual address
-    uint32_t pAddress;          ///< Physical address
-    mmu_pt_t* pt;               ///< Current page table description
-} mmu_l1_pt_t;
+    unsigned int type;                  ///< Page size and validity
+    unsigned int CB;                    ///< Cached and buffered
+    unsigned int domain;                ///< Domain control
+    unsigned int AP;                    ///< Access permission
+    uint32_t sectionAddress;            ///< Address of the section
+} mmu_l1_section_t;
 
 /**
- * Table 3.7. Second-level descriptor bits
+ * Table 3.7. Second-level descriptor bits + address
  */
 typedef struct {
-    uint32_t type;              ///< Page size and validity
-    uint32_t CB;                ///< Cacheable and buffered
-    uint32_t AP0;               ///< Access permission
-    uint32_t AP1;               ///< Access permission
-    uint32_t AP2;               ///< Access permission
-    uint32_t AP3;               ///< Access permission
-    mmu_pt_t* pt;               ///< Current page table description
-    mmu_l1_pt_t* l1_pt;         ///< L1 page table
-} mmu_l2_pt_t;
+    unsigned int type;                  ///< Page size and validity
+    unsigned int CB;                    ///< Cached and buffered
+    unsigned int AP;                    ///< Access permission
+    uint32_t pageTableAddress;          ///< Address of page table
+} mmu_l2_pageTable_t;
 
+/**
+ * Needed functions for upper layer
+ * Initialize mmu
+ * Create/Switch/Kill a process
+ */
 void mmu_init(void);
-
-// input param task/process
-void mmu_create_process(void*);
-void mmu_kill_process(void*);
+//TODO: add process structs
+void mmu_create_process(void);
+void mmu_switch_process(void);
+void mmu_kill_process(void);
 
 #endif //SRC_SYSTEM_HAL_COMMON_MMU_MMU_H_
 
