@@ -5,15 +5,17 @@
  *      Author: Nino Schoch
  */
 
-#ifndef SRC_SYSTEM_HAL_COMMON_MMU_MEMORY_H_
-#define SRC_SYSTEM_HAL_COMMON_MMU_MEMORY_H_
+#ifndef SRC_SYSTEM_HAL_COMMON_MMU_MEMORYMANAGER_H_
+#define SRC_SYSTEM_HAL_COMMON_MMU_MEMORYMANAGER_H_
+
+#include "../hal.h"
 
 /**
  * Status of a page
  */
 typedef struct
 {
-	unsigned char reserved;					///< Status
+	bool_t reserved;						///< Status
 	unsigned int processID;					///< ID of process
 } page_t;
 
@@ -32,4 +34,4 @@ typedef struct {
 } memoryRegion_t;
 
 
-#endif /* SRC_SYSTEM_HAL_COMMON_MMU_MEMORY_H_ */
+#endif /* SRC_SYSTEM_HAL_COMMON_MMU_MEMORYMANAGER_H_ */

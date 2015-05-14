@@ -8,7 +8,7 @@
 #ifndef SRC_SYSTEM_HAL_HAL_H_
 #define SRC_SYSTEM_HAL_HAL_H_
 
-#include <stdint.h>
+#include "../../system.h"
 
 /**
  * Bitshift

@@ -65,13 +65,12 @@ __mmu_enable:
 		STMFD R13!, {R0, R1, R14} ; backup r0, r1 on stack
 
 		MRC p15, #0, r1, c1, c0, #0	; Read System Control Register (SCTLR)
-	    ;BIC r0, r0, #(0x1 << 12)	; Table 4-52 - Bit 12 Instruction Cache off
-	    ;BIC r0, r0, #(0x1 << 2)		; Table 4-52 - Bit 2 Data Cache off
 	    ORR r1, r1, #0x1			; Table 4-52 - Bit 0 MMU on
+	    DSB
 	    MCR p15, #0, r1, c1, c0, #0	; Write System Control Register (SCTLR)
-
+		ISB
 		LDMFD R13!, {R0, R1, PC} ; restore r0,r1 and jump back
-		;MOV PC, R14
+		; MOV PC, R14
 
 ;*-------------------------------------------------------
 ;* Disable MMU

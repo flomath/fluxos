@@ -6,18 +6,9 @@
  */
 //TODO: define unsigned char as bool && NULL as void ptr
 
+//#include <stdint.h>
+//#include <stdlib.h>
 #include "mmu.h"
-#include "memoryManager.h"
-#include "../../common/mmu/memoryManager.h"
-#include "../../common/mmu/mmu.h"
-
-static void initPT(void);
-//static void writeSectionToMemory(mmu_l1_pt_t* section);
-//static void mmu_set_kernel_table(mmu_ptp table);
-//static void mmu_set_process_table(mmu_ptp table);
-
-
-
 
 uint32_t* masterPageTable;
 
@@ -77,7 +68,7 @@ static void mmu_initPageTable(mmu_pageTableP_t pageTable);
  * Maps a kernel master page table to its region
  * (direct mapping)
  */
-static void mmu_mapRegionToMasterPageTable(memoryRegion_t* memoryRegion, mmu_pageTableP_t pageTable);
+static void mmu_mapRegionToMasterPageTable(unsigned int memRegionNumber, mmu_pageTableP_t pageTable);
 
 /**
  * Gets the correct page table index from a virtual address
@@ -91,7 +82,7 @@ static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int page
  * Sections implemented
  * TODO: Coarses have to be checked
  */
-static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t* L1_entry);
+static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t L1_entry);
 
 /**
  * Creates a L2 address based on a given L2 page table template
@@ -123,6 +114,9 @@ void mmu_init(void)
 
     // set domain
     mmu_setDomain(DOMAIN_M);
+
+    // enable MMU
+    mmu_enable();
 }
 
 static void mmu_disable(void) {
@@ -138,13 +132,13 @@ static void mmu_enable(void) {
 static void mmu_setTTBR1(uint32_t* osPageTable)
 {
     // call asm function
-    __mmu_set_ttbr1(osPageTable);
+    __mmu_set_ttbr1((uint32_t)osPageTable);
 }
 
 static void mmu_setTTBR0(uint32_t* pageTable)
 {
     // call asm function
-    __mmu_set_ttbr0(pageTable);
+    __mmu_set_ttbr0((uint32_t)pageTable);
 }
 
 static void mmu_setTTBCR(uint32_t address)
@@ -173,7 +167,7 @@ static mmu_pageTableP_t mmu_createMasterPageTable()
     mmu_mapRegionToMasterPageTable(INTERNAL_SRAM_REGION, masterPageTable);
     mmu_mapRegionToMasterPageTable(MMIO_REGION         , masterPageTable);
     mmu_mapRegionToMasterPageTable(KERNEL_REGION       , masterPageTable);
-    mmu_mapRegionToMasterPageTable(PAGE_TABLE_REGION   , masterPageTable);
+    mmu_mapRegionToMasterPageTable(PAGE_TABLES_REGION  , masterPageTable);
 
     return masterPageTable;
 }
@@ -196,21 +190,22 @@ static mmu_pageTableP_t mmu_createPageTable(unsigned char pageTableType)
             return NULL;
     }
 
-    return (mmu_pageTableP_t)memoryManager_getFreePagesInRegion(PAGE_TABLE_REGION, numPagesReserve);
+    return (mmu_pageTableP_t)memoryManager_getFreePages(PAGE_TABLES_REGION, numPagesReserve);
 }
 
-static void mmu_mapRegionToMasterPageTable(memoryRegion_t* memRegion, mmu_pageTableP_t pageTable)
+static void mmu_mapRegionToMasterPageTable(unsigned int memRegionNumber, mmu_pageTableP_t pageTable)
 {
+    memoryRegion_t* memRegion = memoryManger_getRegion(memRegionNumber);
     uint32_t physicalAddress;
-    mmu_l1_section_t* L1_entry;
+    mmu_l1_section_t L1_entry;
 
     for(physicalAddress = memRegion->addressStart; physicalAddress < memRegion->addressEnd; physicalAddress += SECTION_SIZE)
     {
-        L1_entry->sectionAddress 	= physicalAddress & PT_L1_BIT_MASK;
-        L1_entry->type 		        = SECTION;
-        L1_entry->CB 		        = CB_WB;
-        L1_entry->AP 	            = AP_RWRW;
-        L1_entry->domain 		    = DOMAIN_M;
+        L1_entry.sectionAddress 	= (physicalAddress & PT_L1_BIT_MASK);
+        L1_entry.type 		        = SECTION;
+        L1_entry.CB 		        = CB_WB;
+        L1_entry.AP 	            = AP_RWRW;
+        L1_entry.domain 		    = DOMAIN_NO;
 
         uint32_t pageTableOffset = mmu_getPageTableIndex(physicalAddress, PT_L1);
         uint32_t* newAddress = pageTable + (pageTableOffset << 2)/sizeof(uint32_t);
@@ -220,7 +215,6 @@ static void mmu_mapRegionToMasterPageTable(memoryRegion_t* memRegion, mmu_pageTa
 
 static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int pageTableType)
 {
-    //TODO: shifting dependent on L1/L2/PageFrame and type of page table
     switch(pageTableType) {
         case PT_L1:
             return ((virtualAddress & PT_L1_BIT_MASK) >> PT_L1_BIT_SHIFT);
@@ -229,24 +223,24 @@ static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int page
         case PAGE_FRAME:
             return (virtualAddress & PAGE_FRAME_BIT_MASK);
         default:
-            return NULL;
+            return 0;
     }
 
 }
 
-static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t* L1_entry)
+static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t L1_entry)
 {
-    uint32_t entry = (L1_entry->AP << AP_L1_BIT_SHIFT) |
-                     (L1_entry->domain << DOMAIN_BIT_SHIFT) |
-                     (L1_entry->CB << CB_BIT_SHIFT) |
-                     L1_entry->type;
+    uint32_t entry = (L1_entry.AP << AP_L1_BIT_SHIFT) |
+                     (L1_entry.domain << DOMAIN_BIT_SHIFT) |
+                     (L1_entry.CB << CB_BIT_SHIFT) |
+                     L1_entry.type;
 
-    switch(L1_entry->type) {
+    switch(L1_entry.type) {
         case SECTION:
-            entry |= (L1_entry->sectionAddress & SECTION_BIT_MASK);
+            entry |= (L1_entry.sectionAddress & SECTION_BIT_MASK);
             break;
         case COARSE:
-            entry |= (L1_entry->sectionAddress & COARSE_BIT_MASK);
+            entry |= (L1_entry.sectionAddress & COARSE_BIT_MASK);
             break;
         default:
             return FAULT_PAGE_HIT;

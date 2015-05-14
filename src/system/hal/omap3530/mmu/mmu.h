@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_OMAP3530_MMU_MMU_H_
 
 #include "../../common/mmu/mmu.h"
+#include "memoryManager.h"
 
 /**
  * Translation Table Base

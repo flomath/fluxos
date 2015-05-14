@@ -5,10 +5,8 @@
  *     Author: Nino Schoch
  */
 
-#include <stdlib.h>
 #include <string.h>
 #include "memoryManager.h"
-#include "../../common/mmu/memoryManager.h"
 
 memoryRegion_t memoryRegions[MEMORY_REGIONS];
 
@@ -18,7 +16,7 @@ memoryRegion_t memoryRegions[MEMORY_REGIONS];
  *
  * Reserve directed mapped regions directly
  */
-static void memoryManager_initRegion(memoryRegion_t* memRegion, uint32_t addressStart, uint32_t addressEnd, unsigned char directMapped);
+static void memoryManager_initRegion(memoryRegion_t* memRegion, uint32_t addressStart, uint32_t addressEnd, page_t* pages, bool_t directMapped);
 
 /**
  * Reserve a page in a memory region
@@ -51,12 +49,12 @@ static uint32_t* memoryManager_getPageAddress(memoryRegion_t* memRegion, unsigne
 void memoryManager_init(void)
 {
 	// init regions
-	memoryManager_initRegion(&memoryRegions[BOOT_ROM_REGION     ], BOOT_ROM_START_ADDRESS     , BOOT_ROM_END_ADDRESS     , 1);
-	memoryManager_initRegion(&memoryRegions[INTERNAL_SRAM_REGION], INTERNAL_SRAM_START_ADDRESS, INTERNAL_SRAM_END_ADDRESS, 1);
-	memoryManager_initRegion(&memoryRegions[MMIO_REGION         ], MMIO_START_ADDRESS         , MMIO_END_ADDRESS         , 1);
-	memoryManager_initRegion(&memoryRegions[KERNEL_REGION       ], KERNEL_START_ADDRESS       , KERNEL_END_ADDRESS       , 1);
-	memoryManager_initRegion(&memoryRegions[PAGE_TABLE_REGION   ], PAGE_TABLES_START_ADDRESS  , PAGE_TABLES_END_ADDRESS  , 1);
-	memoryManager_initRegion(&memoryRegions[PROCESS_REGION      ], PROCESS_PAGES_START_ADDRESS, PROCESS_PAGES_END_ADDRESS, 0); //TODO: physical address of process region?
+	memoryManager_initRegion(&memoryRegions[BOOT_ROM_REGION     ], BOOT_ROM_START_ADDRESS     , BOOT_ROM_END_ADDRESS     , regionBootROM     , TRUE);
+	memoryManager_initRegion(&memoryRegions[INTERNAL_SRAM_REGION], INTERNAL_SRAM_START_ADDRESS, INTERNAL_SRAM_END_ADDRESS, regionInternalSRAM, TRUE);
+	memoryManager_initRegion(&memoryRegions[MMIO_REGION         ], MMIO_START_ADDRESS         , MMIO_END_ADDRESS         , regionMMIO        , TRUE);
+	memoryManager_initRegion(&memoryRegions[KERNEL_REGION       ], KERNEL_START_ADDRESS       , KERNEL_END_ADDRESS       , regionKernel      , TRUE);
+	memoryManager_initRegion(&memoryRegions[PAGE_TABLES_REGION  ], PAGE_TABLES_START_ADDRESS  , PAGE_TABLES_END_ADDRESS  , regionPageTables  , TRUE);
+	memoryManager_initRegion(&memoryRegions[PROCESS_REGION      ], PROCESS_START_ADDRESS      , PROCESS_END_ADDRESS      , regionProcess     , FALSE); //TODO: physical address of process region?
 }
 
 memoryRegion_t* memoryManger_getRegion(unsigned int memRegionNumber)
@@ -119,13 +117,14 @@ uint32_t* memoryManager_getFreePages(unsigned int memRegionNumber, unsigned int 
  * Static functions
  */
 
-static void memoryManager_initRegion(memoryRegion_t* memRegion, uint32_t addressStart, uint32_t addressEnd, unsigned char directMapped)
+static void memoryManager_initRegion(memoryRegion_t* memRegion, uint32_t addressStart, uint32_t addressEnd, page_t* pages, bool_t directMapped)
 {
 	memRegion->addressStart 		= addressStart;
 	memRegion->addressEnd 			= addressEnd;
 	memRegion->pageSize				= SMALL_PAGE_SIZE_4KB;
 	memRegion->numPages				= (addressStart-addressEnd) / memRegion->pageSize;
 	memRegion->numPagesReserved		= 0;
+	memRegion->pages 				= pages;
 
 	// reserve all pages in a region
 	// that is directly mapped vA-pA
@@ -157,8 +156,9 @@ static int memoryManager_reservePages(memoryRegion_t* memRegion, unsigned int pa
 	}
 
 	// reserve given pages
-	for(pageNumber; pageNumber < numPagesReserve; pageNumber++) {
-		memoryManager_reservePage(memRegion, pageNumber);
+	unsigned int i;
+	for(i = pageNumber; i < numPagesReserve; i++) {
+		memoryManager_reservePage(memRegion, i);
 	}
 
 	return status;
@@ -172,8 +172,8 @@ static int memoryManager_areFreePages(memoryRegion_t* memRegion, unsigned int pa
 		return pageNumber;
 	}
 
-	unsigned int i = pageNumber;
-	for(i; i < (pageNumber + numPages); i++) {
+	unsigned int i;
+	for(i = pageNumber; i < (pageNumber + numPages); i++) {
 		// if a page is found, which is reserved,
 		// return index - better performance
 		if(memRegion->pages[i].reserved == 1) {
@@ -192,5 +192,5 @@ static uint32_t* memoryManager_getPageAddress(memoryRegion_t* memRegion, unsigne
 		return NULL;
 	}
 
-	return (uint32_t*)(memRegion->addressStart + pageNumber * memRegion->pageSize);
+	return ((uint32_t*)(memRegion->addressStart + pageNumber * memRegion->pageSize));
 }
