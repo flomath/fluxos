@@ -76,7 +76,8 @@ void irq_handler(void) {
 
 	// Save the context of the interrupted process
 	// This must happen, because the registers may get altered
-	__context_save_tmp();
+	asm("STMFD R13!, {R12, R0}");
+	__context_tmp_save(&__context_current);
 
 	interrupt_disable();
 

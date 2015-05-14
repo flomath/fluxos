@@ -7,6 +7,13 @@
 
 
 #include "scheduler.h"
+#include "../hal/omap3530/interrupt/interrupt.h"
+
+/**
+ * Array with all PCBs
+ */
+PCB_t __contexts[SCHEDULER_MAX_PROCESSES];
+static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
 
 void scheduler_addProcess(ProcFunc fct)
 {
@@ -18,9 +25,9 @@ void scheduler_addProcess(ProcFunc fct)
 		mutex_release();
 	}
 
-	SchedulerProcesses[newProcessID].processID = newProcessID;
-	SchedulerProcesses[newProcessID].state = PROCESS_READY;
-	SchedulerProcesses[newProcessID].func = fct;
+	__contexts[newProcessID].processID = newProcessID;
+	__contexts[newProcessID].state = PROCESS_READY;
+	__contexts[newProcessID].func = fct;
 }
 
 void scheduler_run() 
@@ -30,20 +37,27 @@ void scheduler_run()
 	int nextProcess = scheduler_getNextProcess();
 	if(nextProcess == SCHEDULER_INVALID_ID) return;
 
-	switch(SchedulerProcesses[nextProcess].state) {
+	switch(__contexts[nextProcess].state) {
 		case PROCESS_RUNNING: break;
 
 		case PROCESS_READY: 
 		{
 			// speicher Context für Thread
-			/*if(setjmp(SchedulerProcesses[runningThread].context) == 0) {*/
-			if(SchedulerProcesses[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
-				SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_READY;
+			/*if(setjmp(__contexts[runningThread].context) == 0) {*/
+			if(__contexts[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
+				__contexts[SchedulerCurrentRunningProcess].state = PROCESS_READY;
+
+			// Save context
+			__contexts[SchedulerCurrentRunningProcess].registers = __context_current;
 
 			SchedulerCurrentRunningProcess = nextProcess;
-			SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
-			SchedulerProcesses[SchedulerCurrentRunningProcess].func();
-			//longjmp(SchedulerProcesses[runningThread].context, 1);
+			__contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
+			//__contexts[SchedulerCurrentRunningProcess].func();
+			//longjmp(__contexts[runningThread].context, 1);
+
+			// Load context
+			__context_load(&__contexts[SchedulerCurrentRunningProcess]);
+
 			/*}*/
 		} break;
 
@@ -59,12 +73,12 @@ int scheduler_getNextProcess()
 
 	while (nextProcess < SCHEDULER_MAX_PROCESSES && nextProcess != SchedulerCurrentRunningProcess)
 	{
-		if (SchedulerProcesses[nextProcess].state == PROCESS_READY) 
+		if (__contexts[nextProcess].state == PROCESS_READY)
 		{
 			return nextProcess;
 		}
 		// found a terminated process, remove it
-		else if (SchedulerProcesses[nextProcess].state == PROCESS_TERMINATED)
+		else if (__contexts[nextProcess].state == PROCESS_TERMINATED)
 		{
 			// TODO FlorianM: what do we need to do here?
 		}
@@ -78,8 +92,8 @@ int scheduler_getNextProcess()
 
 void scheduler_killProcess(int processID)
 {
-	SchedulerProcesses[processID].state = PROCESS_TERMINATED;
-	SchedulerProcesses[processID].func = NULL;
+	__contexts[processID].state = PROCESS_TERMINATED;
+	__contexts[processID].func = NULL;
 }
 
 int scheduler_getFreeProcessID() 
@@ -87,7 +101,7 @@ int scheduler_getFreeProcessID()
 	int i;
 	for (i=0; i < SCHEDULER_MAX_PROCESSES; i++) 
 	{
-		if (SchedulerProcesses[i].state == PROCESS_CREATED) 
+		if (__contexts[i].state == PROCESS_CREATED)
 		{
 			return i;
 		}

@@ -17,19 +17,10 @@
 
 typedef void (*ProcFunc)();
 
-
 /**
- * Array with all PCBs
+ * Load the context
  */
-static PCB_t SchedulerProcesses[SCHEDULER_MAX_PROCESSES];
-static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
-
-/**
- * Temporary Current Registers
- *
- * This variable will be used for saving the context, when the IRQ Handler is processing.
- */
-Registers_t __context_current;
+extern void __context_load(PCB_t* context_address);
 
 /**
  * Add a new process to the scheduler

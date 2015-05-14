@@ -1,26 +1,23 @@
-		.global __context_save
 		.global __context_load
-		.global __context_save_tmp
-
-		IMPORT __context_current
+		.global __context_tmp_save
 
 
 ; Save the context of the interrupted process into the temporary __context_current variable
-__context_save_tmp:
-	STMFD R13!, {R12}				; Temporarly save R12 in Stack
-	LDR R12, __context_current		; Load the address of the context variable in R12
+; Param:	R0 ... context_current
+; Requirements: Stack must contain old value of R12 and R0
+__context_tmp_save:
+	MOV R12, R0						; Move address of variable to R12
+	LDMFD R13!, {R0}				; Reload old R0 value
 	STMEA R12!, {R0-R11}			; Save Registers R0-R11 in context variable
-	MOV R5, R12						; Move address of context variable to register R5
+	MOV R0, R12						; Move address of context variable to register R0
 	LDMFD R13!, {R12}				; Get the original R12 value from the stack
-	STMEA R5!, {R12}				; Store R12 to the context variable
-									; Registers R13 and R14 are shadowed
+	STMEA R0!, {R12}				; Store R12 to the context variable
+	STMEA R0, {R13-R14}^			; Registers R13 and R14 are shadowed
 									; PC will not need to be saved, because we are copying the LR to the PC
 
-
-; Save the context
-__context_save:
-	; Backup all registers
-
 ; Load the context
+; Param: 	R0 ... context_address
 __context_load:
-	;
+	ADD R0, R0, #12					; Skip size, PID and State
+									; Load Registers from context to stack
+	LDMFD R13, {R0-R14}^			; Load Registers from stack to registers
