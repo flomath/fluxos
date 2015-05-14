@@ -4,6 +4,8 @@
 
 #include <stdio.h>
 #include "src/system/driver/uart/UartDriver.h"
+#include "src/system/driver/button/ButtonDriver.h"
+#include "src/system/driver/gpio/GPIODriver.h"
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
 #include "src/system/hal/omap3530/timer/timer.h"
 #include "src/system/hal/omap3530/prcm/percm.h"
@@ -21,6 +23,12 @@ void main(void) {
 
 	// Set up interrupts
 	interrupt_init();
+
+	// initialise onboard button
+	button_driver_init();
+
+	// initialise LED
+	gpio_driver_init();
 
 	timerCounter=0;
 

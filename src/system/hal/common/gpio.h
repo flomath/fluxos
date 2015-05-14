@@ -15,6 +15,11 @@
  */
 void gpio_enable_input(uint32_t port, uint8_t pin);
 
+/**
+ * enable GPIO interrupt
+ */
+void gpio_enable_irq(uint32_t port, uint32_t irq, uint8_t pin);
+
 /*
  * enable output GPIO
  */
@@ -38,6 +43,6 @@ uint32_t gpio_read(uint32_t port, uint8_t pin);
 /*
  * write to gpio output
  */
-void gpio_write(uint32_t port, uint8_t pin);
+void gpio_write(uint32_t port, uint8_t pin, int32_t value);
 
 #endif /* SRC_SYSTEM_HAL_GPIO_H_ */

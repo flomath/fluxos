@@ -21,6 +21,13 @@
 #define GPIO5     0x49056000
 #define GPIO6     0x49058000
 
+#define EN_GPIO1	3
+#define EN_GPIO2	13
+#define EN_GPIO3	14
+#define EN_GPIO4	15
+#define EN_GPIO5	16
+#define EN_GPIO6	17
+
 #define GPIO_REVISION       0x000    ///< contains IP revision code [24-9]
 #define GPIO_SYSCONFIG      0x010    ///< controls various parameters of L4 [24-11]
 #define GPIO_SYSSTATUS      0x014    ///< status info about module (exl. irq status) [24-13]
