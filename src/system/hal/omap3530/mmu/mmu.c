@@ -144,13 +144,13 @@ static void mmu_setTTBR0(uint32_t* pageTable)
 static void mmu_setTTBCR(uint32_t address)
 {
     // call asm function
-    __mmu_set_ttbcr(address);
+    __mmu_set_ttbcr((address & BOUNDARY_BIT_MASK));
 }
 
 static void mmu_setDomain(uint32_t address)
 {
     // call asm function
-    __mmu_set_domain(address);
+    __mmu_set_domain((address & DOMAIN_BIT_MASK));
 }
 
 static mmu_pageTableP_t mmu_createMasterPageTable()
@@ -179,11 +179,11 @@ static mmu_pageTableP_t mmu_createPageTable(unsigned char pageTableType)
     //TODO: introduce constants
     switch(pageTableType) {
         case PT_L1:
-            // 16 kB Alignment
+            // 4096 Entries = 4 * 4096 = 16 kB Alignment
             numPagesReserve = 4;
             break;
         case PT_L2:
-            // 4  kB Alignment
+            // 256  Entries = 1 * 4096 = 4  kB Alignment
             numPagesReserve = 1;
             break;
         default:
@@ -271,142 +271,3 @@ static uint32_t mmu_createL2PageTableEntry(mmu_l2_pageTable_t* L2_entry)
 
 
 //TODO: implement creation l1, l2, page frames and data abort handler
-
-
-/*static void mmu_set_kernel_table(mmu_ptp table) {
-    uint32_t tableAddr = (uint32_t) table & 0xFFFFC000;
-    __mmu_set_ttbr1(tableAddress);
-}
-
-static void mmu_set_process_table(mmu_ptp table) {
-    uint32_t tableAddr = (uint32_t) table & 0xFFFFC000;
-    __mmu_set_ttbr0(tableAddress);
-}*/
-
-/**
- * Initialize page tables
- */
-/*static void initPT(void)
-{
-    mmu_l1_pt_t l1_os_table;
-    l1_table.ptAddress = PT_L1_OS_STARTADDR;
-    l1_table.vAddress = PT_L1_OS_STARTADDR;
-
-    mmu_l1_section_t hw_section;
-    hw_section.type = SECTION;
-    hw_section.CB = CB_cb;
-    hw_section.domain = DOMAIN_NO;
-    hw_section.AP = AP_RWRW;
-    hw_section.vAddress = HW_STARTADDR;
-    hw_section.pAddress = HW_STARTADDR;
-    hw_section.pageSize = SECTION_SIZE;
-    hw_section.numPages = HW_SIZE / hw_section.pageSize;
-    hw_section.l1_pt = &l1_os_table;
-    writeSectionToMemory(&hw_section);
-
-    mmu_l1_section_t kernel_section;
-    kernel_section.type = SECTION;
-    kernel_section.CB = CB_WB;
-    kernel_section.domain = DOMAIN_NO;
-    kernel_section.AP = AP_RWNA;
-    kernel_section.vAddress = KERNEL_STARTADDR;
-    kernel_section.pAddress = KERNEL_STARTADDR;
-    hw_section.pageSize = SECTION_SIZE;
-    hw_section.numPages = KERNEL_SIZE / kernel_section.pageSize;
-    kernel_section.l1_pt = &l1_os_table;
-    writeSectionToMemory(&kernel_section);
-
-    mmu_l1_section_t pt_l1_section;
-    pt_l1_section.type = SECTION;
-    pt_l1_section.CB = CB_WB;
-    pt_l1_section.domain = DOMAIN_NO;
-    pt_l1_section.AP = AP_RWNA;
-    pt_l1_section.vAddress = PT_L1_P_STARTADDR;
-    pt_l1_section.pAddress = PT_L1_P_STARTADDR;
-    hw_section.pageSize = PT_L1_P_SIZE;
-    hw_section.numPages = PT_SECTION_SIZE / pt_l1_section.pageSize;
-    pt_l1_section.l1_pt = &l1_os_table;
-    writeSectionToMemory(&pt_l1_section);
-
-    mmu_l1_section_t pt_l2_section;
-    pt_l2_section.type = SECTION;
-    pt_l2_section.CB = CB_WB;
-    pt_l2_section.domain = DOMAIN_NO;
-    pt_l2_section.AP = AP_RWNA;
-    pt_l2_section.vAddress = PT_L2_P_STARTADDR;
-    pt_l2_section.pAddress = PT_L2_P_STARTADDR;
-    hw_section.pageSize = PT_L2_P_SIZE;
-    hw_section.numPages = PT_SECTION_SIZE / pt_l2_section.pageSize;
-    pt_l2_section.l1_pt = &l1_os_table;
-    writeSectionToMemory(&pt_l2_section);
-}*/
-/*
-void mmu_create_process(void* processId)
-{
-
-    mmu_l1_pt_t l1_process;
-    l1_process.vAddress = VM_PROC_STARTADDR;
-    l1_process.ptAddress = PT_L1_P_STARTADDR + processId * PT_L1_P_SIZE;
-
-    // 1024 l2 pagetables are possible --> 1024 * 1mb
-    uint32_t nr_of_pages = processSize / SMALL_PAGE_SIZE;
-
-    if (nr_of_pages <= 256) {
-        mmu_l1_section_t process_section;
-        process_section.type = SECTION;
-        process_section.CB = CB_cb;
-        process_section.domain = DOMAIN_NO;
-        process_section.AP = AP_RWRW;
-        process_section.vAddress = PROC_STARTADDR;
-        process_section.pAddress = PROC_STARTADDR;
-        process_section.pageSize = SMALL_PAGE_SIZE;
-        process_section.numPages = PROC_SECTION_SIZE / PROC_SIZE;
-        process_section.l1_pt = &l1_process;
-
-        mmu_l2_pt_t l2_process;
-        l2_process.type = COARSE;
-        l2_process.numPages = nr_of_pages;
-        l2_process.ptAddress = PT_L2_P_STARTADDR + processId * PT_L2_P_SIZE;
-        l2_process.l1_ptAddress = l1_process.ptAddress;
-        l1_process.mmu_l2_pt[0] = l2_process;
-
-        writeTableToMemory(&process_section);
-        writeSmallPagesToMemory(&l2_process);
-    } else {
-
-    }
-}
-*/
-/*void mmu_kill_process(void*)
-{
-
-}
-*/
-/*
- * Write section to memory
- */
-/*
-static void writeSectionToMemory(mmu_l1_section_t* section)
-{
-    uint32_t* tablePos = (uint32_t*) section->pt->ptAddress;
-    tablePos += section->vAddress >> 20;
-    tablePos += section->numPages - 1;
-    // first 2 bits irrelevant
-    tablePos = (uint32_t*)((uint32_t)tablePos & 0xFFFFFFFC);
-
-    // last 12 bits
-    uint32_t entry = section->pAddress & 0xFFFC0000;
-    // Bits 10+11 AP
-    entry |= (section->AP & 0x3) << 10;
-    // Bits 5-8 Domain
-    entry |= (section->domain & 0xF) << 5;
-    // Bits 2+3 CB
-    entry |= (section->CB & 0x3) << 2;
-    // Bits 0+1 Section
-    entry |= section->type & 0x3;
-    int i;
-    for (i = section->numPages - 1; i >= 0; i--) {
-        *tablePos-- = entry + (i << 20);
-    }
-}
-*/

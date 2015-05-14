@@ -73,7 +73,8 @@
  * R = Reserved
  * M = Manager
  */
-#define DOMAIN_BIT_SHIFT   5
+#define DOMAIN_BIT_MASK	    0x3         ///< Lower 2 bits important
+#define DOMAIN_BIT_SHIFT    5
 #define DOMAIN_NO           0x00        ///< No access - Any access generates a domain fault
 #define DOMAIN_C            0x01        ///< Client - Accesses are checked against the access permission bits in the section or page descriptor
 #define DOMAIN_R            0x02        ///< Reserved - Currently behaves like the no access mode
@@ -88,8 +89,8 @@
  * RO = Read-only
  * RW = Read/write
  */
-#define AP_L1_BIT_SHIFT    10
-#define AP_L2_BIT_SHIFT    4
+#define AP_L1_BIT_SHIFT     10
+#define AP_L2_BIT_SHIFT     4
 #define AP_NANA             0x00        ///< AP No access
 #define AP_RWNA             0x01        ///< AP Read/write | No access
 #define AP_RWRO             0x02        ///< AP Read/write | Read-only
@@ -99,63 +100,17 @@
  * Boundaries for TTBR1 and TTBR0
  * Table B3-1
  */
+#define BOUNDARY_BIT_MASK   0x7         ///< Lower 3 bits important
 #define BOUNDARY_HALF	    0x1
 #define BOUNDARY_QUARTER    0x2         ///< One Quarter for ttbr0
-
-
-
-
-
-
-/**
- * Hardware
- */
-#define HW_STARTADDR        0x48000000  ///< Hardware start address
-#define HW_SIZE 			0x1000000   ///< 16 MB - reserved size
-#define HW_PAGE_SIZE 		SMALL_PAGE_SIZE
-
-#define INT_VEC_STARTADDR   0x4020FFC8  ///< Interrupt Vector address
-#define INT_VEC_PAGE_SIZE   LARGE_PAGE_SIZE
-
-/**
- * OS
- */
-#define KERNEL_STARTADDR    0x80000000  ///< Kernel start address - currently DDR0
-#define KERNEL_SIZE         0x800000    ///< 8 MB - ensures there is a gap of 8MB between the end of the mapped in physical RAM and the vmalloc region (to catch errors)
-#define KERNEL_SECTION_SIZE	SECTION_SIZE
-
-#define PT_SECTION_SIZE     0x500000	///< 5MB
-/**
- * L1 table - OS
- */
-#define PT_L1_OS_STARTADDR	(KERNEL_STARTADDR + KERNEL_SIZE)
-#define PT_L1_OS_SIZE       TLB_SIZE
-
-/**
- * L1 + L2 table - Process
- */
-#define PT_L1_P_STARTADDR   (PT_L1_OS_STARTADDR + PT_L1_OS_SIZE)
-#define PT_L1_P_SIZE        TLB_SIZE
-#define PT_L2_P_STARTADDR   (PT_L1_P_STARTADDR + (PT_L1_P_SIZE * MAX_PROCESSES))
-#define PT_L2_P_SIZE        COARSE_SIZE
-
-/**
- * Process
- */
-#define PROC_STARTADDR      (PT_L2_P_STARTADDR + (PT_L2_P_SIZE * MAX_L2_PT))
-#define PROC_SIZE           COARSE_SIZE
-#define PROC_SECTION_SIZE   0x53FFFFF   ///< 82 MB
-
-#define VM_PROC_STARTADDR   0x00004000
 
 /**
  * Asm functions
  */
 extern void __mmu_enable_write_buffer(void);
-extern void __mmu_set_ttbr(void);
 extern void __mmu_set_domain(uint32_t domain);
 extern void __mmu_set_ttbcr(uint32_t ttbrc_address);
-extern void __mmu_set_ttbr0(uint32_t ttbr_address);
+extern void __mmu_set_ttbr0(uint32_t ttbr_address);//TODO: implement ASID (context)
 extern void __mmu_set_ttbr1(uint32_t ttbr_address);
 extern void __mmu_enable(void);
 extern void __mmu_disable(void);
