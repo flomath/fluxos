@@ -15,6 +15,10 @@
 PCB_t __contexts[SCHEDULER_MAX_PROCESSES];
 static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
 
+extern Registers_t __context_current;
+
+char* stacks[SCHEDULER_MAX_PROCESSES];
+
 void scheduler_addProcess(ProcFunc fct)
 {
 	mutex_lock();
@@ -28,6 +32,11 @@ void scheduler_addProcess(ProcFunc fct)
 	__contexts[newProcessID].processID = newProcessID;
 	__contexts[newProcessID].state = PROCESS_READY;
 	__contexts[newProcessID].func = fct;
+
+	stacks[newProcessID] = (char*)malloc(4096);
+	__contexts[newProcessID].registers.SP = (uint32_t)(stacks[newProcessID]) + 4095;
+	__contexts[newProcessID].registers.CPSR = 0b10000; // USER MODE
+	__contexts[newProcessID].registers.LR = (uint32_t)(__contexts[newProcessID].func);
 }
 
 void scheduler_run() 
@@ -42,23 +51,42 @@ void scheduler_run()
 
 		case PROCESS_READY: 
 		{
-			// speicher Context für Thread
-			/*if(setjmp(__contexts[runningThread].context) == 0) {*/
-			if(__contexts[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
-				__contexts[SchedulerCurrentRunningProcess].state = PROCESS_READY;
+			// Do not save an invalid process
+			if (SchedulerCurrentRunningProcess == SCHEDULER_INVALID_ID) {
+				SchedulerCurrentRunningProcess = nextProcess;
+				__contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
 
-			// Save context
-			__contexts[SchedulerCurrentRunningProcess].registers = __context_current;
+				// Load context
+				__context_load(&__contexts[SchedulerCurrentRunningProcess]);
+			} else {
+				// Save Context
+				if (!__context_save(&(__contexts[SchedulerCurrentRunningProcess]))) {
 
-			SchedulerCurrentRunningProcess = nextProcess;
-			__contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
-			//__contexts[SchedulerCurrentRunningProcess].func();
-			//longjmp(__contexts[runningThread].context, 1);
+					if(__contexts[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
+						__contexts[SchedulerCurrentRunningProcess].state = PROCESS_READY;
 
-			// Load context
-			__context_load(&__contexts[SchedulerCurrentRunningProcess]);
+					// Save temporarly saved context
+					__contexts[SchedulerCurrentRunningProcess].registers.R0 = __context_current.R0;
+					__contexts[SchedulerCurrentRunningProcess].registers.R1 = __context_current.R1;
+					__contexts[SchedulerCurrentRunningProcess].registers.R2 = __context_current.R2;
+					__contexts[SchedulerCurrentRunningProcess].registers.R3 = __context_current.R3;
+					__contexts[SchedulerCurrentRunningProcess].registers.R4 = __context_current.R4;
+					__contexts[SchedulerCurrentRunningProcess].registers.R5 = __context_current.R5;
+					__contexts[SchedulerCurrentRunningProcess].registers.R6 = __context_current.R6;
+					__contexts[SchedulerCurrentRunningProcess].registers.R7 = __context_current.R7;
+					__contexts[SchedulerCurrentRunningProcess].registers.R8 = __context_current.R8;
+					__contexts[SchedulerCurrentRunningProcess].registers.R9 = __context_current.R9;
+					__contexts[SchedulerCurrentRunningProcess].registers.R10 = __context_current.R10;
+					__contexts[SchedulerCurrentRunningProcess].registers.R11 = __context_current.R11;
+					__contexts[SchedulerCurrentRunningProcess].registers.R12 = __context_current.R12;
 
-			/*}*/
+					SchedulerCurrentRunningProcess = nextProcess;
+					__contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
+
+					// Load context
+					__context_load(&__contexts[SchedulerCurrentRunningProcess]);
+				}
+			}
 		} break;
 
 		default: break;

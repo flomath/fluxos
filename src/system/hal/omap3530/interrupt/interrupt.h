@@ -22,13 +22,6 @@
 #define IRQ_NUMBER	96
 
 /**
- * Temporary Current Registers
- *
- * This variable will be used for saving the context, when the IRQ Handler is processing.
- */
-Registers_t __context_current;
-
-/**
  * Temporarly save the registers in the variable
  */
 extern void __context_tmp_save(Registers_t* registers);

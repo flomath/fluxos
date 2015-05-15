@@ -14,6 +14,13 @@
 
 static interrupt_callback* irq_callbacks[IRQ_NUMBER] = { NULL };
 
+/**
+ * Temporary Current Registers
+ *
+ * This variable will be used for saving the context, when the IRQ Handler is processing.
+ */
+Registers_t __context_current;
+
 void interrupt_init(void) {
 
 	// 1. Program the MPU_INTC.INTCPS_SYSCONFIG register:
@@ -76,7 +83,7 @@ void irq_handler(void) {
 
 	// Save the context of the interrupted process
 	// This must happen, because the registers may get altered
-	asm("STMFD R13!, {R12, R0}");
+	asm(" STMFD R13!, {R12, R0}");
 	__context_tmp_save(&__context_current);
 
 	interrupt_disable();

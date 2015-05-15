@@ -23,6 +23,11 @@ typedef void (*ProcFunc)();
 extern void __context_load(PCB_t* context_address);
 
 /**
+ * Save the context
+ */
+extern uint32_t __context_save(PCB_t* context_address);
+
+/**
  * Add a new process to the scheduler
  */
 void scheduler_addProcess(ProcFunc fct);
