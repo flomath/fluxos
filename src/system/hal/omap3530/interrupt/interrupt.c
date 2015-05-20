@@ -94,13 +94,13 @@ void irq_handler(void) {
 	uint8_t irq = BIT_TRIM_LEFT(*address, 7);
 	printf("Interrupt: %d\n", irq);
 
+	// Clear the IRQ
+	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+
 	// Call the callback
 	if ( irq_callbacks[irq] != NULL ) {
 		irq_callbacks[irq]();
 	}
-
-	// Clear the IRQ
-	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 }
 
 #pragma INTERRUPT(pabt_handler, PABT)

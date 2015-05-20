@@ -45,14 +45,14 @@ void main(void) {
 }
 
 void test(void) {
-	//while(1) {
+	while(1) {
 		printf("[1] task test\n");
-	//}
+	}
 }
 void test2(void) {
-	//while(1) {
+	while(1) {
 		printf("[2] task test\n");
-	//}
+	}
 }
 
 void uart_process(void) {

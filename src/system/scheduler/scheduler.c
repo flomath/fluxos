@@ -17,7 +17,7 @@ static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
 
 extern Registers_t __context_current;
 
-char* stacks[SCHEDULER_MAX_PROCESSES];
+char stacks[SCHEDULER_MAX_PROCESSES][1024];
 
 void scheduler_addProcess(ProcFunc fct)
 {
@@ -33,10 +33,9 @@ void scheduler_addProcess(ProcFunc fct)
 	__contexts[newProcessID].state = PROCESS_READY;
 	__contexts[newProcessID].func = fct;
 
-	stacks[newProcessID] = (char*)malloc(4096);
-	__contexts[newProcessID].registers.SP = (uint32_t)(stacks[newProcessID]) + 4095;
+	__contexts[newProcessID].registers.SP = (uint32_t)(stacks[newProcessID]) + 1020;
 	__contexts[newProcessID].registers.CPSR = 0b10000; // USER MODE
-	__contexts[newProcessID].registers.LR = (uint32_t)(__contexts[newProcessID].func);
+	__contexts[newProcessID].registers.LR = (uint32_t)(__contexts[newProcessID].func) + 4;
 }
 
 void scheduler_run() 
