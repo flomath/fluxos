@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_
 
 #include "process.h"
+#include "../hal/omap3530/mmu/mmu.h"
 #include <stdlib.h>
 #include "../../tools/mutex.h"
 

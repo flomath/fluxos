@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include "../../common/hal.h"
+#include "../../common/mmu/mmu.h"
 #include "interrupt.h"
 
 
@@ -59,18 +60,20 @@ void interrupt_add_listener(uint32_t irq, interrupt_callback* listener) {
 	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_MIR((uint8_t)irq / 32), BV(irq % 32));
 }
 
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(dabt_handler, DABT)
 interrupt void dabt_handler(void) {
 	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
-	printf("Data Abort Exception!\n");
+	mmu_dabt_handler();
 }
 
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(fiq_handler, FIQ)
 interrupt void fiq_handler(void) {
 	printf("Not implemented: FIQ!\n");
 }
 
-
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
 	interrupt_disable();
@@ -89,16 +92,19 @@ void irq_handler(void) {
 	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 }
 
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(pabt_handler, PABT)
 interrupt void pabt_handler(void) {
 	printf("Not implemented: PABT\n");
 }
 
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(swi_handler, SWI)
 interrupt void swi_handler(void) {
 	printf("Not implemented: SWI\n");
 }
 
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(udef_handler, UDEF)
 interrupt void udef_handler(void) {
 	printf("Not implemented: UDEF\n");

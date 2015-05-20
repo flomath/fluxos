@@ -8,6 +8,7 @@
 #ifndef SRC_SYSTEM_HAL_COMMON_MMU_MMU_H_
 #define SRC_SYSTEM_HAL_COMMON_MMU_MMU_H_
 
+#include "../../../scheduler/process.h"
 #include "../hal.h"
 
 #define MAX_PROCESSES       128         ///< Max proccess count
@@ -42,10 +43,9 @@ typedef struct {
  * Create/Switch/Kill a process
  */
 void mmu_init(void);
-//TODO: add process structs
-void mmu_create_process(void);
-void mmu_switch_process(void); //TODO: need context for ASID
-void mmu_kill_process(void);
+void mmu_create_process(Process_t* process);
+void mmu_switch_process(Process_t* process); //TODO: need context for ASID
+void mmu_kill_process(Process_t* process);
 
 /**
  * Dabt exception handler

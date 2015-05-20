@@ -51,10 +51,8 @@ static page_t regionPageTables[1279];       ///< ((PAGE_TABLES_END_ADDRESS-PAGE_
 #define PROCESS_END_ADDRESS			        0x3EAFFFFF
 static page_t regionProcess[256767];        ///< ((PROCESS_END_ADDRESS-PROCESS_START_ADDRESS)/4096)
 
-
-
 /**
- * TODO: define name
+ * Page sizes
  */
 #define SMALL_PAGE_SIZE_4KB                 0x1000      ///< 4 KB size
 
@@ -68,11 +66,5 @@ void memoryManager_init(void);
  * given base number
  */
 memoryRegion_t* memoryManger_getRegion(unsigned int memRegionNumber);
-
-/**
- * Look up memory for free pages, reserve them
- * and return the address of the first page
- */
-uint32_t* memoryManager_getFreePages(unsigned int memRegionNumber, unsigned int numPagesReserve);
 
 #endif //SRC_SYSTEM_HAL_OMAP3530_MMU_MEMORYMANAGER_H_

@@ -8,6 +8,7 @@
 #ifndef SYSTEM_H_
 #define SYSTEM_H_
 
+#include <stdlib.h>
 #include <stdint.h>
 
 #ifndef NULL

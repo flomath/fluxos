@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "mmu.h"
+#include "../../../scheduler/process.h"
+#include "../../common/mmu/mmu.h"
 
 /**
  * Array of page frames
@@ -23,7 +25,7 @@ static char pageFramesByteArray[PAGE_FRAMES_MAX];
 /**
  * Master OS page table
  */
-static uint32_t* masterPageTable;
+static mmu_pageTableP_t masterPageTable;
 
 /**
  * Disable mmu
@@ -37,15 +39,13 @@ static void mmu_enable(void);
 
 /**
  * Sets the page table for the OS/Kernel region
- * TODO: check if uint32_t or pointer
  */
-static void mmu_setTTBR1(uint32_t osPageTable);
+static void mmu_setTTBR1(mmu_pageTableP_t osPageTable);
 
 /**
  * Sets the page table for the Process region
- * TODO: check if uint32_t or pointer
  */
-static void mmu_setTTBR0(uint32_t processPageTable);
+static void mmu_setTTBR0(mmu_pageTableP_t processPageTable);
 
 /**
  * Sets the ttbcr register
@@ -69,11 +69,6 @@ static mmu_pageTableP_t mmu_createMasterPageTable();
  * Creates a l1 or l2 page table
  */
 static mmu_pageTableP_t mmu_createPageTable(unsigned char pageTableType);
-
-/**
- * Initializes a page table
- */
-static void mmu_initPageTable(mmu_pageTableP_t pageTable);
 
 /**
  * Maps a kernel master page table to its region
@@ -101,7 +96,7 @@ static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t L1_entry);
  * Small pages implemented
  * TODO: Large pages have to be checked
  */
-static uint32_t mmu_createL2PageTableEntry(mmu_l2_pageTable_t* L2_entry);
+static uint32_t mmu_createL2PageTableEntry(mmu_l2_pageTable_t L2_entry);
 
 
 /**
@@ -130,6 +125,29 @@ static void mmu_setPageFrame(unsigned int pageFrame, bool_t used);
  */
 static uint32_t mmu_getPhysicalAddressPageFrame(unsigned int pageFrame);
 
+/**
+ * Get address of L2 from
+ * a given address in L1
+ */
+static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1);
+
+/**
+ * Create a L2 in a L1 from a process
+ */
+static void mmu_createL2PageTable(uint32_t virtualAddress, Process_t* process);
+
+/**
+ * Create a page frame in a L2
+ */
+static void mmu_createPageFrame(uint32_t virtualAddress, mmu_pageTableP_t pageTableL2);
+
+/**
+ * Get a free page frame in
+ * process space
+ */
+static uint32_t mmu_getFreePageFrameProcess();
+
+
 void mmu_init(void)
 {
     // initialize memory regions
@@ -144,9 +162,8 @@ void mmu_init(void)
 
     // set ttbr1 and ttbr0 for
     // OS and Process page table
-    //TODO: check if & is working?
-    mmu_setTTBR1(&masterPageTable);
-    mmu_setTTBR0(&masterPageTable);
+    mmu_setTTBR1(masterPageTable);
+    mmu_setTTBR0(masterPageTable);
 
     // set boundary (size of ttbr1 and ttbr0)
     mmu_setTTBCR(BOUNDARY_QUARTER);
@@ -161,8 +178,9 @@ void mmu_init(void)
 void mmu_dabt_handler(void)
 {
     // load dabt details via asm
-    uint32_t dataFaultStatusRegister;
-    __mmu_load_dabt(dataFaultStatusRegister);
+    uint32_t dataFaultStatusRegister = 0;
+    uint32_t dataFaultAddress = 0;
+    __mmu_load_dabt(dataFaultAddress, dataFaultStatusRegister);
     // Bit 10 + 3-0 for fault status
     // shift bit 10 to 4 to get one value
     unsigned int dataFaultStatus = ((dataFaultStatusRegister & 0x400) >> 6) | (dataFaultStatusRegister & 0xF);
@@ -176,9 +194,11 @@ void mmu_dabt_handler(void)
             break;
         case DABT_TRANS_SECTION_FAULT:
             // L2 needed
+            //mmu_createL2PageTable(dataFaultAddress, currentProcess);
             break;
         case DABT_TRANS_PAGE_FAULT:
             // Page frame needed
+            //mmu_createPageFrame(dataFaultAddress, mmu_getPageTableL2(dataFaultAddress, currentProcess));
             break;
         case DABT_PERM_SECTION_FAULT:
             // kill process
@@ -192,6 +212,31 @@ void mmu_dabt_handler(void)
     }
 }
 
+void mmu_create_process(Process_t* process)
+{
+    mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L1);
+    mmu_mapRegionToMasterPageTable(BOOT_ROM_REGION, pageTable);
+    process->pageTable = pageTable;
+}
+
+void mmu_switch_process(Process_t* process)
+{
+    if(process->pageTable == NULL) {
+        mmu_create_process(process);
+    }
+
+    mmu_setTTBR0(process->pageTable);
+}
+
+void mmu_kill_process(Process_t* process)
+{
+    //TODO: not implemented yet
+}
+
+/**
+ * static
+ */
+
 static void mmu_disable(void) {
     // call asm function
     __mmu_disable();
@@ -202,16 +247,16 @@ static void mmu_enable(void) {
     __mmu_enable();
 }
 
-static void mmu_setTTBR1(uint32_t osPageTable)
+static void mmu_setTTBR1(mmu_pageTableP_t osPageTable)
 {
     // call asm function
-    __mmu_set_ttbr1(osPageTable);
+    __mmu_set_ttbr1((uint32_t)osPageTable);
 }
 
-static void mmu_setTTBR0(uint32_t pageTable)
+static void mmu_setTTBR0(mmu_pageTableP_t pageTable)
 {
     // call asm function
-    __mmu_set_ttbr0(pageTable);
+    __mmu_set_ttbr0((uint32_t)pageTable);
 }
 
 static void mmu_setTTBCR(uint32_t address)
@@ -225,6 +270,10 @@ static void mmu_setDomain(uint32_t address)
     // call asm function
     __mmu_set_domain((address & DOMAIN_BIT_MASK));
 }
+
+/**
+ * Page Tables
+ */
 
 static mmu_pageTableP_t mmu_createMasterPageTable()
 {
@@ -263,7 +312,7 @@ static mmu_pageTableP_t mmu_createPageTable(unsigned char pageTableType)
             return NULL;
     }
 
-    uint32_t pageTable = mmu_getFreePageFrames(numPagesReserve);
+    mmu_pageTableP_t pageTable = (mmu_pageTableP_t)mmu_getFreePageFrames(numPagesReserve);
 
     if( pageTable == NULL ) {
         return 0;
@@ -271,7 +320,7 @@ static mmu_pageTableP_t mmu_createPageTable(unsigned char pageTableType)
 
     // fill all pages with page faults and return page table
     memset(pageTable, FAULT_PAGE_HIT, SMALL_PAGE_SIZE_4KB * numPagesReserve);
-    return (mmu_pageTableP_t)pageTable;
+    return pageTable;
 }
 
 static void mmu_mapRegionToMasterPageTable(unsigned int memRegionNumber, mmu_pageTableP_t pageTable)
@@ -306,48 +355,54 @@ static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int page
         default:
             return 0;
     }
-
 }
 
-static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t L1_entry)
+static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1)
 {
-    uint32_t entry = (L1_entry.AP << AP_L1_BIT_SHIFT) |
-                     (L1_entry.domain << DOMAIN_BIT_SHIFT) |
-                     (L1_entry.CB << CB_BIT_SHIFT) |
-                     L1_entry.type;
+    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2);
 
-    switch(L1_entry.type) {
-        case SECTION:
-            entry |= (L1_entry.sectionAddress & SECTION_BIT_MASK);
-            break;
-        case COARSE:
-            entry |= (L1_entry.sectionAddress & COARSE_BIT_MASK);
-            break;
-        default:
-            return FAULT_PAGE_HIT;
+    if( pageTableOffset == 0 ) {
+        return mmu_createPageTable(PT_L2);
+    } else {
+        return (pageTableL1 + pageTableOffset);
     }
-
-    return entry;
 }
 
-static uint32_t mmu_createL2PageTableEntry(mmu_l2_pageTable_t* L2_entry)
+static void mmu_createL2PageTable(uint32_t virtualAddress, Process_t* process)
 {
-    uint32_t entry = (L2_entry->AP << AP_L2_BIT_SHIFT) |
-                     (L2_entry->CB << CB_BIT_SHIFT) |
-                     L2_entry->type;
+    mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L2);
 
-    switch(L2_entry->type) {
-        case SMALL_PAGE:
-            entry |= (L2_entry->pageTableAddress & SMALL_PAGE_BIT_MASK);
-            break;
-        case LARGE_PAGE:
-            entry |= (L2_entry->pageTableAddress & LARGE_PAGE_BIT_MASK);
-            break;
-        default:
-            return FAULT_PAGE_HIT;
-    }
+    mmu_l1_section_t L1_entry;
+    L1_entry.sectionAddress 	= (*pageTable & COARSE_BIT_MASK);
+    L1_entry.type 		        = COARSE;
+    L1_entry.CB 		        = CB_cb;
+    //L1_entry.AP 	            = AP_RWRW;
+    L1_entry.domain 		    = DOMAIN_M;
 
-    return entry;
+    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L1);
+    uint32_t* newAddress = process->pageTable + (pageTableOffset << 2)/sizeof(uint32_t);
+    *newAddress = mmu_createL1PageTableEntry(L1_entry);
+
+    mmu_createPageFrame(virtualAddress, pageTable);
+}
+
+/**
+ * Page Frames
+ */
+
+static void mmu_createPageFrame(uint32_t virtualAddress, mmu_pageTableP_t pageTableL2)
+{
+    uint32_t pageFrame = mmu_getFreePageFrameProcess();
+
+    mmu_l2_pageTable_t L2_entry;
+    L2_entry.pageTableAddress 	= pageFrame & SMALL_PAGE_BIT_MASK;
+    L2_entry.type  	            = SMALL_PAGE;
+    L2_entry.AP                 = AP_RWRW;
+    L2_entry.CB 	            = CB_cb;
+
+    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2);
+    uint32_t* newAddress = pageTableL2 + (pageTableOffset << 2)/sizeof(uint32_t);
+    *newAddress = mmu_createL2PageTableEntry(L2_entry);
 }
 
 static uint32_t mmu_getFreePageFrames(unsigned int numPageFramesReserve)
@@ -410,7 +465,41 @@ static uint32_t mmu_getFreePageFrames(unsigned int numPageFramesReserve)
         }
     }
 
-    return NULL;
+    return 0;
+}
+
+static uint32_t mmu_getFreePageFrameProcess()
+{
+    unsigned int pageFrameByte;
+    unsigned int pageFrameBit;
+
+    // loop through byte array
+    unsigned int pageFrame;
+    for(pageFrameByte = 0; pageFrameByte < PAGE_FRAMES_MAX; pageFrameByte++) {
+        // loop through byte
+        for(pageFrameBit = 0; pageFrameBit < 8; pageFrameBit++) {
+            pageFrame = (pageFrameByte * PAGE_FRAME_ARRAY_DATATYPE) + pageFrameBit;
+
+            // check if page frame is used
+            if (mmu_isPageFrameUsed(pageFrame) == 0) {
+                break;
+            } else {
+                pageFrame = 0;
+            }
+        }
+
+        if( pageFrame != 0 ) {
+            break;
+        }
+    }
+
+    // check if frame is in use
+    if( pageFrame == 0 ) {
+        return NULL;
+    }
+
+    mmu_setPageFrame(pageFrame, TRUE);
+    return mmu_getPhysicalAddressPageFrame(pageFrame);
 }
 
 static bool_t mmu_isPageFrameUsed(unsigned int pageFrame)
@@ -447,5 +536,47 @@ static uint32_t mmu_getPhysicalAddressPageFrame(unsigned int pageFrame)
     return PAGE_TABLES_START_ADDRESS + (pageFrame * SMALL_PAGE_SIZE_4KB);
 }
 
+/**
+ * Page Table Entries
+ */
 
-//TODO: implement creation l1, l2, page frames and data abort handler
+static uint32_t mmu_createL1PageTableEntry(mmu_l1_section_t L1_entry)
+{
+    uint32_t entry = (L1_entry.AP << AP_L1_BIT_SHIFT) |
+                     (L1_entry.domain << DOMAIN_BIT_SHIFT) |
+                     (L1_entry.CB << CB_BIT_SHIFT) |
+                     L1_entry.type;
+
+    switch(L1_entry.type) {
+        case SECTION:
+            entry |= (L1_entry.sectionAddress & SECTION_BIT_MASK);
+            break;
+        case COARSE:
+            entry |= (L1_entry.sectionAddress & COARSE_BIT_MASK);
+            break;
+        default:
+            return FAULT_PAGE_HIT;
+    }
+
+    return entry;
+}
+
+static uint32_t mmu_createL2PageTableEntry(mmu_l2_pageTable_t L2_entry)
+{
+    uint32_t entry = (L2_entry.AP << AP_L2_BIT_SHIFT) |
+                     (L2_entry.CB << CB_BIT_SHIFT) |
+                     L2_entry.type;
+
+    switch(L2_entry.type) {
+        case SMALL_PAGE:
+            entry |= (L2_entry.pageTableAddress & SMALL_PAGE_BIT_MASK);
+            break;
+        case LARGE_PAGE:
+            entry |= (L2_entry.pageTableAddress & LARGE_PAGE_BIT_MASK);
+            break;
+        default:
+            return FAULT_PAGE_HIT;
+    }
+
+    return entry;
+}

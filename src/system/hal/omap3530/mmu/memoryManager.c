@@ -61,57 +61,6 @@ memoryRegion_t* memoryManger_getRegion(unsigned int memRegionNumber)
 	return &memoryRegions[memRegionNumber];
 }
 
-//uint32_t* memoryManager_getFreePages(unsigned int memRegionNumber, unsigned int numPagesReserve)
-//{
-//	memoryRegion_t* memRegion = memoryManger_getRegion(memRegionNumber);
-//
-//	// check if pages are available
-//	if( numPagesReserve == 0 || numPagesReserve > (memRegion->numPages - memRegion->numPagesReserved) ) {
-//		return NULL;
-//	}
-//
-//	// loop through all pages and look
-//	// for specified number of pages
-//	unsigned int pageNumber;
-//	int pageStatus;
-//	for(pageNumber = 0; pageNumber < memRegion->numPages; pageNumber++)
-//	{
-//		// if a page is found, check
-//		// if more are available
-//		if( (pageNumber + numPagesReserve) > memRegion->numPages ) {
-//			return NULL;
-//		}
-//
-//		// if a page is reserved try to find next one
-//		// if not, check if number of reserved pages are free
-//		if( memRegion->pages[pageNumber].reserved == 1 ) {
-//			continue;
-//		} else {
-//			// try to reserve pages
-//			pageStatus = memoryManager_reservePages(memRegion, pageNumber, numPagesReserve);
-//
-//			// if pageNumber is not -1 (free pages available)
-//			// search for new one
-//			// otherwise pages were reserved and return address of first page
-//			if( pageStatus != -1 ) {
-//				continue;
-//			} else {
-//				uint32_t* pageAddress = memoryManager_getPageAddress(memRegion, pageNumber);
-//
-//				if( pageAddress == NULL ) {
-//					return NULL;
-//				}
-//
-//				// fill all pages with page faults
-//				memset(pageAddress, FAULT_PAGE_HIT, SMALL_PAGE_SIZE_4KB * numPagesReserve);
-//				return pageAddress;
-//			}
-//		}
-//	}
-//
-//	return NULL;
-//}
-
 /**
  * Static functions
  */
@@ -191,5 +140,5 @@ static uint32_t* memoryManager_getPageAddress(memoryRegion_t* memRegion, unsigne
 		return NULL;
 	}
 
-	return ((uint32_t*)(memRegion->addressStart + pageNumber * memRegion->pageSize));
+	return ((uint32_t*)(memRegion->addressStart + (pageNumber * memRegion->pageSize)));
 }

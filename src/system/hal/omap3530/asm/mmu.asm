@@ -5,6 +5,7 @@
 		.global __mmu_set_ttbr1
 		.global __mmu_enable
 		.global __mmu_disable
+		.global __mmu_load_dabt
 
 ;* REGISTERS Table G4-42 Secure registers
 
@@ -86,9 +87,10 @@ __mmu_disable:
 		MOV PC, R14
 
 ;*-------------------------------------------------------
-;* Load DFSR for dabt - B4.1.52
+;* Load DFAR (B4.1.51) and DFSR (B4.1.52) for dabt
 ;*-------------------------------------------------------
 __mmu_load_dabt:
-		MRC p15, #0, R0, c5, c0, #0 ; Read DFSR
+		MRC	p15, #0, R0, c6, c0, #0 ; Read DFAR
+		MRC p15, #0, R1, c5, c0, #0 ; Read DFSR
 
 		MOV PC, R14

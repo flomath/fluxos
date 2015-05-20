@@ -21,6 +21,7 @@ void scheduler_addProcess(ProcFunc fct)
 	SchedulerProcesses[newProcessID].ProcessID = newProcessID;
 	SchedulerProcesses[newProcessID].state = PROCESS_READY;
 	SchedulerProcesses[newProcessID].func = fct;
+	mmu_create_process(&SchedulerProcesses[newProcessID]);
 }
 
 void scheduler_run() 
@@ -35,12 +36,13 @@ void scheduler_run()
 
 		case PROCESS_READY: 
 		{
-			// speicher Context für Thread
+			// speicher Context fÃ¼r Thread
 			/*if(setjmp(SchedulerProcesses[runningThread].context) == 0) {*/
 			if(SchedulerProcesses[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
 				SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_READY;
 
 			SchedulerCurrentRunningProcess = nextProcess;
+			mmu_switch_process(&SchedulerProcesses[SchedulerCurrentRunningProcess]);
 			SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
 			SchedulerProcesses[SchedulerCurrentRunningProcess].func();
 			//longjmp(SchedulerProcesses[runningThread].context, 1);

@@ -23,8 +23,8 @@ typedef struct
  * Region table
  */
 typedef struct {
-	uint32_t addressStart;             		///< Virtual address start
-	uint32_t addressEnd;               		///< Virtual address end
+	unsigned int addressStart;             	///< Virtual address start
+	unsigned int addressEnd;               	///< Virtual address end
 	unsigned int pageSize;     	     		///< Page size and validity
 	unsigned int numPages;               	///< Number of pages
 	unsigned int AP;	                  	///< Access permission
