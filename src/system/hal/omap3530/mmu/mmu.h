@@ -28,6 +28,8 @@
 #define PT_L2               0x1
 #define PAGE_FRAME          0x2
 
+#define PT_L1_SIZE          0x4000      ///< 4096 Entries * 4 = 16kB (p.962)
+
 #define SECTION             0x02        ///< 1 MB block - 1024 Entries
 #define COARSE              0x01        ///< 4 KB block - 256  Entries
 #define SECTION_SIZE        0x100000    ///< 0x100000 = 1048576 Bytes = 1 MB
@@ -105,6 +107,33 @@
 #define BOUNDARY_QUARTER    0x2         ///< One Quarter for ttbr0
 
 /**
+ * Page frames
+ */
+#define FAULT_PAGE_HIT      0x0         ///< Fault entry hit on a page table
+
+#define PAGE_FRAME_ARRAY_DATATYPE   sizeof(char)
+#define PAGE_FRAMES_MAX     (DDR0_END_ADDRESS - PAGE_TABLES_START_ADDRESS) / SMALL_PAGE_SIZE_4KB / PAGE_FRAME_ARRAY_DATATYPE
+#define PAGE_TABLES_MAX     (PAGE_TABLES_END_ADDRESS - PAGE_TABLES_START_ADDRESS) / SMALL_PAGE_SIZE_4KB
+
+/**
+ * Data abort fault status
+ */
+#define DABT_ALIGN_FAULT            0x1 ///< Alignment fault
+#define DABT_DEBUG                  0x2 ///< Debug event
+#define DABT_ACCESS_SECTION_FAULT   0x3 ///< Access flag fault, section
+#define DABT_INSTR_FAULT            0x4 ///< Instruction cache maintenance fault
+#define DABT_TRANS_SECTION_FAULT    0x5 ///< Translation fault, section
+#define DABT_ACCESS_PAGE_FAULT      0x6 ///< Access flag fault, page
+#define DABT_TRANS_PAGE_FAULT       0x7 ///< Translation fault, page
+#define DABT_SYNC_EXT_TRANS_NO      0x8 ///< Synchronous external abort, non-translation
+#define DABT_DOMAIN_SECTION_FAULT   0x9 ///< Domain fault, section
+#define DABT_DOMAIN_PAGE_FAULT      0xB ///< Domain fault, page
+#define DABT_SYNC_EXT_TRANS_L1      0xC ///< Synchronous external abort on translation table walk, first level
+#define DABT_PERM_SECTION_FAULT     0xD ///< Permission fault, section
+#define DABT_SYNC_EXT_TRANS_L2      0xE ///< Synchronous external abort on translation table walk, second level
+#define DABT_PERM_PAGE_FAULT        0xF ///< Permission fault, second level
+
+/**
  * Asm functions
  */
 extern void __mmu_enable_write_buffer(void);
@@ -114,6 +143,7 @@ extern void __mmu_set_ttbr0(uint32_t ttbr_address);//TODO: implement ASID (conte
 extern void __mmu_set_ttbr1(uint32_t ttbr_address);
 extern void __mmu_enable(void);
 extern void __mmu_disable(void);
+extern void __mmu_load_dabt(uint32_t dataFaultStatus);
 
 
 #endif //SRC_SYSTEM_HAL_OMAP3530_MMU_MMU_H_

@@ -44,8 +44,20 @@ typedef struct {
 void mmu_init(void);
 //TODO: add process structs
 void mmu_create_process(void);
-void mmu_switch_process(void);
+void mmu_switch_process(void); //TODO: need context for ASID
 void mmu_kill_process(void);
+
+/**
+ * Dabt exception handler
+ *
+ * If an exception occurs, new
+ * page tables have to be created
+ * or
+ * current process has to be killed
+ *
+ * TODO: Process needed?
+ */
+void mmu_dabt_handler(void);
 
 #endif //SRC_SYSTEM_HAL_COMMON_MMU_MMU_H_
 

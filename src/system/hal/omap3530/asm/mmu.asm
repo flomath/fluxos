@@ -84,3 +84,11 @@ __mmu_disable:
 
 		LDMFD R13!, {R0, R1} ; restore r0,r1 and jump back
 		MOV PC, R14
+
+;*-------------------------------------------------------
+;* Load DFSR for dabt - B4.1.52
+;*-------------------------------------------------------
+__mmu_load_dabt:
+		MRC p15, #0, R0, c5, c0, #0 ; Read DFSR
+
+		MOV PC, R14

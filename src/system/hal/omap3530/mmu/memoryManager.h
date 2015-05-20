@@ -11,6 +11,12 @@
 #include "../../common/mmu/memoryManager.h"
 
 /**
+ * DDR0
+ */
+#define DDR0_START_ADDRESS                  0x80000000
+#define DDR0_END_ADDRESS                    0xC0000000  ///< Start address + 1 GB (0x40000000)
+
+/**
  * Memory regions
  */
 #define MEMORY_REGIONS		                6			///< Number of regions
@@ -51,7 +57,6 @@ static page_t regionProcess[256767];        ///< ((PROCESS_END_ADDRESS-PROCESS_S
  * TODO: define name
  */
 #define SMALL_PAGE_SIZE_4KB                 0x1000      ///< 4 KB size
-#define FAULT_PAGE_HIT                      0x0         ///< Fault entry hit on a page table
 
 /**
  * Initialize the different memory regions
