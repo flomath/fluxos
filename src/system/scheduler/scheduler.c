@@ -28,19 +28,21 @@ void scheduler_run()
 	mutex_lock();
 
 	int nextProcess = scheduler_getNextProcess();
+	if(nextProcess == SCHEDULER_INVALID_ID) return;
 
 	switch(SchedulerProcesses[nextProcess].state) {
 		case PROCESS_RUNNING: break;
 
 		case PROCESS_READY: 
 		{
-			// speicher Context fÃ¼r Thread
+			// speicher Context für Thread
 			/*if(setjmp(SchedulerProcesses[runningThread].context) == 0) {*/
 			if(SchedulerProcesses[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
 				SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_READY;
 
 			SchedulerCurrentRunningProcess = nextProcess;
 			SchedulerProcesses[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
+			SchedulerProcesses[SchedulerCurrentRunningProcess].func();
 			//longjmp(SchedulerProcesses[runningThread].context, 1);
 			/*}*/
 		} break;
