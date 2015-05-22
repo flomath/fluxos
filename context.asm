@@ -8,12 +8,12 @@
 ; Requirements: Stack must contain old value of R12 and R0
 __context_tmp_save:
 	MOV 	R12, R0						; Move address of variable to R12
-	LDMFD 	R13!, {R0}				; Reload old R0 value
-	STMEA 	R12!, {R0-R11}			; Save Registers R0-R11 in context variable
+	LDMFD 	R13!, {R0}					; Reload old R0 value
+	STMEA 	R12!, {R0-R11}				; Save Registers R0-R11 in context variable
 	MOV 	R0, R12						; Move address of context variable to register R0
-	LDMFD 	R13!, {R12}				; Get the original R12 value from the stack
-	STMEA 	R0!, {R12}				; Store R12 to the context variable
-									; PC will not need to be saved, because we are copying the LR to the PC
+	LDMFD 	R13!, {R12}					; Get the original R12 value from the stack
+	STMEA 	R0!, {R12}					; Store R12 to the context variable
+										; PC will not need to be saved, because we are copying the LR to the PC
 	MOV 	PC, R14						; Leave method
 
 ; Load the context
@@ -38,7 +38,7 @@ __context_load:
 ; Save R13, R14 and CSPR (SPSR)
 ; Param: 	R0 ... context_address
 __context_save:
-	ADD 	R0, R0, #68					; Skip size, PID and State and Registers R0-R12
+	ADD 	R0, R0, #64					; Skip size, PID and State and Registers R0-R12
 	MRS		R1, SPSR					; Save mode to R1
 	STMEA 	R0, {R13-R14}^				; Save shadowed registers R13 and R14
 	ADD 	R0, R0, #12					; Skip Register R13, R14 and PC (Point to CPSR)

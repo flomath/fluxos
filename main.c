@@ -10,7 +10,6 @@
 #include "src/system/scheduler/scheduler.h"
 
 interrupt_callback timer_irq;
-static uint16_t timerCounter;
 
 void test(void);
 void test2(void);
@@ -21,8 +20,6 @@ void main(void) {
 
 	// Set up interrupts
 	interrupt_init();
-
-	timerCounter=0;
 
 	// Add IRQ handler
 	interrupt_add_listener(40, &timer_irq);
@@ -75,8 +72,6 @@ void timer_irq(void) {
 	gpt_timer_reset(GPT_TIMER4);
 	gpt_timer_start(GPT_TIMER4);
 
+	// This method will never return
 	scheduler_run();
-
-	timerCounter++;
-	printf("timer count: %u\n", timerCounter);
 }
