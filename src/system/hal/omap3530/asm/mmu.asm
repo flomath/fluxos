@@ -6,6 +6,7 @@
 		.global __mmu_enable
 		.global __mmu_disable
 		.global __mmu_load_dabt
+		.global __mmu_tlb_flush
 
 ;* REGISTERS Table G4-42 Secure registers
 
@@ -47,7 +48,7 @@ __mmu_set_ttbcr:
 ;*-------------------------------------------------------
 __mmu_set_ttbr0:
 		MCR p15, #0, R0, c2, c0, #0	; set LTable of process
-		MCR p15, #0, R1, c13, c0, #1; set process id and ASID
+		; MCR p15, #0, R1, c13, c0, #1 ; set process id and ASID
 
 		MOV PC, R14
 
@@ -90,7 +91,16 @@ __mmu_disable:
 ;* Load DFAR (B4.1.51) and DFSR (B4.1.52) for dabt
 ;*-------------------------------------------------------
 __mmu_load_dabt:
-		MRC	p15, #0, R0, c6, c0, #0 ; Read DFAR
-		MRC p15, #0, R1, c5, c0, #0 ; Read DFSR
+		MRC	p15, #0, r0, c6, c0, #0 ; Read DFAR
+		MRC p15, #0, r1, c5, c0, #0 ; Read DFSR
 
+		MOV PC, R14
+
+__mmu_tlb_flush:
+		STMFD R13!, {R0, R1} ; backup r0, r1 on stack
+
+		MOV R0, #0
+		MCR p15, #0, r0, c8, c7, #0
+
+		LDMFD R13!, {R0, R1} ; restore r0,r1 and jump back
 		MOV PC, R14

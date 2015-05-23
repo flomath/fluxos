@@ -27,7 +27,8 @@ void interrupt_init(void) {
 	// If necessary, disable functional clock autogating
 	// or enable synchronizer autogating by setting the FUNCIDLE bit or TURBO bit accordingly
 
-	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_IDLE, BV(1) + BV(0)); // free running syncrhonizer clock (default) and functional clock gating strategy is applied (default)
+	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_IDLE, BV(1) + BV(0)); // free running synchronizer clock (default) and functional clock gating strategy is applied (default)
+	//hal_bitmask_set(MPU_INTC, MPU_INTC_INTCPS_IDLE, BV(0));
 
 	// 3. Program the MPU_INTC.INTCPS_ILRm register for each interrupt line:
 	// Assign a priority level and set the FIQNFIQ bit for an FIQ interrupt
@@ -61,19 +62,6 @@ void interrupt_add_listener(uint32_t irq, interrupt_callback* listener) {
 }
 
 #pragma SET_CODE_SECTION(".intvecs_impl")
-#pragma INTERRUPT(dabt_handler, DABT)
-interrupt void dabt_handler(void) {
-	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
-	mmu_dabt_handler();
-}
-
-#pragma SET_CODE_SECTION(".intvecs_impl")
-#pragma INTERRUPT(fiq_handler, FIQ)
-interrupt void fiq_handler(void) {
-	printf("Not implemented: FIQ!\n");
-}
-
-#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
 	interrupt_disable();
@@ -89,22 +77,30 @@ void irq_handler(void) {
 	}
 
 	// Clear the IRQ
-	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+	hal_bitmask_set(MPU_INTC, MPU_INTC_INTCPS_CONTROL, BV(1));
 }
 
-#pragma SET_CODE_SECTION(".intvecs_impl")
+#pragma INTERRUPT(dabt_handler, DABT)
+interrupt void dabt_handler(void) {
+	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
+	mmu_dabt_handler();
+}
+
+#pragma INTERRUPT(fiq_handler, FIQ)
+interrupt void fiq_handler(void) {
+	printf("Not implemented: FIQ!\n");
+}
+
 #pragma INTERRUPT(pabt_handler, PABT)
 interrupt void pabt_handler(void) {
 	printf("Not implemented: PABT\n");
 }
 
-#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(swi_handler, SWI)
 interrupt void swi_handler(void) {
 	printf("Not implemented: SWI\n");
 }
 
-#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(udef_handler, UDEF)
 interrupt void udef_handler(void) {
 	printf("Not implemented: UDEF\n");

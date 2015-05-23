@@ -44,7 +44,7 @@ typedef struct {
  */
 void mmu_init(void);
 void mmu_create_process(Process_t* process);
-void mmu_switch_process(Process_t* process); //TODO: need context for ASID
+void mmu_switch_process(Process_t* process); //TODO: change tlb flush to ASID (context needed)
 void mmu_kill_process(Process_t* process);
 
 /**

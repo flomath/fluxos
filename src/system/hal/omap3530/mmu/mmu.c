@@ -11,6 +11,7 @@
 #include <string.h>
 #include "mmu.h"
 #include "../../../scheduler/process.h"
+#include "../../../scheduler/scheduler.h"
 #include "../../common/mmu/mmu.h"
 
 /**
@@ -186,6 +187,10 @@ void mmu_dabt_handler(void)
     unsigned int dataFaultStatus = ((dataFaultStatusRegister & 0x400) >> 6) | (dataFaultStatusRegister & 0xF);
 
     //TODO: check current process - scheduler needed
+    //TODO: function has to be implemented first
+    Process_t* currentProcess = scheduler_getCurrentProcess();
+
+    //TODO: check dataFault stuff
 
     // check
     switch(dataFaultStatus) {
@@ -194,11 +199,11 @@ void mmu_dabt_handler(void)
             break;
         case DABT_TRANS_SECTION_FAULT:
             // L2 needed
-            //mmu_createL2PageTable(dataFaultAddress, currentProcess);
+            mmu_createL2PageTable(dataFaultAddress, currentProcess);
             break;
         case DABT_TRANS_PAGE_FAULT:
             // Page frame needed
-            //mmu_createPageFrame(dataFaultAddress, mmu_getPageTableL2(dataFaultAddress, currentProcess));
+            mmu_createPageFrame(dataFaultAddress, mmu_getPageTableL2(dataFaultAddress, currentProcess));
             break;
         case DABT_PERM_SECTION_FAULT:
             // kill process
@@ -215,7 +220,9 @@ void mmu_dabt_handler(void)
 void mmu_create_process(Process_t* process)
 {
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L1);
-    mmu_mapRegionToMasterPageTable(BOOT_ROM_REGION, pageTable);
+    //TODO: check, process has to start after rom exceptions?
+    //TODO: if mapping to boot rom physical address is address of boot rom, should be from process?
+    mmu_mapRegionToMasterPageTable(BOOT_ROM_EXCEPTIONS, pageTable);
     process->pageTable = pageTable;
 }
 
@@ -257,6 +264,7 @@ static void mmu_setTTBR0(mmu_pageTableP_t pageTable)
 {
     // call asm function
     __mmu_set_ttbr0((uint32_t)pageTable);
+    __mmu_tlb_flush();
 }
 
 static void mmu_setTTBCR(uint32_t address)
@@ -290,6 +298,7 @@ static mmu_pageTableP_t mmu_createMasterPageTable()
     mmu_mapRegionToMasterPageTable(MMIO_REGION         , masterPageTable);
     mmu_mapRegionToMasterPageTable(KERNEL_REGION       , masterPageTable);
     mmu_mapRegionToMasterPageTable(PAGE_TABLES_REGION  , masterPageTable);
+    mmu_mapRegionToMasterPageTable(BOOT_ROM_EXCEPTIONS , masterPageTable);
 
     return masterPageTable;
 }

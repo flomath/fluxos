@@ -144,6 +144,7 @@ extern void __mmu_set_ttbr1(uint32_t ttbr_address);
 extern void __mmu_enable(void);
 extern void __mmu_disable(void);
 extern void __mmu_load_dabt(uint32_t dataFaultAddress, uint32_t dataFaultStatusRegister);
+extern void __mmu_tlb_flush(void);
 
 
 #endif //SRC_SYSTEM_HAL_OMAP3530_MMU_MMU_H_

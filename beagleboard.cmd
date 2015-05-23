@@ -4,6 +4,7 @@
 
 MEMORY
 {
+	BOOTROM:	    o = 0x40000000	l = 0x0001BFFF	/* BOOT ROM */
 	SRAM:           o = 0x40200000  l = 0x0000FFC8  /* 64kB Internal SRAM */
 	EXCEPTIONS:		o = 0x4020FFC8	l = 0x00000037	/* RAM exception vectors */
 	DDR0:           o = 0x80000000  l = 0x40000000	/* 1GB external DDR Bank 0 */
@@ -14,7 +15,10 @@ stackSize = 0x20000;
 SECTIONS
 {
 
-   .intvecs    > EXCEPTIONS
+   .intvecs    > EXCEPTIONS {
+            EXCEPTIONS = .;
+            *(.intvecs)
+   }
    .intvecs_impl > SRAM
 
    .const      > DDR0

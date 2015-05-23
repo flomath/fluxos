@@ -19,22 +19,22 @@
 /**
  * Memory regions
  */
-#define MEMORY_REGIONS		                6			///< Number of regions
+#define MEMORY_REGIONS		                7			///< Number of regions
 
 #define BOOT_ROM_REGION						0
 #define BOOT_ROM_START_ADDRESS				0x40000000
-#define BOOT_ROM_END_ADDRESS				0x4002BFFF
-static page_t regionBootROM[43];            ///< ((BOOT_ROM_END_ADDRESS-BOOT_ROM_START_ADDRESS)/4096)
+#define BOOT_ROM_END_ADDRESS				0x4001BFFF
+static page_t regionBootROM[27];            ///< ((BOOT_ROM_END_ADDRESS-BOOT_ROM_START_ADDRESS)/4096)
 
 #define INTERNAL_SRAM_REGION				1
-#define INTERNAL_SRAM_START_ADDRESS			0x402F0400
-#define INTERNAL_SRAM_END_ADDRESS			0x402FFFFF
+#define INTERNAL_SRAM_START_ADDRESS			0x40200000
+#define INTERNAL_SRAM_END_ADDRESS			0x4020FFFF
 static page_t regionInternalSRAM[15];       ///< ((INTERNAL_SRAM_END_ADDRESS-INTERNAL_SRAM_START_ADDRESS)/4096)
 
 #define MMIO_REGION				            2
-#define MMIO_START_ADDRESS 		            0x40310000
-#define MMIO_END_ADDRESS 		            0x7FFFFFFF
-static page_t regionMMIO[261359];           ///< ((MMIO_END_ADDRESS-MMIO_START_ADDRESS)/4096)
+#define MMIO_START_ADDRESS 		            0x48000000
+#define MMIO_END_ADDRESS 		            0x490FFFFF
+static page_t regionMMIO[4351];             ///< ((MMIO_END_ADDRESS-MMIO_START_ADDRESS)/4096)
 
 #define KERNEL_REGION						3
 #define KERNEL_START_ADDRESS				0x80000000
@@ -50,6 +50,11 @@ static page_t regionPageTables[1279];       ///< ((PAGE_TABLES_END_ADDRESS-PAGE_
 #define PROCESS_START_ADDRESS			    0x00000000
 #define PROCESS_END_ADDRESS			        0x3EAFFFFF
 static page_t regionProcess[256767];        ///< ((PROCESS_END_ADDRESS-PROCESS_START_ADDRESS)/4096)
+
+#define BOOT_ROM_EXCEPTIONS                 6
+#define BOOT_ROM_EXCEPTIONS_START_ADDRESS	0x00014000
+#define BOOT_ROM_EXCEPTIONS_END_ADDRESS		0x0001BFFF
+static page_t regionBootROMExceptions[7];   ///< ((BOOT_ROM_EXCEPTIONS_END_ADDRESS-BOOT_ROM_EXCEPTIONS_START_ADDRESS)/4096)
 
 /**
  * Page sizes

@@ -54,6 +54,7 @@ void memoryManager_init(void)
 	memoryManager_initRegion(&memoryRegions[KERNEL_REGION       ], KERNEL_START_ADDRESS       , KERNEL_END_ADDRESS       , regionKernel      , TRUE);
 	memoryManager_initRegion(&memoryRegions[PAGE_TABLES_REGION  ], PAGE_TABLES_START_ADDRESS  , PAGE_TABLES_END_ADDRESS  , regionPageTables  , TRUE);
 	memoryManager_initRegion(&memoryRegions[PROCESS_REGION      ], PROCESS_START_ADDRESS      , PROCESS_END_ADDRESS      , regionProcess     , FALSE); //TODO: physical address of process region?
+	memoryManager_initRegion(&memoryRegions[BOOT_ROM_EXCEPTIONS ], BOOT_ROM_EXCEPTIONS_START_ADDRESS, BOOT_ROM_EXCEPTIONS_END_ADDRESS, regionBootROMExceptions, TRUE);
 }
 
 memoryRegion_t* memoryManger_getRegion(unsigned int memRegionNumber)
