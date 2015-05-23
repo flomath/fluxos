@@ -37,18 +37,18 @@ void main(void) {
 
 	// Execute
 	while(1) {
-		printf("..idle\n");
+		//printf("..idle\n");
 	}
 }
 
 void test(void) {
 	while(1) {
-		printf("[1] task test\n");
+		//printf("[1] task test\n");
 	}
 }
 void test2(void) {
 	while(1) {
-		printf("[2] task test\n");
+		//printf("[2] task test\n");
 	}
 }
 
@@ -65,7 +65,7 @@ void uart_process(void) {
 			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
-			printf("No Data to process\n");
+			//printf("No Data to process\n");
 		}
 	}
 }
