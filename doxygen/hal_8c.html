@@ -98,8 +98,8 @@ Functions</h2></td></tr>
 <tr class="separator:ad177b1979f179610225cf168650800c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7501e0431addaf00f53fd7536d4fd7d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#aa7501e0431addaf00f53fd7536d4fd7d">hal_get_address_value</a> (uint32_t port, uint8_t offset)</td></tr>
 <tr class="separator:aa7501e0431addaf00f53fd7536d4fd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a5a57ee6290036b3cb768530a9d2563"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a1a5a57ee6290036b3cb768530a9d2563">hal_bitmask_write</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
-<tr class="separator:a1a5a57ee6290036b3cb768530a9d2563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff44a732b939e031ef81b40f55e7e178"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#aff44a732b939e031ef81b40f55e7e178">hal_bitmask_write</a> (uint32_t port, uint8_t offset, uint32_t mask, uint8_t size)</td></tr>
+<tr class="separator:aff44a732b939e031ef81b40f55e7e178"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a249461662e4968aeb232c79073fe4767"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a249461662e4968aeb232c79073fe4767">hal_bitmask_set</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
 <tr class="separator:a249461662e4968aeb232c79073fe4767"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bcf0889832c179d4f63189da959ca55"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hal_8c.html#a7bcf0889832c179d4f63189da959ca55">hal_bitmask_clear</a> (uint32_t port, uint8_t offset, uint32_t mask)</td></tr>
@@ -172,7 +172,7 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a1a5a57ee6290036b3cb768530a9d2563"></a>
+<a class="anchor" id="aff44a732b939e031ef81b40f55e7e178"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -192,7 +192,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mask</em>&#160;</td>
+          <td class="paramname"><em>mask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -201,7 +207,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Write a bitmask into address </p>
+<p>Write a bitmask into address</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>The register base address </td></tr>
+    <tr><td class="paramname">offset</td><td>The offset of the register </td></tr>
+    <tr><td class="paramname">mask</td><td>The value to write </td></tr>
+    <tr><td class="paramname">size</td><td>The size of the register </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -235,6 +250,9 @@ Functions</h2></td></tr>
 <a class="anchor" id="ad177b1979f179610225cf168650800c0"></a>
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a> hal_get_register </td>
@@ -254,6 +272,11 @@ Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 <p>Returns the register address of given port and offset </p>
 
@@ -262,7 +285,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu Mar 26 2015 12:25:27 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu May 14 2015 13:22:29 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

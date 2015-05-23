@@ -1,7 +1,21 @@
 var searchData=
 [
   ['clk_5fuart',['CLK_UART',['../omap3530_2uart_2uart_8h.html#ae0d32a42c9c56d61c403f9b6d121a1de',1,'uart.h']]],
+  ['cm_5fautoidle_5fper',['CM_AUTOIDLE_PER',['../omap3530_2clock_2clock_8h.html#af2cb6e9097432616aa7210d5a572d064',1,'clock.h']]],
+  ['cm_5fautoidle_5fwkup',['CM_AUTOIDLE_WKUP',['../omap3530_2clock_2clock_8h.html#a642144b559f7cc840bcc7262d5ea8834',1,'clock.h']]],
+  ['cm_5fclksel_5fper',['CM_CLKSEL_PER',['../omap3530_2clock_2clock_8h.html#a7037d7d81f8dd5a0379d780170a3fedf',1,'CM_CLKSEL_PER():&#160;clock.h'],['../percm_8h.html#a7037d7d81f8dd5a0379d780170a3fedf',1,'CM_CLKSEL_PER():&#160;percm.h']]],
+  ['cm_5fclksel_5fwkup',['CM_CLKSEL_WKUP',['../omap3530_2clock_2clock_8h.html#ae57da57cffb42d25d69579c6dda7f353',1,'clock.h']]],
+  ['cm_5fclkstctrl_5fper',['CM_CLKSTCTRL_PER',['../omap3530_2clock_2clock_8h.html#ae1146f839967c93f64d592e3fec4b617',1,'clock.h']]],
+  ['cm_5fclkstst_5fper',['CM_CLKSTST_PER',['../omap3530_2clock_2clock_8h.html#a2a53660e2a2bb99b12a7c3be5af3d314',1,'clock.h']]],
   ['cm_5ffclken1_5fcore',['CM_FCLKEN1_CORE',['../core_8h.html#aaa766768da52d28c79749ff8ee0ca8be',1,'core.h']]],
+  ['cm_5ffclken_5fper',['CM_FCLKEN_PER',['../omap3530_2clock_2clock_8h.html#a272fc07858c4ab8bfe81459071f5d53c',1,'CM_FCLKEN_PER():&#160;clock.h'],['../percm_8h.html#a272fc07858c4ab8bfe81459071f5d53c',1,'CM_FCLKEN_PER():&#160;percm.h']]],
+  ['cm_5ffclken_5fwkup',['CM_FCLKEN_WKUP',['../omap3530_2clock_2clock_8h.html#a935fae147e0004939a9a8c550568b5a3',1,'clock.h']]],
   ['cm_5ficlken1_5fcore',['CM_ICLKEN1_CORE',['../core_8h.html#a51274646f628a9e45b0eac07b880e714',1,'core.h']]],
-  ['control_5fpadconf_5fsad2d_5fdmareq2',['CONTROL_PADCONF_SAD2D_DMAREQ2',['../scm_8h.html#ae658e906c24ad143d8faca7b0ea8bc0b',1,'scm.h']]]
+  ['cm_5ficlken_5fper',['CM_ICLKEN_PER',['../omap3530_2clock_2clock_8h.html#a8303dd46f5ec087cfbcb0af21f07e327',1,'CM_ICLKEN_PER():&#160;clock.h'],['../percm_8h.html#a8303dd46f5ec087cfbcb0af21f07e327',1,'CM_ICLKEN_PER():&#160;percm.h']]],
+  ['cm_5ficlken_5fwkup',['CM_ICLKEN_WKUP',['../omap3530_2clock_2clock_8h.html#ad0c173cfc41614f88b2992ae19908f1e',1,'clock.h']]],
+  ['cm_5fidlest_5fper',['CM_IDLEST_PER',['../omap3530_2clock_2clock_8h.html#a889382cde4ef7ea72267c0c179449c75',1,'clock.h']]],
+  ['cm_5fidlest_5fwkup',['CM_IDLEST_WKUP',['../omap3530_2clock_2clock_8h.html#aa243c2e35568b8bf58e2fbbc39e46130',1,'clock.h']]],
+  ['cm_5fsleepdep_5fper',['CM_SLEEPDEP_PER',['../omap3530_2clock_2clock_8h.html#a8965667cd45398bca7e6a707dc8b0a95',1,'clock.h']]],
+  ['control_5fpadconf_5fsad2d_5fdmareq2',['CONTROL_PADCONF_SAD2D_DMAREQ2',['../scm_8h.html#ae658e906c24ad143d8faca7b0ea8bc0b',1,'scm.h']]],
+  ['core_5fcm',['CORE_CM',['../omap3530_2clock_2clock_8h.html#affe4e43a58f1c2101d5a1b4a8abd2e84',1,'clock.h']]]
 ];
