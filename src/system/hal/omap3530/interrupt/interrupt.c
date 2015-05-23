@@ -14,13 +14,6 @@
 
 static interrupt_callback* irq_callbacks[IRQ_NUMBER] = { NULL };
 
-/**
- * Temporary Current Registers
- *
- * This variable will be used for saving the context, when the IRQ Handler is processing.
- */
-Registers_t __context_current;
-
 void interrupt_init(void) {
 
 	// 1. Program the MPU_INTC.INTCPS_SYSCONFIG register:
@@ -81,26 +74,32 @@ interrupt void fiq_handler(void) {
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
 
-	// Save the context of the interrupted process
-	// This must happen, because the registers may get altered
-	asm(" STMFD R13!, {R12, R0}");
-	__context_tmp_save(&__context_current);
+	// Save the registers of the interrupted process to the stack
+	asm(" STMFD R13!, {SPSR}");
+	asm(" STMFD R13!, {R14}");
+	asm(" STMFD R13, {R0-R14}^");
+	Registers_t context = __context_save();
 
 	interrupt_disable();
 
+	// Ensure that the stack will be cleared
+	{
+		// Get the rightmost 6 bits: Active IRQ
+		mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
+		uint8_t irq = BIT_TRIM_LEFT(*address, 7);
+		printf("Interrupt: %d\n", irq);
 
-	// Get the rightmost 6 bits: Active IRQ
-	mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
-	uint8_t irq = BIT_TRIM_LEFT(*address, 7);
-	printf("Interrupt: %d\n", irq);
+		// Clear the IRQ
+		*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 
-	// Clear the IRQ
-	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
-
-	// Call the callback
-	if ( irq_callbacks[irq] != NULL ) {
-		irq_callbacks[irq]();
+		// Call the callback
+		if ( irq_callbacks[irq] != NULL ) {
+			irq_callbacks[irq](&context);
+		}
 	}
+
+	// Load the context
+	__context_load();
 }
 
 #pragma INTERRUPT(pabt_handler, PABT)

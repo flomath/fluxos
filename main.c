@@ -53,25 +53,27 @@ void test2(void) {
 }
 
 void uart_process(void) {
-	int count = uart_driver_count();
-	if ( count > 0 ) {
-		char buffer[8];
-		uart_driver_read(buffer, 8);
+	while (1) {
+		int count = uart_driver_count();
+		if ( count > 0 ) {
+			char buffer[8];
+			uart_driver_read(buffer, 8);
 
-		int i;
-		for ( i = 0; i < 8 && i < count; i++ ) {
-			printf("%c", buffer[i]);
+			int i;
+			for ( i = 0; i < 8 && i < count; i++ ) {
+				printf("%c", buffer[i]);
+			}
+			uart_driver_write(buffer, count < 8 ? count : 8);
+		} else {
+			printf("No Data to process\n");
 		}
-		uart_driver_write(buffer, count < 8 ? count : 8);
-	} else {
-		printf("No Data to process\n");
 	}
 }
 
-void timer_irq(void) {
+void timer_irq(Registers_t* context) {
 	gpt_timer_reset(GPT_TIMER4);
 	gpt_timer_start(GPT_TIMER4);
 
 	// This method will never return
-	scheduler_run();
+	scheduler_run(context);
 }

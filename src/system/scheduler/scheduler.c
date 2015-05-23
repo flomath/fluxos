@@ -12,10 +12,8 @@
 /**
  * Array with all PCBs
  */
-static PCB_t contexts[SCHEDULER_MAX_PROCESSES];
-static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
-
-extern Registers_t __context_current;
+PCB_t contexts[SCHEDULER_MAX_PROCESSES];
+int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
 
 char stacks[SCHEDULER_MAX_PROCESSES][1024];
 
@@ -35,10 +33,11 @@ void scheduler_addProcess(ProcFunc fct)
 
 	contexts[newProcessID].registers.SP = (uint32_t)(stacks[newProcessID]) + 1020;
 	contexts[newProcessID].registers.CPSR = 0b10000; // USER MODE
-	contexts[newProcessID].registers.LR = (uint32_t)(contexts[newProcessID].func) + 4;
+	contexts[newProcessID].registers.LR = NULL; // Todo Set Process Exit Handler
+	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
 }
 
-void scheduler_run() 
+void scheduler_run(Registers_t* context)
 {
 	mutex_lock();
 
@@ -51,43 +50,52 @@ void scheduler_run()
 		case PROCESS_READY: 
 		{
 			// Do not save an invalid process
-			if (SchedulerCurrentRunningProcess == SCHEDULER_INVALID_ID) {
-				SchedulerCurrentRunningProcess = nextProcess;
-				contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
+			if (SchedulerCurrentRunningProcess != SCHEDULER_INVALID_ID) {
 
-				// Load context
-				mutex_release();
-				__context_load(&contexts[SchedulerCurrentRunningProcess]);
-			} else {
-				// Save Context
-				if (!__context_save(&(contexts[SchedulerCurrentRunningProcess]))) {
+				// Save the context
+				if(contexts[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
+					contexts[SchedulerCurrentRunningProcess].state = PROCESS_READY;
 
-					if(contexts[SchedulerCurrentRunningProcess].state == PROCESS_RUNNING)
-						contexts[SchedulerCurrentRunningProcess].state = PROCESS_READY;
-
-					// Save temporarly saved context
-					contexts[SchedulerCurrentRunningProcess].registers.R0 = __context_current.R0;
-					contexts[SchedulerCurrentRunningProcess].registers.R1 = __context_current.R1;
-					contexts[SchedulerCurrentRunningProcess].registers.R2 = __context_current.R2;
-					contexts[SchedulerCurrentRunningProcess].registers.R3 = __context_current.R3;
-					contexts[SchedulerCurrentRunningProcess].registers.R4 = __context_current.R4;
-					contexts[SchedulerCurrentRunningProcess].registers.R5 = __context_current.R5;
-					contexts[SchedulerCurrentRunningProcess].registers.R6 = __context_current.R6;
-					contexts[SchedulerCurrentRunningProcess].registers.R7 = __context_current.R7;
-					contexts[SchedulerCurrentRunningProcess].registers.R8 = __context_current.R8;
-					contexts[SchedulerCurrentRunningProcess].registers.R9 = __context_current.R9;
-					contexts[SchedulerCurrentRunningProcess].registers.R10 = __context_current.R10;
-					contexts[SchedulerCurrentRunningProcess].registers.R11 = __context_current.R11;
-					contexts[SchedulerCurrentRunningProcess].registers.R12 = __context_current.R12;
-
-					SchedulerCurrentRunningProcess = nextProcess;
-					contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
-
-					// Load context
-					mutex_release();
-					__context_load(&contexts[SchedulerCurrentRunningProcess]);
-				}
+				// Save temporarly saved context
+				contexts[SchedulerCurrentRunningProcess].registers.R0 = context->R0;
+				contexts[SchedulerCurrentRunningProcess].registers.R1 = context->R1;
+				contexts[SchedulerCurrentRunningProcess].registers.R2 = context->R2;
+				contexts[SchedulerCurrentRunningProcess].registers.R3 = context->R3;
+				contexts[SchedulerCurrentRunningProcess].registers.R4 = context->R4;
+				contexts[SchedulerCurrentRunningProcess].registers.R5 = context->R5;
+				contexts[SchedulerCurrentRunningProcess].registers.R6 = context->R6;
+				contexts[SchedulerCurrentRunningProcess].registers.R7 = context->R7;
+				contexts[SchedulerCurrentRunningProcess].registers.R8 = context->R8;
+				contexts[SchedulerCurrentRunningProcess].registers.R9 = context->R9;
+				contexts[SchedulerCurrentRunningProcess].registers.R10 = context->R10;
+				contexts[SchedulerCurrentRunningProcess].registers.R11 = context->R11;
+				contexts[SchedulerCurrentRunningProcess].registers.R12 = context->R12;
+				contexts[SchedulerCurrentRunningProcess].registers.SP = context->SP;
+				contexts[SchedulerCurrentRunningProcess].registers.LR = context->LR;
+				contexts[SchedulerCurrentRunningProcess].registers.PC = context->PC;
+				contexts[SchedulerCurrentRunningProcess].registers.CPSR = context->CPSR;
 			}
+
+			// Switch context
+			SchedulerCurrentRunningProcess = nextProcess;
+			contexts[SchedulerCurrentRunningProcess].state = PROCESS_RUNNING;
+			context->R0 = contexts[SchedulerCurrentRunningProcess].registers.R0;
+			context->R1 = contexts[SchedulerCurrentRunningProcess].registers.R1;
+			context->R2 = contexts[SchedulerCurrentRunningProcess].registers.R2;
+			context->R3 = contexts[SchedulerCurrentRunningProcess].registers.R3;
+			context->R4 = contexts[SchedulerCurrentRunningProcess].registers.R4;
+			context->R5 = contexts[SchedulerCurrentRunningProcess].registers.R5;
+			context->R6 = contexts[SchedulerCurrentRunningProcess].registers.R6;
+			context->R7 = contexts[SchedulerCurrentRunningProcess].registers.R7;
+			context->R8 = contexts[SchedulerCurrentRunningProcess].registers.R8;
+			context->R9 = contexts[SchedulerCurrentRunningProcess].registers.R9;
+			context->R10 = contexts[SchedulerCurrentRunningProcess].registers.R10;
+			context->R11 = contexts[SchedulerCurrentRunningProcess].registers.R11;
+			context->R12 = contexts[SchedulerCurrentRunningProcess].registers.R12;
+			context->SP = contexts[SchedulerCurrentRunningProcess].registers.SP;
+			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
+			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
+			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
 		} break;
 
 		default: break;

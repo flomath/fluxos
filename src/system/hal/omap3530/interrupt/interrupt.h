@@ -24,6 +24,11 @@
 /**
  * Temporarly save the registers in the variable
  */
-extern void __context_tmp_save(Registers_t* registers);
+extern Registers_t __context_save(void);
+
+/**
+ * Load the context
+ */
+extern void __context_load(void);
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_INTERRUPT_INTERRUPT_H_ */
