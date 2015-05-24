@@ -3,7 +3,14 @@
 		.global __switch_mode
 
 __context_save:
-	SUB		R13, R13, #60
+	ADD		R13, R13, #4				; Point to CPSR/SPSR
+	MRS		R0, SPSR					; Get SPSR and save it to R0
+	STMFD	R13!, {R0}					; Put SPSR on the stack
+	SUB		R13, R13, #4				; Point to R14
+
+	STMFD 	R13, {R0-R14}^				; Save R0-R14 (User Registers)
+	SUB		R13, R13, #60				; Point to begin
+
 	MOV		R0, R13						; Return the stack pointer
 	MOV 	PC, R14						; Leave method
 
@@ -28,7 +35,7 @@ __context_load:
 ; Switch to Mode
 ; Param: 	R0 ... system mode
 __switch_mode:
-	MOV		R1, R0					; Save mode to R1
+	MOV		R1, R0					; Save R0 to R1
 	MRS		R0, CPSR				; Save mode to R0
 	AND		R2,R1,#0x0				; Clear R2
 	ORR		R2,R14,#0x0				; R2 = R14

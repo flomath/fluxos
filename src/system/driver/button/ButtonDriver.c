@@ -29,7 +29,7 @@ void button_driver_init()
 	interrupt_add_listener(BUTTON_DRIVER_IRQ, &button_driver_interrupt);
 }
 
-void button_driver_interrupt()
+void button_driver_interrupt(Registers_t* context)
 {
 	printf("button pressed\n");
 

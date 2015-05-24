@@ -73,11 +73,9 @@ interrupt void fiq_handler(void) {
 
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
-
 	// Save the registers of the interrupted process to the stack
-	asm(" STMFD R13!, {SPSR}");
-	asm(" STMFD R13!, {R14}");
-	asm(" STMFD R13, {R0-R14}^");
+	asm(" SUB R13, R13, #4"); // Save place for SPSR
+	asm(" STMFD R13, {R14}"); 	// Save R14
 	Registers_t context = __context_save();
 
 	interrupt_disable();
