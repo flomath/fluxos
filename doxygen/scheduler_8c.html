@@ -85,25 +85,36 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">scheduler.c File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="scheduler_8h_source.html">scheduler.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="omap3530_2interrupt_2interrupt_8h_source.html">../hal/omap3530/interrupt/interrupt.h</a>&quot;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ad4a964f369a6ca77db660db4d9207fe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#ad4a964f369a6ca77db660db4d9207fe4">scheduler_addProcess</a> (<a class="el" href="scheduler_8h.html#a7ca175240b4e4bbf496b8242fa42bb1d">ProcFunc</a> fct)</td></tr>
 <tr class="separator:ad4a964f369a6ca77db660db4d9207fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5f84a075fced7233d81a117affb54ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#ab5f84a075fced7233d81a117affb54ee">scheduler_run</a> ()</td></tr>
-<tr class="separator:ab5f84a075fced7233d81a117affb54ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c7ca6d2c8341f6cc7a27bd40e726d93"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#a5c7ca6d2c8341f6cc7a27bd40e726d93">scheduler_run</a> (<a class="el" href="struct_registers__t.html">Registers_t</a> *context)</td></tr>
+<tr class="separator:a5c7ca6d2c8341f6cc7a27bd40e726d93"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff17a4d47d37eb622126c6887b5f405f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#aff17a4d47d37eb622126c6887b5f405f">scheduler_getNextProcess</a> ()</td></tr>
 <tr class="separator:aff17a4d47d37eb622126c6887b5f405f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b53edd112f79046fc16d1ff5af9741a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#a2b53edd112f79046fc16d1ff5af9741a">scheduler_killProcess</a> (int processID)</td></tr>
 <tr class="separator:a2b53edd112f79046fc16d1ff5af9741a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a771519df21e85420554b4b14a3cb984c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#a771519df21e85420554b4b14a3cb984c">scheduler_getFreeProcessID</a> ()</td></tr>
 <tr class="separator:a771519df21e85420554b4b14a3cb984c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:abf41e9f5d7f8d90eb647e7cfe415c096"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_p_c_b__t.html">PCB_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#abf41e9f5d7f8d90eb647e7cfe415c096">contexts</a> [<a class="el" href="scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6">SCHEDULER_MAX_PROCESSES</a>]</td></tr>
+<tr class="separator:abf41e9f5d7f8d90eb647e7cfe415c096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb7675414ae716974a0fffbf26e191b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#abbb7675414ae716974a0fffbf26e191b">SchedulerCurrentRunningProcess</a> = <a class="el" href="scheduler_8h.html#aa34c0aacdd202c733c2cc2e6d63bb558">SCHEDULER_INVALID_ID</a></td></tr>
+<tr class="separator:abbb7675414ae716974a0fffbf26e191b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5908c22cbac6c9ae766c463d1d6aa149"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#a5908c22cbac6c9ae766c463d1d6aa149">stacks</a> [<a class="el" href="scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6">SCHEDULER_MAX_PROCESSES</a>][1024]</td></tr>
+<tr class="separator:a5908c22cbac6c9ae766c463d1d6aa149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="ad4a964f369a6ca77db660db4d9207fe4"></a>
@@ -172,26 +183,64 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ab5f84a075fced7233d81a117affb54ee"></a>
+<a class="anchor" id="a5c7ca6d2c8341f6cc7a27bd40e726d93"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void scheduler_run </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="struct_registers__t.html">Registers_t</a> *&#160;</td>
+          <td class="paramname"><em>context</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Run the scheduler </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="abf41e9f5d7f8d90eb647e7cfe415c096"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_p_c_b__t.html">PCB_t</a> contexts[<a class="el" href="scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6">SCHEDULER_MAX_PROCESSES</a>]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Array with all PCBs </p>
+
+</div>
+</div>
+<a class="anchor" id="abbb7675414ae716974a0fffbf26e191b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int SchedulerCurrentRunningProcess = <a class="el" href="scheduler_8h.html#aa34c0aacdd202c733c2cc2e6d63bb558">SCHEDULER_INVALID_ID</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5908c22cbac6c9ae766c463d1d6aa149"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char stacks[<a class="el" href="scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6">SCHEDULER_MAX_PROCESSES</a>][1024]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 14 2015 13:22:29 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 27 2015 08:36:05 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

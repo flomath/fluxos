@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['process_5ft',['Process_t',['../struct_process__t.html',1,'']]]
+  ['pcb_5ft',['PCB_t',['../struct_p_c_b__t.html',1,'']]]
 ];

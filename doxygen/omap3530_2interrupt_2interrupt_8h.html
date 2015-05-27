@@ -85,12 +85,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a>  </div>
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">interrupt.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="common_2interrupt_8h_source.html">../../common/interrupt.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="process_8h_source.html">../../../scheduler/process.h</a>&quot;</code><br />
 </div>
 <p><a href="omap3530_2interrupt_2interrupt_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -112,6 +114,13 @@ Macros</h2></td></tr>
 <tr class="separator:a966277684257dae5f2f1804356e74f03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5027e7fce32575b5443780b0a0fd70f3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2interrupt_2interrupt_8h.html#a5027e7fce32575b5443780b0a0fd70f3">IRQ_NUMBER</a>&#160;&#160;&#160;96</td></tr>
 <tr class="separator:a5027e7fce32575b5443780b0a0fd70f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a3b6dfc6a79056aeb12a6e8ccbd8377a2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_registers__t.html">Registers_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2interrupt_2interrupt_8h.html#a3b6dfc6a79056aeb12a6e8ccbd8377a2">__context_save</a> (void)</td></tr>
+<tr class="separator:a3b6dfc6a79056aeb12a6e8ccbd8377a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b3716ad44a302fb3da6e186ec43012"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="omap3530_2interrupt_2interrupt_8h.html#ad0b3716ad44a302fb3da6e186ec43012">__context_load</a> (void)</td></tr>
+<tr class="separator:ad0b3716ad44a302fb3da6e186ec43012"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a5027e7fce32575b5443780b0a0fd70f3"></a>
@@ -218,10 +227,45 @@ Macros</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ad0b3716ad44a302fb3da6e186ec43012"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void __context_load </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Load the context </p>
+
+</div>
+</div>
+<a class="anchor" id="a3b6dfc6a79056aeb12a6e8ccbd8377a2"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_registers__t.html">Registers_t</a> __context_save </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Temporarly save the registers in the variable </p>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 14 2015 13:22:29 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 27 2015 08:36:04 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

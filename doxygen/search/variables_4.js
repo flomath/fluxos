@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['state',['state',['../struct_process__t.html#a5968cef154641a9946347fce13f2801d',1,'Process_t']]],
-  ['stop_5fbit',['stop_bit',['../struct_u_a_r_t_configuration__t.html#aa49a956e599b816be1a98d2046de7547',1,'UARTConfiguration_t']]]
+  ['parity_5ftype',['parity_type',['../struct_u_a_r_t_configuration__t.html#aef001e001ebc868aaa72d7ee27e79cfa',1,'UARTConfiguration_t']]],
+  ['pc',['PC',['../struct_registers__t.html#aaba58ab5859bd2047075b25eb255eec6',1,'Registers_t']]],
+  ['processid',['processID',['../struct_p_c_b__t.html#a8d6d2535a6c010be3cea123256938873',1,'PCB_t']]]
 ];

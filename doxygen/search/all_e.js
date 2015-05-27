@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['wkup_5fcm',['WKUP_CM',['../omap3530_2clock_2clock_8h.html#a7c81a97a0a78f4643fde1a926d55eca6',1,'clock.h']]]
+  ['timer_2ec',['timer.c',['../timer_8c.html',1,'']]],
+  ['timer_2eh',['timer.h',['../common_2timer_8h.html',1,'']]],
+  ['timer_2eh',['timer.h',['../omap3530_2timer_2timer_8h.html',1,'']]]
 ];

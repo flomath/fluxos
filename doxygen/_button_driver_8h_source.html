@@ -99,18 +99,20 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_DRIVER_BUTTON_BUTTONDRIVER_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include&lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_button_driver_8h.html#a41717bd58c22288dbdb83cff34c6eb6b">button_driver_init</a>();</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_button_driver_8h.html#a86171a31abf6302a373d5814d5bb20f3">button_driver_interrupt</a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_DRIVER_BUTTON_BUTTONDRIVER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="_button_driver_8h_html_a86171a31abf6302a373d5814d5bb20f3"><div class="ttname"><a href="_button_driver_8h.html#a86171a31abf6302a373d5814d5bb20f3">button_driver_interrupt</a></div><div class="ttdeci">void button_driver_interrupt()</div><div class="ttdef"><b>Definition:</b> ButtonDriver.c:32</div></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../../scheduler/process.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_button_driver_8h.html#a41717bd58c22288dbdb83cff34c6eb6b">button_driver_init</a>();</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_button_driver_8h.html#a16fcdc807b75660ef18979d139a38d8c">button_driver_interrupt</a>(<a class="code" href="struct_registers__t.html">Registers_t</a>* context);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_DRIVER_BUTTON_BUTTONDRIVER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="struct_registers__t_html"><div class="ttname"><a href="struct_registers__t.html">Registers_t</a></div><div class="ttdef"><b>Definition:</b> process.h:24</div></div>
 <div class="ttc" id="_button_driver_8h_html_a41717bd58c22288dbdb83cff34c6eb6b"><div class="ttname"><a href="_button_driver_8h.html#a41717bd58c22288dbdb83cff34c6eb6b">button_driver_init</a></div><div class="ttdeci">void button_driver_init()</div><div class="ttdef"><b>Definition:</b> ButtonDriver.c:17</div></div>
+<div class="ttc" id="_button_driver_8h_html_a16fcdc807b75660ef18979d139a38d8c"><div class="ttname"><a href="_button_driver_8h.html#a16fcdc807b75660ef18979d139a38d8c">button_driver_interrupt</a></div><div class="ttdeci">void button_driver_interrupt(Registers_t *context)</div><div class="ttdef"><b>Definition:</b> ButtonDriver.c:32</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 14 2015 13:22:29 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 27 2015 08:36:04 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

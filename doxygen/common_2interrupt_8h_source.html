@@ -98,26 +98,29 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="common_2interrupt_8h.html#aab0651f7b99ed7c63a03348a5fd06c13">   11</a></span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#aab0651f7b99ed7c63a03348a5fd06c13">interrupt_callback</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../../scheduler/process.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#a1c62fca549a4981d6684d4a5c72874b9">interrupt_init</a>();</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#aaa547d1d7074b73a55b85640b558923b">interrupt_enable</a>();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#aad559c0a8c9209a2751887cac7cf8881">interrupt_disable</a>();</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#a111a6eebb7f7dbe55c9dd4647baea9c8">interrupt_add_listener</a>(uint32_t irq, <a class="code" href="common_2interrupt_8h.html#aab0651f7b99ed7c63a03348a5fd06c13">interrupt_callback</a>* callback);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="common_2interrupt_8h.html#a8955e54b593ea5f255318341e3d51d25">   13</a></span>&#160;<span class="keyword">typedef</span> <span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#a8955e54b593ea5f255318341e3d51d25">interrupt_callback</a>(<a class="code" href="struct_registers__t.html">Registers_t</a>* context);</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#a1c62fca549a4981d6684d4a5c72874b9">interrupt_init</a>();</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#aaa547d1d7074b73a55b85640b558923b">interrupt_enable</a>();</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#aad559c0a8c9209a2751887cac7cf8881">interrupt_disable</a>();</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt_8h.html#a111a6eebb7f7dbe55c9dd4647baea9c8">interrupt_add_listener</a>(uint32_t irq, <a class="code" href="common_2interrupt_8h.html#a8955e54b593ea5f255318341e3d51d25">interrupt_callback</a>* callback);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="common_2interrupt_8h_html_a1c62fca549a4981d6684d4a5c72874b9"><div class="ttname"><a href="common_2interrupt_8h.html#a1c62fca549a4981d6684d4a5c72874b9">interrupt_init</a></div><div class="ttdeci">void interrupt_init()</div><div class="ttdef"><b>Definition:</b> interrupt.c:17</div></div>
-<div class="ttc" id="common_2interrupt_8h_html_aab0651f7b99ed7c63a03348a5fd06c13"><div class="ttname"><a href="common_2interrupt_8h.html#aab0651f7b99ed7c63a03348a5fd06c13">interrupt_callback</a></div><div class="ttdeci">void interrupt_callback(void)</div><div class="ttdef"><b>Definition:</b> interrupt.h:11</div></div>
+<div class="ttc" id="struct_registers__t_html"><div class="ttname"><a href="struct_registers__t.html">Registers_t</a></div><div class="ttdef"><b>Definition:</b> process.h:24</div></div>
 <div class="ttc" id="common_2interrupt_8h_html_a111a6eebb7f7dbe55c9dd4647baea9c8"><div class="ttname"><a href="common_2interrupt_8h.html#a111a6eebb7f7dbe55c9dd4647baea9c8">interrupt_add_listener</a></div><div class="ttdeci">void interrupt_add_listener(uint32_t irq, interrupt_callback *callback)</div><div class="ttdef"><b>Definition:</b> interrupt.c:55</div></div>
 <div class="ttc" id="common_2interrupt_8h_html_aad559c0a8c9209a2751887cac7cf8881"><div class="ttname"><a href="common_2interrupt_8h.html#aad559c0a8c9209a2751887cac7cf8881">interrupt_disable</a></div><div class="ttdeci">void interrupt_disable()</div><div class="ttdef"><b>Definition:</b> interrupt.c:50</div></div>
 <div class="ttc" id="common_2interrupt_8h_html_aaa547d1d7074b73a55b85640b558923b"><div class="ttname"><a href="common_2interrupt_8h.html#aaa547d1d7074b73a55b85640b558923b">interrupt_enable</a></div><div class="ttdeci">void interrupt_enable()</div><div class="ttdef"><b>Definition:</b> interrupt.c:45</div></div>
+<div class="ttc" id="common_2interrupt_8h_html_a8955e54b593ea5f255318341e3d51d25"><div class="ttname"><a href="common_2interrupt_8h.html#a8955e54b593ea5f255318341e3d51d25">interrupt_callback</a></div><div class="ttdeci">void interrupt_callback(Registers_t *context)</div><div class="ttdef"><b>Definition:</b> interrupt.h:13</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Thu May 14 2015 13:22:29 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed May 27 2015 08:36:04 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
