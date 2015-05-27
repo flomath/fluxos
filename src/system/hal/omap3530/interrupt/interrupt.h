@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_OMAP3530_INTERRUPT_INTERRUPT_H_
 
 #include "../../common/interrupt.h"
+#include "../../../scheduler/process.h"
 
 #define MPU_INTC					0x48200000				//< The MPU Instance [10-5]
 #define MPU_INTC_INTCPS_SYSCONFIG	0x010					//< This register controls various parameters of the module interface [10-10]
@@ -19,5 +20,15 @@
 #define MPU_INTC_INTCPS_SIR_IRQ		0x040					//<	This register supplies the currently active IRQ interrupt number [10-14]
 
 #define IRQ_NUMBER	96
+
+/**
+ * Temporarly save the registers in the variable
+ */
+extern Registers_t __context_save(void);
+
+/**
+ * Load the context
+ */
+extern void __context_load(void);
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_INTERRUPT_INTERRUPT_H_ */
