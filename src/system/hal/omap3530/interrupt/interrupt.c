@@ -64,20 +64,31 @@ void interrupt_add_listener(uint32_t irq, interrupt_callback* listener) {
 #pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
+	// Save the registers of the interrupted process to the stack
+	asm(" SUB R13, R13, #4"); // Save place for SPSR
+	asm(" STMFD R13, {R14}"); 	// Save R14
+	Registers_t context = __context_save();
+
 	interrupt_disable();
 
-	// Get the rightmost 6 bits: Active IRQ
-	mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
-	uint8_t irq = BIT_TRIM_LEFT(*address, 7);
-	printf("Interrupt: %d\n", irq);
+	// Ensure that the stack will be cleared
+	{
+		// Get the rightmost 6 bits: Active IRQ
+		mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
+		uint8_t irq = BIT_TRIM_LEFT(*address, 7);
+		printf("Interrupt: %d\n", irq);
 
-	// Call the callback
-	if ( irq_callbacks[irq] != NULL ) {
-		irq_callbacks[irq]();
+		// Clear the IRQ
+		*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+
+		// Call the callback
+		if ( irq_callbacks[irq] != NULL ) {
+			irq_callbacks[irq](&context);
+		}
 	}
 
-	// Clear the IRQ
-	hal_bitmask_set(MPU_INTC, MPU_INTC_INTCPS_CONTROL, BV(1));
+	// Load the context
+	__context_load();
 }
 
 #pragma INTERRUPT(dabt_handler, DABT)
