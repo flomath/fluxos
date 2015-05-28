@@ -43,9 +43,9 @@ typedef struct {
  * Create/Switch/Kill a process
  */
 void mmu_init(void);
-void mmu_create_process(Process_t* process);
-void mmu_switch_process(Process_t* process); //TODO: change tlb flush to ASID (context needed)
-void mmu_kill_process(Process_t* process);
+void mmu_create_process(PCB_t* process);
+void mmu_switch_process(PCB_t* process); //TODO: change tlb flush to ASID (context needed)
+void mmu_kill_process(PCB_t* process);
 
 /**
  * Dabt exception handler

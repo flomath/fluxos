@@ -35,6 +35,7 @@ void scheduler_addProcess(ProcFunc fct)
 	contexts[newProcessID].registers.CPSR = 0b10000; // USER MODE
 	contexts[newProcessID].registers.LR = NULL; // Todo Set Process Exit Handler
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
+	mmu_create_process(&contexts[newProcessID]);
 }
 
 void scheduler_run(Registers_t* context)
@@ -96,6 +97,7 @@ void scheduler_run(Registers_t* context)
 			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
 			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
 			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
+			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;
 
 		default: break;
@@ -143,4 +145,9 @@ int scheduler_getFreeProcessID()
 		}
 	}
 	return SCHEDULER_INVALID_ID;
+}
+
+PCB_t* scheduler_getCurrentProcess()
+{
+	return &contexts[SchedulerCurrentRunningProcess];
 }

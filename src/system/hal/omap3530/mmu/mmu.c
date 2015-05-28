@@ -9,10 +9,9 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "../../../scheduler/scheduler.h"
 #include "mmu.h"
 #include "../../../scheduler/process.h"
-#include "../../../scheduler/scheduler.h"
-#include "../../common/mmu/mmu.h"
 
 /**
  * Array of page frames
@@ -135,7 +134,7 @@ static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTabl
 /**
  * Create a L2 in a L1 from a process
  */
-static void mmu_createL2PageTable(uint32_t virtualAddress, Process_t* process);
+static void mmu_createL2PageTable(uint32_t virtualAddress, PCB_t* process);
 
 /**
  * Create a page frame in a L2
@@ -188,7 +187,7 @@ void mmu_dabt_handler(void)
 
     //TODO: check current process - scheduler needed
     //TODO: function has to be implemented first
-    Process_t* currentProcess = scheduler_getCurrentProcess();
+    PCB_t* currentProcess = scheduler_getCurrentProcess();
 
     //TODO: check dataFault stuff
 
@@ -203,7 +202,7 @@ void mmu_dabt_handler(void)
             break;
         case DABT_TRANS_PAGE_FAULT:
             // Page frame needed
-            mmu_createPageFrame(dataFaultAddress, mmu_getPageTableL2(dataFaultAddress, currentProcess));
+            mmu_createPageFrame(dataFaultAddress, mmu_getPageTableL2(dataFaultAddress, currentProcess->pageTable));
             break;
         case DABT_PERM_SECTION_FAULT:
             // kill process
@@ -217,7 +216,7 @@ void mmu_dabt_handler(void)
     }
 }
 
-void mmu_create_process(Process_t* process)
+void mmu_create_process(PCB_t* process)
 {
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L1);
     //TODO: check, process has to start after rom exceptions?
@@ -226,7 +225,7 @@ void mmu_create_process(Process_t* process)
     process->pageTable = pageTable;
 }
 
-void mmu_switch_process(Process_t* process)
+void mmu_switch_process(PCB_t* process)
 {
     if(process->pageTable == NULL) {
         mmu_create_process(process);
@@ -235,7 +234,7 @@ void mmu_switch_process(Process_t* process)
     mmu_setTTBR0(process->pageTable);
 }
 
-void mmu_kill_process(Process_t* process)
+void mmu_kill_process(PCB_t* process)
 {
     //TODO: not implemented yet
 }
@@ -377,7 +376,7 @@ static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTabl
     }
 }
 
-static void mmu_createL2PageTable(uint32_t virtualAddress, Process_t* process)
+static void mmu_createL2PageTable(uint32_t virtualAddress, PCB_t* process)
 {
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L2);
 
@@ -504,7 +503,7 @@ static uint32_t mmu_getFreePageFrameProcess()
 
     // check if frame is in use
     if( pageFrame == 0 ) {
-        return NULL;
+        return 0;
     }
 
     mmu_setPageFrame(pageFrame, TRUE);

@@ -46,6 +46,6 @@ void scheduler_killProcess(int processID);
 /**
  * Get current process
  */
-Process_t* scheduler_getCurrentProcess();
+PCB_t* scheduler_getCurrentProcess();
 
 #endif /* SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_ */
