@@ -78,14 +78,14 @@ void irq_handler(void) {
 		uint8_t irq = BIT_TRIM_LEFT(*address, 7);
 		printf("Interrupt: %d\n", irq);
 
-		// Clear the IRQ
-		*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
-
 		// Call the callback
 		if ( irq_callbacks[irq] != NULL ) {
 			irq_callbacks[irq](&context);
 		}
 	}
+
+	// Clear the IRQ
+	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 
 	// Load the context
 	__context_load();
@@ -93,8 +93,16 @@ void irq_handler(void) {
 
 #pragma INTERRUPT(dabt_handler, DABT)
 interrupt void dabt_handler(void) {
-	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
+//	interrupt_disable();
+//
+//	// Clear the IRQ
+//	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+
 	mmu_dabt_handler();
+
+
+	// restores both the PC and the CPSR, and retries the aborted instruction
+//	asm(" SUBS PC, R14, #8");
 }
 
 #pragma INTERRUPT(fiq_handler, FIQ)
