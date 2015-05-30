@@ -5,7 +5,8 @@
 		.global __mmu_set_ttbr1
 		.global __mmu_enable
 		.global __mmu_disable
-		.global __mmu_load_dabt
+		.global __mmu_load_dabt_addr
+		.global __mmu_load_dabt_status
 		.global __mmu_tlb_flush
 
 ;* REGISTERS Table G4-42 Secure registers
@@ -17,8 +18,8 @@ __mmu_enable_write_buffer:
 		STMFD R13!, {R0, R1} ; backup r0, r1 on stack
 
 		MRC p15, #0, r0, c1, c0, #0	; Read SCTLR - G6.2.117
-	    ORR r0, r0, #(0x1 << 3)		; Table 4-52 - Bit 3 RES1 on
-	    MCR p15, #0, r0, c1, c0, #0	; Write SCTLR
+		ORR r0, r0, #(0x1 << 3)		; Table 4-52 - Bit 3 RES1 on
+		MCR p15, #0, r0, c1, c0, #0	; Write SCTLR
 
 		LDMFD R13!, {R0, R1} ; restore r0,r1 and jump back
 		MOV PC, R14
@@ -67,9 +68,9 @@ __mmu_enable:
 		STMFD R13!, {R0, R1, R14} ; backup r0, r1 on stack
 
 		MRC p15, #0, r1, c1, c0, #0	; Read System Control Register (SCTLR)
-	    ORR r1, r1, #0x1			; Table 4-52 - Bit 0 MMU on
-	    DSB
-	    MCR p15, #0, r1, c1, c0, #0	; Write System Control Register (SCTLR)
+		ORR r1, r1, #0x1			; Table 4-52 - Bit 0 MMU on
+		DSB
+		MCR p15, #0, r1, c1, c0, #0	; Write System Control Register (SCTLR)
 		ISB
 		LDMFD R13!, {R0, R1, PC} ; restore r0,r1 and jump back
 		; MOV PC, R14
@@ -81,18 +82,27 @@ __mmu_disable:
 		STMFD R13!, {R0, R1} ; backup r0, r1 on stack
 
 		MRC p15, #0, r0, c1, c0, #0	; Read System Control Register (SCTLR)
-    	BIC r0, r0, #0x1			; Table 4-52 - Bit 0 MMU off
-    	MCR p15, #0, r0, c1, c0, #0	; Write System Control Register (SCTLR)
+		BIC r0, r0, #0x1			; Table 4-52 - Bit 0 MMU off
+		MCR p15, #0, r0, c1, c0, #0	; Write System Control Register (SCTLR)
 
 		LDMFD R13!, {R0, R1} ; restore r0,r1 and jump back
 		MOV PC, R14
 
 ;*-------------------------------------------------------
-;* Load DFAR (B4.1.51) and DFSR (B4.1.52) for dabt
+;* Load DFAR (B4.1.51) for dabt
 ;*-------------------------------------------------------
-__mmu_load_dabt:
+__mmu_load_dabt_addr:
 		MRC	p15, #0, r0, c6, c0, #0 ; Read DFAR
-		MRC p15, #0, r1, c5, c0, #0 ; Read DFSR
+		STR r0, [R13, #4] ; save addr on stack
+
+		MOV PC, R14
+
+;*-------------------------------------------------------
+;* Load DFSR (B4.1.52) for dabt
+;*-------------------------------------------------------
+__mmu_load_dabt_status:
+		MRC p15, #0, r0, c5, c0, #0 ; Read DFSR
+		STR r0, [R13, #4] ; save status on stack
 
 		MOV PC, R14
 

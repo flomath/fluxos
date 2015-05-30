@@ -5,9 +5,10 @@
  *      Author: florian
  */
 
-
+#include <stdio.h>
 #include "scheduler.h"
 #include "../hal/omap3530/interrupt/interrupt.h"
+#include "process.h"
 
 /**
  * Array with all PCBs
@@ -31,7 +32,8 @@ void scheduler_addProcess(ProcFunc fct)
 	contexts[newProcessID].state = PROCESS_READY;
 	contexts[newProcessID].func = fct;
 
-	contexts[newProcessID].registers.SP = (uint32_t)(stacks[newProcessID]) + 1020;
+	// stack size 0x20000 - do not start at 0x20000 because of rom exceptions
+	contexts[newProcessID].registers.SP = (uint32_t) 0x10020000; //(uint32_t)(stacks[newProcessID]) + 1020;
 	contexts[newProcessID].registers.CPSR = 0b10000; // USER MODE
 	contexts[newProcessID].registers.LR = NULL; // Todo Set Process Exit Handler
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
@@ -97,6 +99,7 @@ void scheduler_run(Registers_t* context)
 			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
 			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
 			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
+			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
 			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;
 

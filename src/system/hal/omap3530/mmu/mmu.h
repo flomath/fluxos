@@ -15,8 +15,6 @@
  * Translation Table Base
  */
 #define TLB_SIZE            0x4000      ///< 4096 Entries * 4 = 16kB (p.962)
-#define TTBR0			    0x0
-#define TTBR1               0x1
 
 /**
  * Page tables, sizes
@@ -38,8 +36,9 @@
 #define COARSE_BIT_MASK     0xFFFFFC00  ///< Upper 22 bits
 
 #define PT_L1_BIT_MASK	    0xFFF00000  ///< Upper 12 bits
+#define PT_L1_BIT_MASK_N    ((PT_L1_BIT_MASK >> 0x2) & PT_L1_BIT_MASK) ///< Align to boundary of ttbrs - this case quarter
 #define PT_L1_BIT_SHIFT     20          ///< Upper 12 bits important
-#define PT_L2_BIT_MASK	    0xFF000     ///< 8 bits after Upper 12
+#define PT_L2_BIT_MASK	    0xFF000     ///< 8 bits after upper 12
 #define PT_L2_BIT_SHIFT     12          ///< 8 bits after lower 12 important
 #define PAGE_FRAME_BIT_MASK 0xFFF       ///< Lower 12 bits
 
@@ -102,6 +101,8 @@
  * Boundaries for TTBR1 and TTBR0
  * Table B3-1
  */
+#define TTBR0			    0x0
+#define TTBR1               0x1
 #define BOUNDARY_BIT_MASK   0x7         ///< Lower 3 bits important
 #define BOUNDARY_HALF	    0x1
 #define BOUNDARY_QUARTER    0x2         ///< One Quarter for ttbr0
@@ -110,10 +111,12 @@
  * Page frames
  */
 #define FAULT_PAGE_HIT      0x0         ///< Fault entry hit on a page table
+#define PT_OFFSET_INVALID   0xFFFFFFFF  ///< Invalid page table offset
 
-#define PAGE_FRAME_ARRAY_DATATYPE   sizeof(char)
-#define PAGE_FRAMES_MAX     (DDR0_END_ADDRESS - PAGE_TABLES_START_ADDRESS) / SMALL_PAGE_SIZE_4KB / PAGE_FRAME_ARRAY_DATATYPE
-#define PAGE_TABLES_MAX     (PAGE_TABLES_END_ADDRESS - PAGE_TABLES_START_ADDRESS) / SMALL_PAGE_SIZE_4KB
+#define TRANSLATION_ARRAY_DATATYPE  8   ///< 8 bits = 1 byte
+#define TRANSLATION_ARRAY_MAX       (DDR0_END_ADDRESS - PAGE_TABLES_START_ADDRESS) / SMALL_PAGE_SIZE_4KB / TRANSLATION_ARRAY_DATATYPE
+#define PAGE_TABLES_MAX             (PAGE_TABLES_END_ADDRESS - PAGE_TABLES_START_ADDRESS) / SMALL_PAGE_SIZE_4KB
+#define PAGE_FRAMES_START           (PAGE_TABLES_MAX / TRANSLATION_ARRAY_DATATYPE) + 1
 
 /**
  * Data abort fault status
@@ -143,7 +146,8 @@ extern void __mmu_set_ttbr0(uint32_t ttbr_address);//TODO: implement ASID (conte
 extern void __mmu_set_ttbr1(uint32_t ttbr_address);
 extern void __mmu_enable(void);
 extern void __mmu_disable(void);
-extern void __mmu_load_dabt(uint32_t dataFaultAddress, uint32_t dataFaultStatusRegister);
+extern uint32_t __mmu_load_dabt_addr(void);
+extern uint32_t __mmu_load_dabt_status(void);
 extern void __mmu_tlb_flush(void);
 
 

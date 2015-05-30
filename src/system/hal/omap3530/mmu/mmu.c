@@ -12,15 +12,16 @@
 #include "../../../scheduler/scheduler.h"
 #include "mmu.h"
 #include "../../../scheduler/process.h"
+#include "../../common/mmu/mmu.h"
 
 /**
- * Array of page frames
+ * Array of page tables and page frames
  * for matching physical addresses
  * (process + page tables)
  *
  * Each entry consisting of one byte (8 bits)
  */
-static char pageFramesByteArray[PAGE_FRAMES_MAX];
+static char translationByteArray[TRANSLATION_ARRAY_MAX];
 
 /**
  * Master OS page table
@@ -80,7 +81,7 @@ static void mmu_mapRegionToMasterPageTable(unsigned int memRegionNumber, mmu_pag
  * Gets the correct page table index from a virtual address
  * depended on the page table (L1, L2 or page frame)
  */
-static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int pageTableType);
+static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int pageTableType, unsigned int ttbr);
 
 /**
  * Creates a L1 address based on a given L1 section template
@@ -100,30 +101,30 @@ static uint32_t mmu_createL2PageTableEntry(mmu_l2_pageTable_t L2_entry);
 
 
 /**
- * Get address of free page frame
- * Page frames are directly reserved
+ * Get address of free page table
+ * Page tables is directly reserved
  */
-static uint32_t mmu_getFreePageFrames(unsigned int numPageFramesReserve);
+static uint32_t mmu_getFreePageTable(unsigned int numEntriesReserve);
 
 /**
- * Check if a given page frame is used or not
+ * Check if a given entry(bit) in array is used or not
  */
-static bool_t mmu_isPageFrameUsed(unsigned int pageFrame);
+static bool_t mmu_isEntryUsed(unsigned int entry);
 
 /**
- * Set a page frame status on used/free
+ * Set an entry's status on used/free
  *
  * true for used
  * false for free
  */
-static void mmu_setPageFrame(unsigned int pageFrame, bool_t used);
+static void mmu_setEntry(unsigned int entry, bool_t used);
 
 /**
  * Get physical address of page frame
  *
  * physical address = page table (direct mapped) + page frame * page size
  */
-static uint32_t mmu_getPhysicalAddressPageFrame(unsigned int pageFrame);
+static uint32_t mmu_getPhysicalAddressEntry(unsigned int entry);
 
 /**
  * Get address of L2 from
@@ -145,7 +146,7 @@ static void mmu_createPageFrame(uint32_t virtualAddress, mmu_pageTableP_t pageTa
  * Get a free page frame in
  * process space
  */
-static uint32_t mmu_getFreePageFrameProcess();
+static uint32_t mmu_getFreePageFrame();
 
 
 void mmu_init(void)
@@ -169,7 +170,8 @@ void mmu_init(void)
     mmu_setTTBCR(BOUNDARY_QUARTER);
 
     // set domain
-    mmu_setDomain(DOMAIN_M);
+//    mmu_setDomain(DOMAIN_M);
+    mmu_setDomain(0xFFFFFFFF);
 
     // enable MMU
     mmu_enable();
@@ -178,9 +180,8 @@ void mmu_init(void)
 void mmu_dabt_handler(void)
 {
     // load dabt details via asm
-    uint32_t dataFaultStatusRegister = 0;
-    uint32_t dataFaultAddress = 0;
-    __mmu_load_dabt(dataFaultAddress, dataFaultStatusRegister);
+    uint32_t dataFaultAddress = __mmu_load_dabt_addr();
+    uint32_t dataFaultStatusRegister = __mmu_load_dabt_status();
     // Bit 10 + 3-0 for fault status
     // shift bit 10 to 4 to get one value
     unsigned int dataFaultStatus = ((dataFaultStatusRegister & 0x400) >> 6) | (dataFaultStatusRegister & 0xF);
@@ -192,6 +193,7 @@ void mmu_dabt_handler(void)
     //TODO: check dataFault stuff
 
     // check
+    printf("Data Abort Exception! 0x%x\n", dataFaultStatus);
     switch(dataFaultStatus) {
         case DABT_ALIGN_FAULT:
             printf("Alignment fault!\n");
@@ -211,7 +213,6 @@ void mmu_dabt_handler(void)
             // kill process
             break;
         default:
-            printf("Data Abort Exception!\n");
             break;
     }
 }
@@ -219,10 +220,9 @@ void mmu_dabt_handler(void)
 void mmu_create_process(PCB_t* process)
 {
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L1);
-    //TODO: check, process has to start after rom exceptions?
-    //TODO: if mapping to boot rom physical address is address of boot rom, should be from process?
     mmu_mapRegionToMasterPageTable(BOOT_ROM_EXCEPTIONS, pageTable);
     process->pageTable = pageTable;
+    printf("L1 created at 0x%x\n", pageTable);
 }
 
 void mmu_switch_process(PCB_t* process)
@@ -275,7 +275,8 @@ static void mmu_setTTBCR(uint32_t address)
 static void mmu_setDomain(uint32_t address)
 {
     // call asm function
-    __mmu_set_domain((address & DOMAIN_BIT_MASK));
+//    __mmu_set_domain((address & DOMAIN_BIT_MASK));
+    __mmu_set_domain((address));
 }
 
 /**
@@ -320,7 +321,7 @@ static mmu_pageTableP_t mmu_createPageTable(unsigned char pageTableType)
             return NULL;
     }
 
-    mmu_pageTableP_t pageTable = (mmu_pageTableP_t)mmu_getFreePageFrames(numPagesReserve);
+    mmu_pageTableP_t pageTable = (mmu_pageTableP_t) mmu_getFreePageTable(numPagesReserve);
 
     if( pageTable == NULL ) {
         return 0;
@@ -343,55 +344,61 @@ static void mmu_mapRegionToMasterPageTable(unsigned int memRegionNumber, mmu_pag
         L1_entry.type 		        = SECTION;
         L1_entry.CB 		        = CB_WB;
         L1_entry.AP 	            = AP_RWRW;
-        L1_entry.domain 		    = DOMAIN_NO;
+        L1_entry.domain 		    = DOMAIN_M;
 
-        uint32_t pageTableOffset = mmu_getPageTableIndex(physicalAddress, PT_L1);
+        uint32_t pageTableOffset = mmu_getPageTableIndex(physicalAddress, PT_L1, TTBR1);
         uint32_t* newAddress = pageTable + (pageTableOffset << 2)/sizeof(uint32_t);
         *newAddress = mmu_createL1PageTableEntry(L1_entry);
     }
 }
 
-static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int pageTableType)
+static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int pageTableType, unsigned int ttbr)
 {
+    uint32_t bitMask;
     switch(pageTableType) {
         case PT_L1:
-            return ((virtualAddress & PT_L1_BIT_MASK) >> PT_L1_BIT_SHIFT);
+            bitMask = (ttbr == TTBR1 ? PT_L1_BIT_MASK : PT_L1_BIT_MASK_N);
+            return ((virtualAddress & bitMask) >> PT_L1_BIT_SHIFT);
         case PT_L2:
             return ((virtualAddress & PT_L2_BIT_MASK) >> PT_L2_BIT_SHIFT);
         case PAGE_FRAME:
             return (virtualAddress & PAGE_FRAME_BIT_MASK);
         default:
-            return 0;
+            return PT_OFFSET_INVALID;
     }
 }
 
 static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1)
 {
-    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2);
+    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2, TTBR0);
 
-    if( pageTableOffset == 0 ) {
+    if( pageTableOffset == PT_OFFSET_INVALID ) {
         return mmu_createPageTable(PT_L2);
     } else {
-        return (pageTableL1 + pageTableOffset);
+        mmu_pageTableP_t pageTable = (pageTableL1 + pageTableOffset);
+        return pageTable;
     }
 }
 
 static void mmu_createL2PageTable(uint32_t virtualAddress, PCB_t* process)
 {
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L2);
+    printf("L2 created at 0x%x\n", pageTable);
 
     mmu_l1_section_t L1_entry;
-    L1_entry.sectionAddress 	= (*pageTable & COARSE_BIT_MASK);
+    L1_entry.sectionAddress 	= ((uint32_t)pageTable & COARSE_BIT_MASK);
     L1_entry.type 		        = COARSE;
-    L1_entry.CB 		        = CB_cb;
-    //L1_entry.AP 	            = AP_RWRW;
+//    L1_entry.CB 		        = CB_cb;
     L1_entry.domain 		    = DOMAIN_M;
+    // not needed
+    L1_entry.CB 		        = 0x0;
+    L1_entry.AP                 = 0x0;
 
-    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L1);
+    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L1, TTBR0);
     uint32_t* newAddress = process->pageTable + (pageTableOffset << 2)/sizeof(uint32_t);
     *newAddress = mmu_createL1PageTableEntry(L1_entry);
 
-    mmu_createPageFrame(virtualAddress, pageTable);
+    //mmu_createPageFrame(virtualAddress, pageTable);
 }
 
 /**
@@ -400,7 +407,7 @@ static void mmu_createL2PageTable(uint32_t virtualAddress, PCB_t* process)
 
 static void mmu_createPageFrame(uint32_t virtualAddress, mmu_pageTableP_t pageTableL2)
 {
-    uint32_t pageFrame = mmu_getFreePageFrameProcess();
+    uint32_t pageFrame = mmu_getFreePageFrame();
 
     mmu_l2_pageTable_t L2_entry;
     L2_entry.pageTableAddress 	= pageFrame & SMALL_PAGE_BIT_MASK;
@@ -408,65 +415,65 @@ static void mmu_createPageFrame(uint32_t virtualAddress, mmu_pageTableP_t pageTa
     L2_entry.AP                 = AP_RWRW;
     L2_entry.CB 	            = CB_cb;
 
-    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2);
+    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2, TTBR0);
     uint32_t* newAddress = pageTableL2 + (pageTableOffset << 2)/sizeof(uint32_t);
     *newAddress = mmu_createL2PageTableEntry(L2_entry);
 }
 
-static uint32_t mmu_getFreePageFrames(unsigned int numPageFramesReserve)
+static uint32_t mmu_getFreePageTable(unsigned int numEntriesReserve)
 {
-    unsigned int pageFrameByte;
-    unsigned int pageFrameBit;
+    unsigned int translationArrayByte;
+    unsigned int translationBit;
 
     // loop through byte array
-    for(pageFrameByte = 0; pageFrameByte < (PAGE_TABLES_MAX / PAGE_FRAME_ARRAY_DATATYPE); pageFrameByte++) {
+    for(translationArrayByte = 0; translationArrayByte < PAGE_TABLES_MAX; translationArrayByte++) {
         // loop through byte
-        for(pageFrameBit = 0; pageFrameBit < 8; pageFrameBit++) {
-            unsigned int pageFrame = (pageFrameByte * PAGE_FRAME_ARRAY_DATATYPE) + pageFrameBit;
+        for(translationBit = 0; translationBit < 8; translationBit++) {
+            unsigned int pageTableEntry = (translationArrayByte * TRANSLATION_ARRAY_DATATYPE) + translationBit;
 
-            // check if page frame exceeds byte array
-            if( pageFrame > PAGE_TABLES_MAX ) {
+            // check if page table entry exceeds byte array
+            if( pageTableEntry > PAGE_TABLES_MAX ) {
                 return 0;
             }
 
             // actually no usage of other page types
-            if( numPageFramesReserve != 1 && numPageFramesReserve != 4 ) {
+            if( numEntriesReserve != 1 && numEntriesReserve != 4 ) {
                 return 0;
             }
 
             // check if page frame is used
-            if( mmu_isPageFrameUsed(pageFrame) == 0 ) {
+            if(mmu_isEntryUsed(pageTableEntry) == 0 ) {
                 // if numPageFrames == 1 -> L2 needed
-                if( numPageFramesReserve == 1 ) {
+                if( numEntriesReserve == 1 ) {
                     // set page frame
-                    mmu_setPageFrame(pageFrame, TRUE);
+                    mmu_setEntry(pageTableEntry, TRUE);
 
                     // return physical address
-                    return mmu_getPhysicalAddressPageFrame(pageFrame);
+                    return mmu_getPhysicalAddressEntry(pageTableEntry);
                 }
-                // TODO: 16 times repeated(alignment) for L2? I think just for large pages?!
+                // TODO: 16 times repeated(alignment) for Large Pages (L2)
 
-                // if numPageFrame == 4 -> L1 needed
+                // if numEntriesReserve == 4 -> L1 needed
                 // check for 16kB alignment
-                if( mmu_getPhysicalAddressPageFrame(pageFrame) % PT_L1_SIZE != 0 ) {
+                if(mmu_getPhysicalAddressEntry(pageTableEntry) % PT_L1_SIZE != 0 ) {
                     continue;
                 }
 
-                // check if 3 further page frames are free (because L1 needs 4 pages)
-                // otherwise go 3 page frames further and continue searching
-                if ( mmu_isPageFrameUsed(pageFrame + 1) == 0 &&
-                        mmu_isPageFrameUsed(pageFrame + 2) == 0 &&
-                        mmu_isPageFrameUsed(pageFrame + 3) == 0 ) {
+                // check if 3 further entries are free (because L1 needs 4 entries)
+                // otherwise go 3 entries further and continue searching
+                if (mmu_isEntryUsed(pageTableEntry + 1) == 0 &&
+                        mmu_isEntryUsed(pageTableEntry + 2) == 0 &&
+                        mmu_isEntryUsed(pageTableEntry + 3) == 0 ) {
                     // set page frames
-                    mmu_setPageFrame(pageFrame    , TRUE);
-                    mmu_setPageFrame(pageFrame + 1, TRUE);
-                    mmu_setPageFrame(pageFrame + 2, TRUE);
-                    mmu_setPageFrame(pageFrame + 3, TRUE);
+                    mmu_setEntry(pageTableEntry, TRUE);
+                    mmu_setEntry(pageTableEntry + 1, TRUE);
+                    mmu_setEntry(pageTableEntry + 2, TRUE);
+                    mmu_setEntry(pageTableEntry + 3, TRUE);
 
                     // return physical address
-                    return mmu_getPhysicalAddressPageFrame(pageFrame);
+                    return mmu_getPhysicalAddressEntry(pageTableEntry);
                 } else {
-                    pageFrameBit += 3;
+                    translationBit += 3;
                 }
             }
 
@@ -476,20 +483,22 @@ static uint32_t mmu_getFreePageFrames(unsigned int numPageFramesReserve)
     return 0;
 }
 
-static uint32_t mmu_getFreePageFrameProcess()
+static uint32_t mmu_getFreePageFrame()
 {
-    unsigned int pageFrameByte;
-    unsigned int pageFrameBit;
+    unsigned int translationArrayByte;
+    unsigned int translationBit;
 
     // loop through byte array
     unsigned int pageFrame;
-    for(pageFrameByte = 0; pageFrameByte < PAGE_FRAMES_MAX; pageFrameByte++) {
+    for(translationArrayByte = PAGE_FRAMES_START; translationArrayByte < sizeof(translationByteArray); translationArrayByte++) {
         // loop through byte
-        for(pageFrameBit = 0; pageFrameBit < 8; pageFrameBit++) {
-            pageFrame = (pageFrameByte * PAGE_FRAME_ARRAY_DATATYPE) + pageFrameBit;
+        for(translationBit = 0; translationBit < 8; translationBit++) {
+            pageFrame = (translationArrayByte * TRANSLATION_ARRAY_DATATYPE) + translationBit;
+
+            //TODO: check if exceeds
 
             // check if page frame is used
-            if (mmu_isPageFrameUsed(pageFrame) == 0) {
+            if (mmu_isEntryUsed(pageFrame) == 0) {
                 break;
             } else {
                 pageFrame = 0;
@@ -506,42 +515,42 @@ static uint32_t mmu_getFreePageFrameProcess()
         return 0;
     }
 
-    mmu_setPageFrame(pageFrame, TRUE);
-    return mmu_getPhysicalAddressPageFrame(pageFrame);
+    mmu_setEntry(pageFrame, TRUE);
+    return mmu_getPhysicalAddressEntry(pageFrame);
 }
 
-static bool_t mmu_isPageFrameUsed(unsigned int pageFrame)
+static bool_t mmu_isEntryUsed(unsigned int entry)
 {
-    // check if on position of pageFrame is 1 or 0 (used or free)
-    return (pageFramesByteArray[pageFrame / PAGE_FRAME_ARRAY_DATATYPE] >> (pageFrame % PAGE_FRAME_ARRAY_DATATYPE)) & 0x1;
+    // check if on position of entry is 1 or 0 (used or free)
+    return (translationByteArray[entry / TRANSLATION_ARRAY_DATATYPE] >> (entry % TRANSLATION_ARRAY_DATATYPE)) & 0x1;
 }
 
-static void mmu_setPageFrame(unsigned int pageFrame, bool_t used)
+static void mmu_setEntry(unsigned int entry, bool_t used)
 {
-    char pageFrameByte = pageFramesByteArray[pageFrame / PAGE_FRAME_ARRAY_DATATYPE];
+    char pageFrameByte = translationByteArray[entry / TRANSLATION_ARRAY_DATATYPE];
 
     switch(used)
     {
         case TRUE:
-            pageFrameByte |= (used << (pageFrame % PAGE_FRAME_ARRAY_DATATYPE));
+            pageFrameByte |= (used << (entry % TRANSLATION_ARRAY_DATATYPE));
             break;
         case FALSE:
-            pageFrameByte &= (used << (pageFrame % PAGE_FRAME_ARRAY_DATATYPE));
+            pageFrameByte &= (used << (entry % TRANSLATION_ARRAY_DATATYPE));
             break;
         default:
             break;
     }
 
-    pageFramesByteArray[pageFrame / PAGE_FRAME_ARRAY_DATATYPE] = pageFrameByte;
+    translationByteArray[entry / TRANSLATION_ARRAY_DATATYPE] = pageFrameByte;
 }
 
-static uint32_t mmu_getPhysicalAddressPageFrame(unsigned int pageFrame)
+static uint32_t mmu_getPhysicalAddressEntry(unsigned int entry)
 {
-    if( pageFrame + SMALL_PAGE_SIZE_4KB > ((PAGE_TABLES_END_ADDRESS - PAGE_TABLES_START_ADDRESS) + (PROCESS_END_ADDRESS - PROCESS_START_ADDRESS)) ) {
+    if( entry + SMALL_PAGE_SIZE_4KB > ((PAGE_TABLES_END_ADDRESS - PAGE_TABLES_START_ADDRESS) + (PROCESS_END_ADDRESS - PROCESS_START_ADDRESS)) ) {
         return 0;
     }
 
-    return PAGE_TABLES_START_ADDRESS + (pageFrame * SMALL_PAGE_SIZE_4KB);
+    return PAGE_TABLES_START_ADDRESS + (entry * SMALL_PAGE_SIZE_4KB);
 }
 
 /**

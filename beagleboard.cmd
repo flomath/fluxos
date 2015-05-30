@@ -15,10 +15,7 @@ stackSize = 0x20000;
 SECTIONS
 {
 
-   .intvecs    > EXCEPTIONS {
-            EXCEPTIONS = .;
-            *(.intvecs)
-   }
+   .intvecs    > EXCEPTIONS
    .intvecs_impl > SRAM
 
    .const      > DDR0
