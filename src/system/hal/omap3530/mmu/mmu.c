@@ -130,7 +130,7 @@ static uint32_t mmu_getPhysicalAddressEntry(unsigned int entry);
  * Get address of L2 from
  * a given address in L1
  */
-static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1);
+static mmu_pageTableP_t mmu_getL2PageTable(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1);
 
 /**
  * Create a L2 in a L1 from a process
@@ -204,7 +204,7 @@ void mmu_dabt_handler(void)
             break;
         case DABT_TRANS_PAGE_FAULT:
             // Page frame needed
-            mmu_createPageFrame(dataFaultAddress, mmu_getPageTableL2(dataFaultAddress, currentProcess->pageTable));
+            mmu_createPageFrame(dataFaultAddress, mmu_getL2PageTable(dataFaultAddress, currentProcess->pageTable));
             break;
         case DABT_PERM_SECTION_FAULT:
             // kill process
@@ -368,15 +368,18 @@ static uint32_t mmu_getPageTableIndex(uint32_t virtualAddress, unsigned int page
     }
 }
 
-static mmu_pageTableP_t mmu_getPageTableL2(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1)
+static mmu_pageTableP_t mmu_getL2PageTable(uint32_t virtualAddress, mmu_pageTableP_t pageTableL1)
 {
-    uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2, TTBR0);
+    uint32_t pageTableOffsetL1 = mmu_getPageTableIndex(virtualAddress, PT_L1, TTBR0);
+    uint32_t pageTableOffsetL2 = mmu_getPageTableIndex(virtualAddress, PT_L2, TTBR0);
 
-    if( pageTableOffset == PT_OFFSET_INVALID ) {
+    if( pageTableOffsetL2 == PT_OFFSET_INVALID ) {
         return mmu_createPageTable(PT_L2);
     } else {
-        mmu_pageTableP_t pageTable = (pageTableL1 + pageTableOffset);
-        return pageTable;
+        uint32_t pageTableL2Ref = ((uint32_t)pageTableL1 + (pageTableOffsetL1 << 2));
+        uint32_t pageTableL2_base = (uint32_t)(*((uint32_t*)pageTableL2Ref)) & SMALL_PAGE_BIT_MASK;
+//        mmu_pageTableP_t pageTableL2 = (mmu_pageTableP_t)(pageTableL2_base + (pageTableOffsetL2 << 2));
+        return (mmu_pageTableP_t) pageTableL2_base;
     }
 }
 
@@ -416,7 +419,8 @@ static void mmu_createPageFrame(uint32_t virtualAddress, mmu_pageTableP_t pageTa
     L2_entry.CB 	            = CB_cb;
 
     uint32_t pageTableOffset = mmu_getPageTableIndex(virtualAddress, PT_L2, TTBR0);
-    uint32_t* newAddress = pageTableL2 + (pageTableOffset << 2)/sizeof(uint32_t);
+    mmu_pageTableP_t pageTableL2_base = (mmu_pageTableP_t)((uint32_t)pageTableL2 & SMALL_PAGE_BIT_MASK);
+    uint32_t* newAddress = pageTableL2_base + (pageTableOffset << 2)/sizeof(uint32_t);
     *newAddress = mmu_createL2PageTableEntry(L2_entry);
 }
 
