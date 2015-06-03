@@ -11,31 +11,46 @@ MEMORY
 }
 
 stackSize = 0x20000;
+heapSize  = 0x20000;
 
 SECTIONS
 {
 
-   .intvecs    > EXCEPTIONS
-   .intvecs_impl > SRAM
+    .intvecs    > EXCEPTIONS
+    .intvecs_impl > SRAM
 
-   .const      > DDR0
-   .bss        > DDR0
-   .far        > DDR0
-   .stack      > DDR0
-   .data       > DDR0
-   .cio        > DDR0
-   .text       > DDR0
-   .sysmem     > DDR0
-   .switch     > DDR0
+    .text          >  DDR0
+    .stack         >  DDR0
+    .bss           >  DDR0
+    .cio           >  DDR0
+    .const         >  DDR0
+    .data          >  DDR0
+    .switch        >  DDR0
+    .sysmem        >  DDR0
+    .far           >  DDR0
+    .args          >  DDR0
+    .ppinfo        >  DDR0
+    .ppdata        >  DDR0
 
-   .cinit      > SRAM
+    /* TI-ABI or COFF sections */
+    .pinit         >  SRAM
+    .cinit         >  SRAM
 
-   .stackArea > DDR0 {
-       . = align(4);
-       . = . + stackSize;
-       __stackIrq = .;
-       . = . + stackSize;
-       __stackSvc = .;
-       . = . + stackSize;
-   }
+    /* EABI sections */
+    .binit         >  SRAM
+    .init_array    >  SRAM
+    .neardata      >  SRAM
+    .fardata       >  SRAM
+    .rodata        >  SRAM
+    .c6xabi.exidx  >  SRAM
+    .c6xabi.extab  >  SRAM
+
+    .stackArea > DDR0 {
+        . = align(4);
+        . = . + stackSize;
+        __stackIrq = .;
+        . = . + stackSize;
+        __stackSvc = .;
+        . = . + stackSize;
+    }
 }

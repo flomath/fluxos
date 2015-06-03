@@ -26,6 +26,9 @@
 #define PT_L2               0x1
 #define PAGE_FRAME          0x2
 
+#define PT_L1_ENTRIES       4096
+#define PT_L2_ENTRIES       256
+
 #define PT_L1_SIZE          0x4000      ///< 4096 Entries * 4 = 16kB (p.962)
 
 #define SECTION             0x02        ///< 1 MB block - 1024 Entries
@@ -110,6 +113,7 @@
 /**
  * Page frames
  */
+#define FAULT               0x0         ///< General fault occured
 #define FAULT_PAGE_HIT      0x0         ///< Fault entry hit on a page table
 #define PT_OFFSET_INVALID   0xFFFFFFFF  ///< Invalid page table offset
 

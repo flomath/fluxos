@@ -69,6 +69,7 @@ void irq_handler(void) {
 	asm(" STMFD R13, {R14}"); 	// Save R14
 	Registers_t context = __context_save();
 
+	//TODO: to disable interrupts in interrupt mode do we have to switch the mode??!?!?!?!
 	interrupt_disable();
 
 	// Ensure that the stack will be cleared
@@ -85,7 +86,8 @@ void irq_handler(void) {
 	}
 
 	// Clear the IRQ
-	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+//	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+	hal_bitmask_set(MPU_INTC, MPU_INTC_INTCPS_CONTROL, BV(0));
 
 	// Load the context
 	__context_load();
@@ -93,13 +95,7 @@ void irq_handler(void) {
 
 #pragma INTERRUPT(dabt_handler, DABT)
 interrupt void dabt_handler(void) {
-//	interrupt_disable();
-//
-//	// Clear the IRQ
-//	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
-
 	mmu_dabt_handler();
-
 
 	// restores both the PC and the CPSR, and retries the aborted instruction
 //	asm(" SUBS PC, R14, #8");

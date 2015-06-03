@@ -38,6 +38,8 @@ void scheduler_addProcess(ProcFunc fct)
 	contexts[newProcessID].registers.LR = NULL; // Todo Set Process Exit Handler
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
 	mmu_create_process(&contexts[newProcessID]);
+
+	mutex_release();
 }
 
 void scheduler_run(Registers_t* context)
@@ -133,8 +135,11 @@ int scheduler_getNextProcess()
 
 void scheduler_killProcess(int processID)
 {
+	//TODO: this function has to be fully executed!!!
 	contexts[processID].state = PROCESS_TERMINATED;
-	contexts[processID].func = NULL;
+	contexts[processID].func = NULL; //TODO: set function which gets executed after a process has been killed
+
+	mmu_kill_process(&contexts[processID]);
 }
 
 int scheduler_getFreeProcessID() 
