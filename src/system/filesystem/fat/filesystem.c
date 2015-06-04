@@ -68,6 +68,8 @@ FAT_FILE* fat_file_open(struct fat16_filesystem *fs, struct FAT_DIR *de) {
 int fat_file_close(FAT_FILE * file)
 {
     free(file);
+
+    return 0;
 }
 
 int fat_file_size(struct FAT_DIR *de)
@@ -94,7 +96,7 @@ void fat_file_getname(char *output, struct FAT_DIR *de)
     extension[len] = 0;
 
     /* write name */
-    p = stpcpy(output, name);
+    p = strcpy(output, name);
 
     /* write extension */
     if (*extension) {
