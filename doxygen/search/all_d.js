@@ -17,5 +17,7 @@ var searchData=
   ['stacks',['stacks',['../scheduler_8c.html#a5908c22cbac6c9ae766c463d1d6aa149',1,'scheduler.c']]],
   ['state',['state',['../struct_p_c_b__t.html#a4ab8d1008641219f3d02f1ac61465961',1,'PCB_t']]],
   ['stop_5fbit',['stop_bit',['../struct_u_a_r_t_configuration__t.html#aa49a956e599b816be1a98d2046de7547',1,'UARTConfiguration_t']]],
-  ['swi_5fhandler',['swi_handler',['../interrupt_8c.html#ad72d8b327009e60e93af3a69093aa84a',1,'interrupt.c']]]
+  ['swi_5fhandler',['swi_handler',['../interrupt_8c.html#a14f4f4ee40fc2423353cab91159e6ee1',1,'interrupt.c']]],
+  ['sys_5fdebug',['SYS_DEBUG',['../common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642',1,'interrupt_sw.h']]],
+  ['syscall',['syscall',['../common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa',1,'interrupt_sw.h']]]
 ];

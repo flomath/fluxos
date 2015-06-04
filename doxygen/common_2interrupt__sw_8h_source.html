@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.9.1"/>
-<title>Fluxos: /home/travis/build/flomath/fluxos/src/system/hal/common/clock.h Source File</title>
+<title>Fluxos: /home/travis/build/flomath/fluxos/src/system/hal/common/interrupt_sw.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -85,26 +85,34 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">clock.h</div>  </div>
+<div class="title">interrupt_sw.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<a href="common_2clock_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * clock.h</span></div>
+<a href="common_2interrupt__sw_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="comment"> * syscall.h</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *  Created on: 13.05.2015</span></div>
+<div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *  Created on: 23.05.2015</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *      Author: florian</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef SRC_SYSTEM_HAL_CLOCK_H_</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_HAL_CLOCK_H_</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment"> * enable clock for gpio</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2clock_8h.html#a2090674e001e247dc76e541130401f74">clock_enable_gpio</a>(uint32_t port);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_CLOCK_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="common_2clock_8h_html_a2090674e001e247dc76e541130401f74"><div class="ttname"><a href="common_2clock_8h.html#a2090674e001e247dc76e541130401f74">clock_enable_gpio</a></div><div class="ttdeci">void clock_enable_gpio(uint32_t port)</div><div class="ttdef"><b>Definition:</b> clock.c:5</div></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642">   13</a></span>&#160;<span class="preprocessor">#define SYS_DEBUG       10</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#pragma SWI_ALIAS(syscall, 0)</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa">syscall</a>(uint32_t swiID, uint32_t params[]);</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#a290900f99b0b9ed6592960dd4240c8fb">handle_interrupt_sw</a>(uint32_t swiID, uint32_t params[]);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#aa0b4f2a102b395e2c63205408e2d01fa">_switch_mode</a>(uint32_t mode);</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="common_2interrupt__sw_8h_html_a290900f99b0b9ed6592960dd4240c8fb"><div class="ttname"><a href="common_2interrupt__sw_8h.html#a290900f99b0b9ed6592960dd4240c8fb">handle_interrupt_sw</a></div><div class="ttdeci">void handle_interrupt_sw(uint32_t swiID, uint32_t params[])</div><div class="ttdef"><b>Definition:</b> interrupt_sw.c:10</div></div>
+<div class="ttc" id="common_2interrupt__sw_8h_html_aa0b4f2a102b395e2c63205408e2d01fa"><div class="ttname"><a href="common_2interrupt__sw_8h.html#aa0b4f2a102b395e2c63205408e2d01fa">_switch_mode</a></div><div class="ttdeci">void _switch_mode(uint32_t mode)</div></div>
+<div class="ttc" id="common_2interrupt__sw_8h_html_a79d73e39bd93c8114e104508baf518aa"><div class="ttname"><a href="common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa">syscall</a></div><div class="ttdeci">void syscall(uint32_t swiID, uint32_t params[])</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
