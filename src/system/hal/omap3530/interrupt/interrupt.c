@@ -86,8 +86,7 @@ void irq_handler(void) {
 	}
 
 	// Clear the IRQ
-//	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
-	hal_bitmask_set(MPU_INTC, MPU_INTC_INTCPS_CONTROL, BV(0));
+	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 
 	// Load the context
 	__context_load();
