@@ -8,8 +8,9 @@
 #include "src/system/driver/gpio/GPIODriver.h"
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
 #include "src/system/hal/omap3530/timer/timer.h"
-#include "src/system/hal/omap3530/prcm/percm.h"
+#include "src/system/hal/omap3530/clock/clock.h"
 #include "src/system/scheduler/scheduler.h"
+#include "src/system/hal/omap3530/mcbsp/mcbsp.h"
 
 interrupt_callback timer_irq;
 
@@ -28,6 +29,10 @@ void main(void) {
 
 	// initialise LED
 	gpio_driver_init();
+
+	// Enable sound
+	mcbsp2_enable();
+	mcbsp_init_master(MCBSP2);
 
 	// Add IRQ handler
 	interrupt_add_listener(40, &timer_irq);

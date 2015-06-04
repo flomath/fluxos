@@ -24,13 +24,17 @@
 #define CM_CLKSEL_WKUP    0x040
 
 // per
-#define CM_FCLKEN_PER     0x000
-#define CM_ICLKEN_PER     0x010
-#define CM_IDLEST_PER     0x020
-#define CM_AUTOIDLE_PER   0x030
-#define CM_CLKSEL_PER     0x040
-#define CM_SLEEPDEP_PER   0x044
-#define CM_CLKSTCTRL_PER  0x048
-#define CM_CLKSTST_PER    0x04C
+#define CM_FCLKEN_PER		0x000		///< Controls the modules functional clock activity
+#define CM_ICLKEN_PER		0x010		///< Controls the modules interface clock activity
+#define CM_CLKSEL_PER		0x040	 	///< PER domain modules source clock selection
+#define CM_IDLEST_PER     	0x020
+#define CM_AUTOIDLE_PER   	0x030
+#define CM_SLEEPDEP_PER   	0x044
+#define CM_CLKSTCTRL_PER  	0x048
+#define CM_CLKSTST_PER    	0x04C
+
+
+#define CONTROL				0x48002274
+#define CONTROL_DEVCONF0	0x004
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_CLOCK_CLOCK_H_ */
