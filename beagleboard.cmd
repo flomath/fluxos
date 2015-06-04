@@ -17,6 +17,7 @@ stackSize = 0x20000;
 SECTIONS
 {
    .intvecs    > EXCEPTIONS
+   .intvecs_impl > SRAM
 
    .const      > SRAM
    .bss        > SRAM

@@ -12,13 +12,10 @@
 #include <stdlib.h>
 #include "../../tools/mutex.h"
 
-#define		SCHEDULER_MAX_PROCESSES 10
+#define		SCHEDULER_MAX_PROCESSES 8
 #define		SCHEDULER_INVALID_ID	-1
 
 typedef void (*ProcFunc)();
-
-static Process_t SchedulerProcesses[SCHEDULER_MAX_PROCESSES];
-static int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
 
 /**
  * Add a new process to the scheduler

@@ -8,9 +8,10 @@
 #ifndef SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_
 #define SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_
 
+#include "../../scheduler/process.h"
 #include "interrupt_sw.h"
 
-typedef void interrupt_callback(void);
+typedef void interrupt_callback(Registers_t* context);
 
 /**
  * Initializes the IRQ environment.

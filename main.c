@@ -13,7 +13,6 @@
 #include "src/system/scheduler/scheduler.h"
 
 interrupt_callback timer_irq;
-static uint16_t timerCounter;
 
 void test(void);
 void test2(void);
@@ -29,8 +28,6 @@ void main(void) {
 
 	// initialise LED
 	gpio_driver_init();
-
-	timerCounter=0;
 
 	// Add IRQ handler
 	interrupt_add_listener(40, &timer_irq);
@@ -56,38 +53,51 @@ void main(void) {
 }
 
 void test(void) {
-	//while(1) {
+	int a = 1;
+	a++;
+
+	printf("%i", a);
+	syscall(SYS_DEBUG, 0);
+
+	a++;
+	printf("%i", a);
+
+	while(1) {
 		printf("[1] task test\n");
-	//}
+		int x = 0;
+		x++;
+	}
 }
 void test2(void) {
-	//while(1) {
+	while(1) {
 		printf("[2] task test\n");
-	//}
-}
-
-void uart_process(void) {
-	int count = uart_driver_count();
-	if ( count > 0 ) {
-		char buffer[8];
-		uart_driver_read(buffer, 8);
-
-		int i;
-		for ( i = 0; i < 8 && i < count; i++ ) {
-			printf("%c", buffer[i]);
-		}
-		uart_driver_write(buffer, count < 8 ? count : 8);
-	} else {
-		printf("No Data to process\n");
+		int y = 1;
+		y--;
 	}
 }
 
-void timer_irq(void) {
+void uart_process(void) {
+	while (1) {
+		int count = uart_driver_count();
+		if ( count > 0 ) {
+			char buffer[8];
+			uart_driver_read(buffer, 8);
+
+			int i;
+			for ( i = 0; i < 8 && i < count; i++ ) {
+				printf("%c", buffer[i]);
+			}
+			uart_driver_write(buffer, count < 8 ? count : 8);
+		} else {
+			printf("No Data to process\n");
+		}
+	}
+}
+
+void timer_irq(Registers_t* context) {
 	gpt_timer_reset(GPT_TIMER4);
 	gpt_timer_start(GPT_TIMER4);
 
-	scheduler_run();
-
-	timerCounter++;
-	printf("timer count: %u\n", timerCounter);
+	// This method will never return
+	scheduler_run(context);
 }

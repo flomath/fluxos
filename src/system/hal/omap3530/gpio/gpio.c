@@ -65,7 +65,7 @@ uint32_t gpio_read(uint32_t port, uint8_t pin)
   if((hal_get_address_value(port, GPIO_OE) & BV(pin)) == 1)
     return (hal_get_address_value(port, GPIO_DATAIN) & BV(pin));
 
-  return;
+  return 0;
 }
 
 void gpio_write(uint32_t port, uint8_t pin, int32_t value)
