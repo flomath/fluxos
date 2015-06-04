@@ -59,6 +59,7 @@ void interrupt_add_listener(uint32_t irq, interrupt_callback* listener) {
 	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_MIR((uint8_t)irq / 32), BV(irq % 32));
 }
 
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(dabt_handler, DABT)
 interrupt void dabt_handler(void) {
 	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
@@ -70,7 +71,7 @@ interrupt void fiq_handler(void) {
 	printf("Not implemented: FIQ!\n");
 }
 
-
+#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
 	// Save the registers of the interrupted process to the stack
@@ -106,8 +107,8 @@ interrupt void pabt_handler(void) {
 }
 
 #pragma INTERRUPT(swi_handler, SWI)
-interrupt void swi_handler(void) {
-	printf("Not implemented: SWI\n");
+interrupt void swi_handler(uint32_t swiID, uint32_t params[]) {
+	handle_interrupt_sw(swiID, params);
 }
 
 #pragma INTERRUPT(udef_handler, UDEF)
