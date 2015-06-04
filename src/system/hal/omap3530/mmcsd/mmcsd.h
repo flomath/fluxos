@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_OMAP3530_MMCSD_H_
 
 #include "../../common/hal.h"
+#include "../clock/clock.h"
 
 #define MMCHS1      0x4809C000
 #define MMCHS2      0x480B4000
@@ -48,6 +49,8 @@
 #define CONTROL_PADCONF_MMC1_DAT4	0x48002150
 #define CONTROL_PADCONF_MMC1_DAT6	0x48002154
 
+#define MMCHS_CMD0      0
+
 /**
  * initialize mmc/sd controller
  */
@@ -57,5 +60,15 @@ void mmcsd_init();
  * soft-reset the mmc/sd controller
  */
 void mmcsd_softreset();
+
+/**
+ * pre card identifaction procedure
+ */
+void mmcsd_precard_identification();
+
+/**
+ * send a command
+ */
+void mmcsd_sendcmd(uint32_t cmd);
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_MMCSD_H_ */

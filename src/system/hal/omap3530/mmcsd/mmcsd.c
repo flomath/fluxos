@@ -11,9 +11,11 @@ void mmcsd_init()
 {
     // configure interface and functional clocks
     // p. 3161
+		hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(24));
+		hal_bitmask_set(CORE_CM, CM_ICLKEN_CORE, BV(24));
 
     // softreset mmc/sd controller
-	mmcsd_softreset();
+		mmcsd_softreset();
 
     // set default capabilities [22.5.1.3]
     // all settings are for MMCHS1 [p. 3206]
@@ -24,7 +26,8 @@ void mmcsd_init()
     // Maximum current capabilities
     hal_bitmask_clear(MMCHS1, MMCHS_CUR_CAPA, 0xFF);
 
-    // todo: set currents
+    // set max currents (p. 3208)
+		//hal_bitmask_set(MMCHS1, MMCHS_CUR_CAPA, BV(26));
 
     // wakeup configuration [22.5.1.4]
     hal_bitmask_set(MMCHS1, MMCHS_CAPA, BV(2));     // enwakup
@@ -54,16 +57,6 @@ void mmcsd_init()
     // output and input buffers. The goal is to
     // support the synchronization of the mmci_clk.
     // see page 777
-    *(int*)CONTROL_PADCONF_MMC1_CLK = 0x0000010F; //clk
-	*(int*)CONTROL_PADCONF_MMC1_CLK |= 0x010F0000; //cmd
-	*(int*)CONTROL_PADCONF_MMC1_DAT0 = 0x0000010F; //dat0
-	*(int*)CONTROL_PADCONF_MMC1_DAT0 |= 0x010F0000; //dat1
-	*(int*)CONTROL_PADCONF_MMC1_DAT2 = 0x0000010F; //dat2
-	*(int*)CONTROL_PADCONF_MMC1_DAT2 |= 0x010F0000; //dat3
-	*(int*)CONTROL_PADCONF_MMC1_DAT4 = 0x0000010F; //dat4
-	*(int*)CONTROL_PADCONF_MMC1_DAT4 |= 0x010F0000; //dat5
-	*(int*)CONTROL_PADCONF_MMC1_DAT6 = 0x0000010F; //dat6
-	*(int*)CONTROL_PADCONF_MMC1_DAT6 |= 0x010F0000; //dat7
 
     // update clock
     hal_bitmask_clear(MMCHS1, MMCHS_SYSCTL, BV(2)); 	// set unstable
@@ -77,13 +70,53 @@ void mmcsd_init()
     hal_bitmask_clear(MMCHS1, MMCHS_SYSCONFIG, BV(4));	// pwr management
     hal_bitmask_set(MMCHS1, MMCHS_SYSCONFIG, BV(3));	// pwr management
     hal_bitmask_clear(MMCHS1, MMCHS_SYSCONFIG, BV(0));	// autoidle clock strgy: free running
+
+		// precard identification procedure (p. 3162)
+		mmcsd_precard_identification();
+}
+
+void mmcsd_precard_identification()
+{
+	// p. 3147
+	hal_bitmask_set(MMCHS1, MMCHS_CON, BV(1)); // send init sequence
+	hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x00000000, 32);	// send dummy command
+
+	// wait for 1ms
+
+	hal_bitmask_clear(MMCHS1, MMCHS_STAT, BV(0));	// clear flag
+	hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(1)); // stop sending init sequence
+	hal_bitmask_write(MMCHS1, MMCHS_STAT, 0xFFFFFFFF, 32);	// clear stat register
+
+	// change clock frequency to fit protocol
+
+	// send cmd0
+	mmcsd_sendcmd(MMCHS_CMD0);
+
+	// send cmd5
+	mmcsd_sendcmd(MMCHS_CMD5);
+
+	// read MMCHS_STAT and check CC and CTO
+	// cto = cmd timeout error
+	// cc = command complete
+	while((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1) && (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1)) { }
+}
+
+void mmcsd_sendcmd(uint32_t cmd)
+{
+	switch(cmd)
+	{
+		case 1:
+		{
+				// what to do?
+		}
+		break;
+	}
 }
 
 void mmcsd_softreset()
 {
     // set softreset bit to 1
     hal_bitmask_set(MMCHS1, MMCHS_SYSCONFIG, BV(1));
-
     // wait for reset done
     while(hal_get_address_value(MMCHS1, MMCHS_SYSSTATUS) & BV(0) != 1) {}
 }
