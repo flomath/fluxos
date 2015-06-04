@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #ifndef NULL
 #define NULL ((void*) 0)

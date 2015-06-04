@@ -7,12 +7,9 @@
  *     © Page Frames - Marko Petrovic
  */
 
-#include <stdio.h>
 #include <string.h>
 #include "../../../scheduler/scheduler.h"
 #include "mmu.h"
-#include "../../../scheduler/process.h"
-#include "../../common/mmu/mmu.h"
 
 /**
  * Array of page tables and page frames
@@ -241,7 +238,7 @@ void mmu_create_process(PCB_t* process)
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L1);
     mmu_mapRegionToMasterPageTable(BOOT_ROM_EXCEPTIONS, pageTable);
     process->pageTable = pageTable;
-    printf("L1 created at 0x%x\n", pageTable);
+//    printf("L1 created at 0x%x\n", pageTable);
 }
 
 void mmu_switch_process(PCB_t* process)
@@ -407,7 +404,7 @@ static mmu_pageTableP_t mmu_getL2PageTable(uint32_t virtualAddress, mmu_pageTabl
 static void mmu_createL2PageTable(uint32_t virtualAddress, PCB_t* process)
 {
     mmu_pageTableP_t pageTable = mmu_createPageTable(PT_L2);
-    printf("L2 created at 0x%x\n", pageTable);
+//    printf("L2 created at 0x%x\n", pageTable);
 
     mmu_l1_section_t L1_entry;
     L1_entry.sectionAddress 	= ((uint32_t)pageTable & COARSE_BIT_MASK);

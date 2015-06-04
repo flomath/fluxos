@@ -101,7 +101,7 @@ void scheduler_run(Registers_t* context)
 			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
 			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
 			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
-			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
+//			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
 			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;
 

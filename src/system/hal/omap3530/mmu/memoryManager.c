@@ -39,12 +39,6 @@ static int memoryManager_reservePages(memoryRegion_t* memRegion, unsigned int pa
  */
 static int memoryManager_areFreePages(memoryRegion_t* memRegion, unsigned int pageNumber, unsigned int numPages);
 
-/**
- * Get address of given page number
- * based on the region
- */
-static uint32_t* memoryManager_getPageAddress(memoryRegion_t* memRegion, unsigned int pageNumber);
-
 void memoryManager_init(void)
 {
 	// init regions
@@ -131,15 +125,4 @@ static int memoryManager_areFreePages(memoryRegion_t* memRegion, unsigned int pa
 	}
 
 	return -1;
-}
-
-static uint32_t* memoryManager_getPageAddress(memoryRegion_t* memRegion, unsigned int pageNumber)
-{
-	// check if region can address
-	// number of page
-	if( pageNumber > memRegion->numPages ) {
-		return NULL;
-	}
-
-	return ((uint32_t*)(memRegion->addressStart + (pageNumber * memRegion->pageSize)));
 }

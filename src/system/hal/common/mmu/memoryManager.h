@@ -16,7 +16,6 @@
 typedef struct
 {
 	bool_t reserved;						///< Status
-	unsigned int processID;					///< ID of process
 } page_t;
 
 /**
