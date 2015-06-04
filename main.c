@@ -6,6 +6,7 @@
 #include "src/system/driver/uart/UartDriver.h"
 #include "src/system/driver/button/ButtonDriver.h"
 #include "src/system/driver/gpio/GPIODriver.h"
+#include "src/system/hal/common/interrupt_sw.h"
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
 #include "src/system/hal/omap3530/timer/timer.h"
 #include "src/system/hal/omap3530/prcm/percm.h"
@@ -19,7 +20,6 @@ void uart_process(void);
 
 #pragma TASK(main)
 void main(void) {
-
 	// Set up interrupts
 	interrupt_init();
 
@@ -43,6 +43,9 @@ void main(void) {
 	// Enable interrupts globally
 	interrupt_enable();
 
+	// call software interrupt
+	//syscall(SYS_DEBUG, 0);
+
 	// Execute
 	while(1) {
 		printf("..idle\n");
@@ -50,6 +53,15 @@ void main(void) {
 }
 
 void test(void) {
+	int a = 1;
+	a++;
+
+	printf("%i", a);
+	syscall(SYS_DEBUG, 0);
+
+	a++;
+	printf("%i", a);
+
 	while(1) {
 		printf("[1] task test\n");
 		int x = 0;

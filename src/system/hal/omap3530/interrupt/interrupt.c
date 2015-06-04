@@ -111,8 +111,8 @@ interrupt void pabt_handler(void) {
 }
 
 #pragma INTERRUPT(swi_handler, SWI)
-interrupt void swi_handler(void) {
-	printf("Not implemented: SWI\n");
+interrupt void swi_handler(uint32_t swiID, uint32_t params[]) {
+	handle_interrupt_sw(swiID, params);
 }
 
 #pragma INTERRUPT(udef_handler, UDEF)
