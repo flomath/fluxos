@@ -99,19 +99,178 @@ void mmcsd_precard_identification()
 	// cto = cmd timeout error
 	// cc = command complete
 	while((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1) && (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1)) { }
+	int cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
+	int cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+
+	// it is an SDIO-card
+	if (cc)
+	{
+
+	}
+	else
+	{
+		hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
+		while(hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25) != 1) {}	// wait until it returns 0x0
+
+		// send cmd8
+		mmcsd_sendcmd(MMCHS_CMD8);
+
+		// read MMCHS_STAT register
+		while((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0) != 1) && (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1)) { }
+		cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
+		cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+
+		// it is SD card compliant with standard 2.0 or later
+		if (cc)
+		{
+			// standard specifiction
+			// END
+		}
+		else
+		{
+			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
+			while(hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25) != 1) {}	// wait until it returns 0x0
+
+			// do until card is not busy anymore
+			int value_rsp10;
+			do {
+				// send cmd55
+				mmcsd_sendcmd(MMCHS_CMD55);
+
+				// send ACMD41 command
+				// todo
+
+				// read MMCHS_STAT register
+				while((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0) != 1) && (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1)) { }
+				cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
+				cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+
+				// SD card compliant with standard 1.x
+				if (cc)
+				{
+					// verify if card is busy
+					value_rsp10 = hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31);
+				}
+				else
+				{
+					// it is an MMC card
+					// will be implemented later
+				}
+			} while(!value_rsp10);
+
+			// send cmd2 to gather information about how to read sd card
+			mmcsd_sendcmd(MMCHS_CMD2);
+
+			// send cmd3
+			mmcsd_sendcmd(MMCHS_CMD3);
+
+			// TODO: handle mmc card
+
+			// send cmd7
+			mmcsd_sendcmd(MMCHS_CMD7);
+
+		}
+	}
+
 }
 
 void mmcsd_sendcmd(uint32_t cmd)
 {
+	// see p.3151
+	// read/write transfer flow with polling and without DMA
+
+	// until data lines are not in use anymore
+	while((hal_get_address_value(MMCHS1, MMCHS_PSTATE) & BV(1) != 1)) { }
+
+	// Set Bitfields in MMCHS_CON
+
+	// write MMCHS_CSRE if response type permits
+	hal_bitmask_write(MMCHS1, MMCHS_CSRE, 0x00000000);
+
+	// Set Blocksize and number of Blocks
+	// write MMCHS_BLK
+
+	// MMCHS_ARG default
+	// hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00000000);
+
+	// if interrupts are used: MMCHS_ISE
+	// set to default?
+
+	// Write command
+	// MMCHS_CMD
 	switch(cmd)
 	{
 		case 1:
 		{
-				// what to do?
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x01020000);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00050001);
+		}
+		break;
+
+		case 2:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x02090000);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001);
+		}
+		break;
+
+		case 3:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x031a0000);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000);
+		}
+		break;
+
+		case 7:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x071a0000);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000);
+		}
+		break;
+
+		case 9:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x09090000);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000);
 		}
 		break;
 	}
+
+	// read MMCHS_STAT register
+	while((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0) != 1) && (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16) != 1)) { }
+	int cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
+	int cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+	int ccrc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+
+	// conflict occured on mmci_cmd line
+	if (cto && ccrc)
+	{
+		// set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
+	}
+	else
+	{
+		if (cto && !ccrc)
+		{
+			// set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
+		}
+		else if (cc)
+		{
+			// read response type
+			// RESP_TYPE = MMCHS_CMD[17:16]
+
+			// a response is waiting
+			if(RESP_TYPE != 0x0)
+			{
+				// read MMCHS_RSP
+				// read MMCHS_STAT CIE, CEB, CCRC and CERR
+			}
+		}
+	}
 }
+
 
 void mmcsd_softreset()
 {

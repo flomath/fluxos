@@ -41,6 +41,7 @@
 #define MMCHS_REV           0x1FC
 
 #define MMCHS_RSP(n)        (0x210 + (n * 4))
+#define MMCHS_RSP10         0x110
 
 #define CONTROL_PADCONF_MMC1_CLK	0x48002144	// mmc1_clk and mmc1_cmd
 #define CONTROL_PADCONF_MMC1_DAT0	0x48002148
@@ -50,6 +51,12 @@
 #define CONTROL_PADCONF_MMC1_DAT6	0x48002154
 
 #define MMCHS_CMD0      0
+#define MMCHS_CMD2      2
+#define MMCHS_CMD3      3
+#define MMCHS_CMD5      5
+#define MMCHS_CMD7      7
+#define MMCHS_CMD8      8
+#define MMCHS_CMD55      55
 
 /**
  * initialize mmc/sd controller
@@ -68,6 +75,7 @@ void mmcsd_precard_identification();
 
 /**
  * send a command
+ * a command starts an operation (serially transfered from sd host ctrl to the card on the mmci_cmd line)
  */
 void mmcsd_sendcmd(uint32_t cmd);
 
