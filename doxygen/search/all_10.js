@@ -1,4 +1,22 @@
 var searchData=
 [
-  ['wkup_5fcm',['WKUP_CM',['../omap3530_2clock_2clock_8h.html#a7c81a97a0a78f4643fde1a926d55eca6',1,'clock.h']]]
+  ['r0',['R0',['../struct_registers__t.html#aa64f6cf6a3dada5e744a95de09999f54',1,'Registers_t']]],
+  ['r1',['R1',['../struct_registers__t.html#abd73b74af149da109624752131cc697c',1,'Registers_t']]],
+  ['r10',['R10',['../struct_registers__t.html#af2bcd5d2a2b7e656f80ba88f5e13c3bb',1,'Registers_t']]],
+  ['r11',['R11',['../struct_registers__t.html#a16ae600828fae456e3324e4848c54d59',1,'Registers_t']]],
+  ['r12',['R12',['../struct_registers__t.html#ac05a4f8733ff7f3f01a91b582c142963',1,'Registers_t']]],
+  ['r2',['R2',['../struct_registers__t.html#a859ed1fabc2d2be82f1c92f037d9b520',1,'Registers_t']]],
+  ['r3',['R3',['../struct_registers__t.html#a4a67d953529716c12ee37dc403e3d2c8',1,'Registers_t']]],
+  ['r4',['R4',['../struct_registers__t.html#a65b72055f3643670f27f24dcbdfc8a9d',1,'Registers_t']]],
+  ['r5',['R5',['../struct_registers__t.html#a8dfc5d6c3330d7d7f767a1940a93b573',1,'Registers_t']]],
+  ['r6',['R6',['../struct_registers__t.html#a94d104922d2bf719a98ab5681ecb30f2',1,'Registers_t']]],
+  ['r7',['R7',['../struct_registers__t.html#a40a9eb4dd04475b915bedb8791547ab8',1,'Registers_t']]],
+  ['r8',['R8',['../struct_registers__t.html#a9855169b5ef8b11b8384bedab7551d67',1,'Registers_t']]],
+  ['r9',['R9',['../struct_registers__t.html#a3aadfca56b4d47e88ac2b6638af9eea3',1,'Registers_t']]],
+  ['registers',['registers',['../struct_p_c_b__t.html#a2b5aa508126f11dac6570253a4953696',1,'PCB_t']]],
+  ['registers_5ft',['Registers_t',['../struct_registers__t.html',1,'']]],
+  ['reserved_5fsector_5fcount',['reserved_sector_count',['../structfat__bios__parameter__block.html#aaf9d264e2e9f17808ca158e1666871e9',1,'fat_bios_parameter_block']]],
+  ['root_5fdir_5fentries',['root_dir_entries',['../structfat16__filesystem.html#ac5b442d1f8f932ce4593be14e69f7e0d',1,'fat16_filesystem']]],
+  ['root_5fdir_5foffset',['root_dir_offset',['../structfat16__filesystem.html#a744efd343b0751a8bbcd3ebe3432a36b',1,'fat16_filesystem']]],
+  ['root_5fdir_5fsize',['root_dir_size',['../structfat16__filesystem.html#aa25b3e17845278c3a12a27f67afd9a47',1,'fat16_filesystem']]]
 ];

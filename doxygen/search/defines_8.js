@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['scheduler_5finvalid_5fid',['SCHEDULER_INVALID_ID',['../scheduler_8h.html#aa34c0aacdd202c733c2cc2e6d63bb558',1,'scheduler.h']]],
-  ['scheduler_5fmax_5fprocesses',['SCHEDULER_MAX_PROCESSES',['../scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6',1,'scheduler.h']]],
-  ['sys_5fdebug',['SYS_DEBUG',['../common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642',1,'interrupt_sw.h']]]
+  ['per_5fcm',['PER_CM',['../omap3530_2clock_2clock_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'PER_CM():&#160;clock.h'],['../percm_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'PER_CM():&#160;percm.h']]]
 ];
