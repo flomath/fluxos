@@ -1,13 +1,16 @@
 var searchData=
 [
-  ['hal_2ec',['hal.c',['../hal_8c.html',1,'']]],
-  ['hal_2eh',['hal.h',['../hal_8h.html',1,'']]],
-  ['hal_5fbitmask_5fclear',['hal_bitmask_clear',['../hal_8c.html#a7bcf0889832c179d4f63189da959ca55',1,'hal_bitmask_clear(uint32_t port, uint8_t offset, uint32_t mask):&#160;hal.c'],['../hal_8h.html#a7bcf0889832c179d4f63189da959ca55',1,'hal_bitmask_clear(uint32_t port, uint8_t offset, uint32_t mask):&#160;hal.c']]],
-  ['hal_5fbitmask_5fset',['hal_bitmask_set',['../hal_8c.html#a249461662e4968aeb232c79073fe4767',1,'hal_bitmask_set(uint32_t port, uint8_t offset, uint32_t mask):&#160;hal.c'],['../hal_8h.html#a249461662e4968aeb232c79073fe4767',1,'hal_bitmask_set(uint32_t port, uint8_t offset, uint32_t mask):&#160;hal.c']]],
-  ['hal_5fbitmask_5fwrite',['hal_bitmask_write',['../hal_8c.html#aff44a732b939e031ef81b40f55e7e178',1,'hal_bitmask_write(uint32_t port, uint8_t offset, uint32_t mask, uint8_t size):&#160;hal.c'],['../hal_8h.html#aff44a732b939e031ef81b40f55e7e178',1,'hal_bitmask_write(uint32_t port, uint8_t offset, uint32_t mask, uint8_t size):&#160;hal.c']]],
-  ['hal_5fget_5faddress_5fvalue',['hal_get_address_value',['../hal_8c.html#aa7501e0431addaf00f53fd7536d4fd7d',1,'hal_get_address_value(uint32_t port, uint8_t offset):&#160;hal.c'],['../hal_8h.html#aa7501e0431addaf00f53fd7536d4fd7d',1,'hal_get_address_value(uint32_t port, uint8_t offset):&#160;hal.c']]],
-  ['hal_5fget_5fregister',['hal_get_register',['../hal_8c.html#ad177b1979f179610225cf168650800c0',1,'hal_get_register(uint32_t port, uint8_t offset):&#160;hal.c'],['../hal_8h.html#ad177b1979f179610225cf168650800c0',1,'hal_get_register(uint32_t port, uint8_t offset):&#160;hal.c']]],
-  ['handle_5finterrupt_5fsw',['handle_interrupt_sw',['../common_2interrupt__sw_8h.html#a290900f99b0b9ed6592960dd4240c8fb',1,'handle_interrupt_sw(uint32_t swiID, uint32_t params[]):&#160;interrupt_sw.c'],['../interrupt__sw_8c.html#a290900f99b0b9ed6592960dd4240c8fb',1,'handle_interrupt_sw(uint32_t swiID, uint32_t params[]):&#160;interrupt_sw.c']]],
-  ['head_5fcount',['head_count',['../structfat__bios__parameter__block.html#a5d382ed4755a3fc26462c6d5af9debc6',1,'fat_bios_parameter_block']]],
-  ['hour',['hour',['../structfat__time.html#ac0960d062513656ea2065d9a17356031',1,'fat_time']]]
+  ['interrupt_2ec',['interrupt.c',['../interrupt_8c.html',1,'']]],
+  ['interrupt_2eh',['interrupt.h',['../common_2interrupt_8h.html',1,'']]],
+  ['interrupt_2eh',['interrupt.h',['../omap3530_2interrupt_2interrupt_8h.html',1,'']]],
+  ['interrupt_5fadd_5flistener',['interrupt_add_listener',['../common_2interrupt_8h.html#a111a6eebb7f7dbe55c9dd4647baea9c8',1,'interrupt_add_listener(uint32_t irq, interrupt_callback *callback):&#160;interrupt.c'],['../interrupt_8c.html#a2f38b6946cfd4ee65eb3bc948c87eef7',1,'interrupt_add_listener(uint32_t irq, interrupt_callback *listener):&#160;interrupt.c']]],
+  ['interrupt_5fcallback',['interrupt_callback',['../common_2interrupt_8h.html#a8955e54b593ea5f255318341e3d51d25',1,'interrupt.h']]],
+  ['interrupt_5fdisable',['interrupt_disable',['../common_2interrupt_8h.html#aad559c0a8c9209a2751887cac7cf8881',1,'interrupt_disable():&#160;interrupt.c'],['../interrupt_8c.html#a725d86e101990acb45341f39ecef5319',1,'interrupt_disable(void):&#160;interrupt.c']]],
+  ['interrupt_5fenable',['interrupt_enable',['../common_2interrupt_8h.html#aaa547d1d7074b73a55b85640b558923b',1,'interrupt_enable():&#160;interrupt.c'],['../interrupt_8c.html#a7a5aa8b76d80abb2edcde7be747f4370',1,'interrupt_enable(void):&#160;interrupt.c']]],
+  ['interrupt_5finit',['interrupt_init',['../common_2interrupt_8h.html#a1c62fca549a4981d6684d4a5c72874b9',1,'interrupt_init():&#160;interrupt.c'],['../interrupt_8c.html#aae3db3a98d70c22944d98e61fa398938',1,'interrupt_init(void):&#160;interrupt.c']]],
+  ['interrupt_5fsw_2ec',['interrupt_sw.c',['../interrupt__sw_8c.html',1,'']]],
+  ['interrupt_5fsw_2eh',['interrupt_sw.h',['../omap3530_2interrupt_2interrupt__sw_8h.html',1,'']]],
+  ['interrupt_5fsw_2eh',['interrupt_sw.h',['../common_2interrupt__sw_8h.html',1,'']]],
+  ['irq_5fhandler',['irq_handler',['../interrupt_8c.html#afbe4835df451e474a54178267b1d6060',1,'interrupt.c']]],
+  ['irq_5fnumber',['IRQ_NUMBER',['../omap3530_2interrupt_2interrupt_8h.html#a5027e7fce32575b5443780b0a0fd70f3',1,'interrupt.h']]]
 ];
