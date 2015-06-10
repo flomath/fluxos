@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include "../../common/hal.h"
+#include "../../common/mmu/mmu.h"
 #include "interrupt.h"
 
 
@@ -26,7 +27,8 @@ void interrupt_init(void) {
 	// If necessary, disable functional clock autogating
 	// or enable synchronizer autogating by setting the FUNCIDLE bit or TURBO bit accordingly
 
-	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_IDLE, BV(1) + BV(0)); // free running syncrhonizer clock (default) and functional clock gating strategy is applied (default)
+	hal_bitmask_clear(MPU_INTC, MPU_INTC_INTCPS_IDLE, BV(1) + BV(0)); // free running synchronizer clock (default) and functional clock gating strategy is applied (default)
+	//hal_bitmask_set(MPU_INTC, MPU_INTC_INTCPS_IDLE, BV(0));
 
 	// 3. Program the MPU_INTC.INTCPS_ILRm register for each interrupt line:
 	// Assign a priority level and set the FIQNFIQ bit for an FIQ interrupt
@@ -60,18 +62,6 @@ void interrupt_add_listener(uint32_t irq, interrupt_callback* listener) {
 }
 
 #pragma SET_CODE_SECTION(".intvecs_impl")
-#pragma INTERRUPT(dabt_handler, DABT)
-interrupt void dabt_handler(void) {
-	// Data abort exception. Read LR ans subtract 8 bits for getting the MemoryAddress of the cause
-	printf("Data Abort Exception!\n");
-}
-
-#pragma INTERRUPT(fiq_handler, FIQ)
-interrupt void fiq_handler(void) {
-	printf("Not implemented: FIQ!\n");
-}
-
-#pragma SET_CODE_SECTION(".intvecs_impl")
 #pragma INTERRUPT(irq_handler, IRQ)
 void irq_handler(void) {
 	// Save the registers of the interrupted process to the stack
@@ -79,6 +69,7 @@ void irq_handler(void) {
 	asm(" STMFD R13, {R14}"); 	// Save R14
 	Registers_t context = __context_save();
 
+	//TODO: to disable interrupts in interrupt mode do we have to switch the mode??!?!?!?!
 	interrupt_disable();
 
 	// Ensure that the stack will be cleared
@@ -86,19 +77,32 @@ void irq_handler(void) {
 		// Get the rightmost 6 bits: Active IRQ
 		mmio_t address = hal_get_register(MPU_INTC, MPU_INTC_INTCPS_SIR_IRQ);
 		uint8_t irq = BIT_TRIM_LEFT(*address, 7);
-		printf("Interrupt: %d\n", irq);
-
-		// Clear the IRQ
-		*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+//		printf("Interrupt: %d\n", irq);
 
 		// Call the callback
 		if ( irq_callbacks[irq] != NULL ) {
 			irq_callbacks[irq](&context);
 		}
+
+		// Clear the IRQ
+		*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
 	}
 
 	// Load the context
 	__context_load();
+}
+
+#pragma INTERRUPT(dabt_handler, DABT)
+interrupt void dabt_handler(void) {
+	mmu_dabt_handler();
+
+	// restores both the PC and the CPSR, and retries the aborted instruction
+//	asm(" SUBS PC, R14, #8");
+}
+
+#pragma INTERRUPT(fiq_handler, FIQ)
+interrupt void fiq_handler(void) {
+	printf("Not implemented: FIQ!\n");
 }
 
 #pragma INTERRUPT(pabt_handler, PABT)

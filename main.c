@@ -11,6 +11,7 @@
 #include "src/system/hal/omap3530/timer/timer.h"
 #include "src/system/hal/omap3530/prcm/percm.h"
 #include "src/system/scheduler/scheduler.h"
+#include "src/system/hal/omap3530/mmu/mmu.h"
 
 interrupt_callback timer_irq;
 
@@ -29,10 +30,13 @@ void main(void) {
 	// initialise LED
 	gpio_driver_init();
 
+	// initialise MMU
+	mmu_init();
+
 	// Add IRQ handler
 	interrupt_add_listener(40, &timer_irq);
 
-	gpt_timer_init(GPT_TIMER4, 3000);
+	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
 
 	scheduler_addProcess(test);
@@ -56,11 +60,11 @@ void test(void) {
 	int a = 1;
 	a++;
 
-	printf("%i", a);
+	printf("%i\n", a);
 	syscall(SYS_DEBUG, 0);
 
 	a++;
-	printf("%i", a);
+	printf("%i\n", a);
 
 	while(1) {
 		printf("[1] task test\n");
@@ -69,11 +73,11 @@ void test(void) {
 	}
 }
 void test2(void) {
-	while(1) {
+//	while(1) {
 		printf("[2] task test\n");
 		int y = 1;
 		y--;
-	}
+//	}
 }
 
 void uart_process(void) {
@@ -95,9 +99,9 @@ void uart_process(void) {
 }
 
 void timer_irq(Registers_t* context) {
-	gpt_timer_reset(GPT_TIMER4);
-	gpt_timer_start(GPT_TIMER4);
-
 	// This method will never return
 	scheduler_run(context);
+
+	gpt_timer_reset(GPT_TIMER4);
+	gpt_timer_start(GPT_TIMER4);
 }
