@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['oem_5fname',['oem_name',['../structfat__preamble.html#a59f145d9652854eac60f58a87e068e5e',1,'fat_preamble']]],
-  ['os_5fboot_5fcode',['os_boot_code',['../structfat16__extended__bios__parameter__block.html#ae7ec022a97124802230297057dc2c349',1,'fat16_extended_bios_parameter_block']]]
+  ['type',['type',['../structmmu__l1__section__t.html#ac692161d2a727a81f80bc61b3f282871',1,'mmu_l1_section_t::type()'],['../structmmu__l2__page_table__t.html#a71e182b34aab4277ea59c2f60d02e65d',1,'mmu_l2_pageTable_t::type()']]]
 ];

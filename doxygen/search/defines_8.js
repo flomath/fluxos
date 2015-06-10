@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['scheduler_5finvalid_5fid',['SCHEDULER_INVALID_ID',['../scheduler_8h.html#aa34c0aacdd202c733c2cc2e6d63bb558',1,'scheduler.h']]],
-  ['scheduler_5fmax_5fprocesses',['SCHEDULER_MAX_PROCESSES',['../scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6',1,'scheduler.h']]],
-  ['sys_5fdebug',['SYS_DEBUG',['../common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642',1,'interrupt_sw.h']]]
+  ['kernel_5fend_5faddress',['KERNEL_END_ADDRESS',['../omap3530_2mmu_2memory_manager_8h.html#adc993cab79f6f1c7921f7fbe914a077f',1,'memoryManager.h']]],
+  ['kernel_5fregion',['KERNEL_REGION',['../omap3530_2mmu_2memory_manager_8h.html#aa005727364bcee065eb5895a4ce52de4',1,'memoryManager.h']]],
+  ['kernel_5fstart_5faddress',['KERNEL_START_ADDRESS',['../omap3530_2mmu_2memory_manager_8h.html#aae21c168d500b36aaceb2a44730d6f51',1,'memoryManager.h']]]
 ];

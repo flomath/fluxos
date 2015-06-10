@@ -93,6 +93,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="process_8h_source.html">process.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="omap3530_2mmu_2mmu_8h_source.html">../hal/omap3530/mmu/mmu.h</a>&quot;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="mutex_8h_source.html">../../tools/mutex.h</a>&quot;</code><br />
 </div>
@@ -122,6 +123,8 @@ Functions</h2></td></tr>
 <tr class="separator:ab5f84a075fced7233d81a117affb54ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b53edd112f79046fc16d1ff5af9741a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8h.html#a2b53edd112f79046fc16d1ff5af9741a">scheduler_killProcess</a> (int processID)</td></tr>
 <tr class="separator:a2b53edd112f79046fc16d1ff5af9741a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a649b1cd03812f20a213420df3e94d775"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_p_c_b__t.html">PCB_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8h.html#a649b1cd03812f20a213420df3e94d775">scheduler_getCurrentProcess</a> ()</td></tr>
+<tr class="separator:a649b1cd03812f20a213420df3e94d775"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="aa34c0aacdd202c733c2cc2e6d63bb558"></a>
@@ -176,6 +179,22 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Add a new process to the scheduler </p>
+
+</div>
+</div>
+<a class="anchor" id="a649b1cd03812f20a213420df3e94d775"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_p_c_b__t.html">PCB_t</a>* scheduler_getCurrentProcess </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Get current process </p>
 
 </div>
 </div>
@@ -247,7 +266,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 10 2015 08:45:04 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Jun 10 2015 09:43:48 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

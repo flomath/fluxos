@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['uart_5fdriver_5fcallback_5fmethod',['uart_driver_callback_method',['../_uart_driver_8c.html#a5f1926a1299cd0581077d63eaf94d036',1,'UartDriver.c']]]
+  ['numpages',['numPages',['../structmemory_region__t.html#a23fa8ea80e2618432c66ac528a7b7339',1,'memoryRegion_t']]],
+  ['numpagesreserved',['numPagesReserved',['../structmemory_region__t.html#a2e8ed2641355001ec979efd4f20b6325',1,'memoryRegion_t']]]
 ];

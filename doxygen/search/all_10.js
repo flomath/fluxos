@@ -1,4 +1,32 @@
 var searchData=
 [
-  ['wkup_5fcm',['WKUP_CM',['../omap3530_2clock_2clock_8h.html#a7c81a97a0a78f4643fde1a926d55eca6',1,'clock.h']]]
+  ['scheduler_2ec',['scheduler.c',['../scheduler_8c.html',1,'']]],
+  ['scheduler_2eh',['scheduler.h',['../scheduler_8h.html',1,'']]],
+  ['scheduler_5faddprocess',['scheduler_addProcess',['../scheduler_8c.html#ad4a964f369a6ca77db660db4d9207fe4',1,'scheduler_addProcess(ProcFunc fct):&#160;scheduler.c'],['../scheduler_8h.html#ad4a964f369a6ca77db660db4d9207fe4',1,'scheduler_addProcess(ProcFunc fct):&#160;scheduler.c']]],
+  ['scheduler_5fgetcurrentprocess',['scheduler_getCurrentProcess',['../scheduler_8c.html#a649b1cd03812f20a213420df3e94d775',1,'scheduler_getCurrentProcess():&#160;scheduler.c'],['../scheduler_8h.html#a649b1cd03812f20a213420df3e94d775',1,'scheduler_getCurrentProcess():&#160;scheduler.c']]],
+  ['scheduler_5fgetfreeprocessid',['scheduler_getFreeProcessID',['../scheduler_8c.html#a771519df21e85420554b4b14a3cb984c',1,'scheduler_getFreeProcessID():&#160;scheduler.c'],['../scheduler_8h.html#a771519df21e85420554b4b14a3cb984c',1,'scheduler_getFreeProcessID():&#160;scheduler.c']]],
+  ['scheduler_5fgetnextprocess',['scheduler_getNextProcess',['../scheduler_8c.html#aff17a4d47d37eb622126c6887b5f405f',1,'scheduler_getNextProcess():&#160;scheduler.c'],['../scheduler_8h.html#aff17a4d47d37eb622126c6887b5f405f',1,'scheduler_getNextProcess():&#160;scheduler.c']]],
+  ['scheduler_5finvalid_5fid',['SCHEDULER_INVALID_ID',['../scheduler_8h.html#aa34c0aacdd202c733c2cc2e6d63bb558',1,'scheduler.h']]],
+  ['scheduler_5fkillprocess',['scheduler_killProcess',['../scheduler_8c.html#a2b53edd112f79046fc16d1ff5af9741a',1,'scheduler_killProcess(int processID):&#160;scheduler.c'],['../scheduler_8h.html#a2b53edd112f79046fc16d1ff5af9741a',1,'scheduler_killProcess(int processID):&#160;scheduler.c']]],
+  ['scheduler_5fmax_5fprocesses',['SCHEDULER_MAX_PROCESSES',['../scheduler_8h.html#a32f0ff88ce35998e49b16b96af4784a6',1,'scheduler.h']]],
+  ['scheduler_5frun',['scheduler_run',['../scheduler_8c.html#a5c7ca6d2c8341f6cc7a27bd40e726d93',1,'scheduler_run(Registers_t *context):&#160;scheduler.c'],['../scheduler_8h.html#ab5f84a075fced7233d81a117affb54ee',1,'scheduler_run():&#160;scheduler.h']]],
+  ['schedulercurrentrunningprocess',['SchedulerCurrentRunningProcess',['../scheduler_8c.html#abbb7675414ae716974a0fffbf26e191b',1,'scheduler.c']]],
+  ['scm_2eh',['scm.h',['../scm_8h.html',1,'']]],
+  ['section',['SECTION',['../omap3530_2mmu_2mmu_8h.html#ac5f41b3cefc075e35486583b52712b0d',1,'mmu.h']]],
+  ['section_5fbit_5fmask',['SECTION_BIT_MASK',['../omap3530_2mmu_2mmu_8h.html#a6746df0668c6416c5271f6808c33d977',1,'mmu.h']]],
+  ['section_5fsize',['SECTION_SIZE',['../omap3530_2mmu_2mmu_8h.html#af736426da3c7639cf81900258bdd8a05',1,'mmu.h']]],
+  ['sectionaddress',['sectionAddress',['../structmmu__l1__section__t.html#a239904bbf1204e2f21396d78d406963b',1,'mmu_l1_section_t']]],
+  ['serialdriver_2eh',['SerialDriver.h',['../_serial_driver_8h.html',1,'']]],
+  ['size',['size',['../struct_p_c_b__t.html#a93946052113ee7e90745332dd3628fcd',1,'PCB_t']]],
+  ['small_5fpage',['SMALL_PAGE',['../omap3530_2mmu_2mmu_8h.html#ae22559ed6ac6374b80f74cfff5646296',1,'mmu.h']]],
+  ['small_5fpage_5fbit_5fmask',['SMALL_PAGE_BIT_MASK',['../omap3530_2mmu_2mmu_8h.html#a05f12f3608794e0ca10a12d608e3d383',1,'mmu.h']]],
+  ['small_5fpage_5fsize',['SMALL_PAGE_SIZE',['../omap3530_2mmu_2mmu_8h.html#a3d0ffb1de97be5d8d0509cc744781bc1',1,'mmu.h']]],
+  ['small_5fpage_5fsize_5f4kb',['SMALL_PAGE_SIZE_4KB',['../omap3530_2mmu_2memory_manager_8h.html#ad006c6f3cbf3cb7ca77444b85ca0a76e',1,'memoryManager.h']]],
+  ['sp',['SP',['../struct_registers__t.html#af480483f058a97f77b90a32dd3e4082a',1,'Registers_t']]],
+  ['state',['state',['../struct_p_c_b__t.html#a4ab8d1008641219f3d02f1ac61465961',1,'PCB_t']]],
+  ['stop_5fbit',['stop_bit',['../struct_u_a_r_t_configuration__t.html#aa49a956e599b816be1a98d2046de7547',1,'UARTConfiguration_t']]],
+  ['swi_5fhandler',['swi_handler',['../interrupt_8c.html#a14f4f4ee40fc2423353cab91159e6ee1',1,'interrupt.c']]],
+  ['sys_5fdebug',['SYS_DEBUG',['../common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642',1,'interrupt_sw.h']]],
+  ['syscall',['syscall',['../common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa',1,'interrupt_sw.h']]],
+  ['system_2eh',['system.h',['../system_8h.html',1,'']]]
 ];
