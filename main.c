@@ -73,11 +73,11 @@ void test(void) {
 	}
 }
 void test2(void) {
-	while(1) {
+//	while(1) {
 		printf("[2] task test\n");
 		int y = 1;
 		y--;
-	}
+//	}
 }
 
 void uart_process(void) {

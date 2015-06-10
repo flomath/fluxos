@@ -83,10 +83,10 @@ void irq_handler(void) {
 		if ( irq_callbacks[irq] != NULL ) {
 			irq_callbacks[irq](&context);
 		}
-	}
 
-	// Clear the IRQ
-	*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+		// Clear the IRQ
+		*((mmio_t)(MPU_INTC + MPU_INTC_INTCPS_CONTROL)) |= 0x01;
+	}
 
 	// Load the context
 	__context_load();
