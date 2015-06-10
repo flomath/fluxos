@@ -79,4 +79,9 @@ void mmcsd_precard_identification();
  */
 void mmcsd_sendcmd(uint32_t cmd);
 
+/**
+ * change the mmc/sd output clock frequency
+ */
+void mmcsd_change_clockfrequency(uint32_t clockfrequency);
+
 #endif /* SRC_SYSTEM_HAL_OMAP3530_MMCSD_H_ */
