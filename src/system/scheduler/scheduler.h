@@ -10,7 +10,7 @@
 
 #include "process.h"
 #include <stdlib.h>
-#include "../../tools/mutex.h"
+#include "../../utils/mutex.h"
 
 #define		SCHEDULER_MAX_PROCESSES 8
 #define		SCHEDULER_INVALID_ID	-1

@@ -5,7 +5,7 @@
  *      Author: florian
  */
 
-#include "mutex.h"
+#include "../utils/mutex.h"
 
 int mutex_lock() {
 	// _disable_interrupts();

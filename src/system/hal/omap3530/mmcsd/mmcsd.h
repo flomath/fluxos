@@ -10,6 +10,7 @@
 
 #include "../../common/hal.h"
 #include "../clock/clock.h"
+#include "../../../../utils/sleep.h"
 
 #define MMCHS1      0x4809C000
 #define MMCHS2      0x480B4000
@@ -50,13 +51,18 @@
 #define CONTROL_PADCONF_MMC1_DAT4	0x48002150
 #define CONTROL_PADCONF_MMC1_DAT6	0x48002154
 
+#define MMCHS_CLK_FRQCY400		0xF0	// 400 kHz
+#define MMCHS_CLK_FRQCY80		0x258	// 80 kHz
+
 #define MMCHS_CMD0      0
 #define MMCHS_CMD2      2
 #define MMCHS_CMD3      3
 #define MMCHS_CMD5      5
 #define MMCHS_CMD7      7
 #define MMCHS_CMD8      8
-#define MMCHS_CMD55      55
+#define MMCHS_CMD55     55
+
+#define MAX_RETRY		500
 
 /**
  * initialize mmc/sd controller

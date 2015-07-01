@@ -11,6 +11,8 @@
 #include "src/system/hal/omap3530/prcm/percm.h"
 #include "src/system/scheduler/scheduler.h"
 
+#include "src/system/hal/omap3530/mmcsd/mmcsd.h"
+
 interrupt_callback timer_irq;
 
 void test(void);
@@ -24,24 +26,26 @@ void main(void) {
 	interrupt_init();
 
 	// initialise onboard button
-	button_driver_init();
+	//button_driver_init();
 
 	// initialise LED
-	gpio_driver_init();
+	//gpio_driver_init();
 
 	// Add IRQ handler
-	interrupt_add_listener(40, &timer_irq);
+	//interrupt_add_listener(40, &timer_irq);
 
-	gpt_timer_init(GPT_TIMER4, 3000);
-	gpt_timer_start(GPT_TIMER4);
+	//gpt_timer_init(GPT_TIMER4, 3000);
+	//gpt_timer_start(GPT_TIMER4);
 
-	scheduler_addProcess(test);
-	scheduler_addProcess(test2);
-	scheduler_addProcess(uart_process);
-	uart_driver_init(9600);
+	//scheduler_addProcess(test);
+	//scheduler_addProcess(test2);
+	//scheduler_addProcess(uart_process);
+	//uart_driver_init(9600);
+
+	mmcsd_init();
 
 	// Enable interrupts globally
-	interrupt_enable();
+	//interrupt_enable();
 
 	// Execute
 	while(1) {

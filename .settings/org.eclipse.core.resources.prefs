@@ -34,5 +34,7 @@ encoding//Debug/src/system/scheduler/subdir_rules.mk=UTF-8
 encoding//Debug/src/system/scheduler/subdir_vars.mk=UTF-8
 encoding//Debug/src/tools/subdir_rules.mk=UTF-8
 encoding//Debug/src/tools/subdir_vars.mk=UTF-8
+encoding//Debug/src/utils/subdir_rules.mk=UTF-8
+encoding//Debug/src/utils/subdir_vars.mk=UTF-8
 encoding//Debug/subdir_rules.mk=UTF-8
 encoding//Debug/subdir_vars.mk=UTF-8
