@@ -12,12 +12,15 @@
 #include "src/system/hal/omap3530/prcm/percm.h"
 #include "src/system/scheduler/scheduler.h"
 #include "src/system/hal/omap3530/mmu/mmu.h"
+#include "src/system/scheduler/loader.h"
 
 interrupt_callback timer_irq;
 
 void test(void);
 void test2(void);
 void uart_process(void);
+
+extern char appdata[];
 
 #pragma TASK(main)
 void main(void) {
@@ -39,10 +42,13 @@ void main(void) {
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
 
-	scheduler_addProcess(test);
-	scheduler_addProcess(test2);
-	scheduler_addProcess(uart_process);
-	uart_driver_init(9600);
+	//scheduler_addProcess(test);
+	//scheduler_addProcess(test2);
+	//scheduler_addProcess(uart_process);
+	//uart_driver_init(9600);
+
+	// Load process
+	loader_load_process((uint32_t)&appdata + 0x524, 1332); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();
@@ -73,11 +79,11 @@ void test(void) {
 	}
 }
 void test2(void) {
-//	while(1) {
+	while(1) {
 		printf("[2] task test\n");
 		int y = 1;
 		y--;
-//	}
+	}
 }
 
 void uart_process(void) {
