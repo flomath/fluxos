@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #define SYS_DEBUG		10
+#define SYS_EXIT	    20
 
 #pragma SWI_ALIAS(syscall, 0)
 void syscall(uint32_t swiID, uint32_t params[]);

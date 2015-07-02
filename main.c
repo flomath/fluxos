@@ -77,6 +77,7 @@ void test2(void) {
 		printf("[2] task test\n");
 		int y = 1;
 		y--;
+		printf("[2] further test\n");
 //	}
 }
 
@@ -100,6 +101,7 @@ void uart_process(void) {
 
 void timer_irq(Registers_t* context) {
 	// This method will never return
+	//button_driver_interrupt(context);
 	scheduler_run(context);
 
 	gpt_timer_reset(GPT_TIMER4);
