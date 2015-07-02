@@ -42,7 +42,7 @@ void main(void) {
 	//scheduler_addProcess(uart_process);
 	//uart_driver_init(9600);
 
-	mmcsd_init();
+	mmcsd_card_detect();
 
 	// Enable interrupts globally
 	//interrupt_enable();

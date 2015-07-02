@@ -7,7 +7,19 @@
 
 #include "mmcsd.h"
 
-void mmcsd_init()
+CARD_INFO cardInfo;
+EFI_BLOCK_MEDIA mmchsMedia = {
+	1704,
+	true,
+    false,
+	false,
+	false,
+	false,
+	512,
+	0
+};
+
+void mmcsd_card_detect()
 {
     // configure interface and functional clocks
     // p. 3161
@@ -17,14 +29,21 @@ void mmcsd_init()
     // softreset mmc/sd controller
 	mmcsd_softreset();
 
+	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(24)); // set to 1
+	uint32_t softResetAllDone;
+	do {
+		// wait until it returns 0x0
+		softResetAllDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(24)), 24);
+	} while ( softResetAllDone != 0 );
+
     // set default capabilities [22.5.1.3]
     // all settings are for MMCHS1 [p. 3206]
     hal_bitmask_set(MMCHS1, MMCHS_CAPA, BV(26));    // Voltage Support 1.8V must be set to 1
     hal_bitmask_set(MMCHS1, MMCHS_CAPA, BV(25));    // Voltage Support 3.0V must be set to 1
-    hal_bitmask_clear(MMCHS1, MMCHS_CAPA, BV(24));  // Voltage Support 3.3V must be set to 0
+    //hal_bitmask_clear(MMCHS1, MMCHS_CAPA, BV(24));  // Voltage Support 3.3V must be set to 0
 
     // Maximum current capabilities
-    hal_bitmask_clear(MMCHS1, MMCHS_CUR_CAPA, 0xFF);
+    //hal_bitmask_clear(MMCHS1, MMCHS_CUR_CAPA, 0xFF);
 
     // set max currents (p. 3208)
 	//hal_bitmask_set(MMCHS1, MMCHS_CUR_CAPA, BV(26));
@@ -32,30 +51,34 @@ void mmcsd_init()
     // wakeup configuration [22.5.1.4]
     hal_bitmask_set(MMCHS1, MMCHS_CAPA, BV(2));     // enwakup
     hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(24));    // wakeup event on sd card interrupt
-    hal_bitmask_set(MMCHS1, MMCHS_IE, BV(8));       // enable card interrupt (sdio card only!)
+    //hal_bitmask_set(MMCHS1, MMCHS_IE, BV(8));       // enable card interrupt (sdio card only!)
 
     // enable interrupts
     // TODO: check if all important one are set
-    hal_bitmask_set(MMCHS1, MMCHS_IE, BV(20));       // data timeout error
-    hal_bitmask_set(MMCHS1, MMCHS_IE, BV(19));       // cmd index error
-    hal_bitmask_set(MMCHS1, MMCHS_IE, BV(16));       // cto enable error
-    hal_bitmask_set(MMCHS1, MMCHS_IE, BV(1));        // TC (transfer completed) interrupt
-    hal_bitmask_set(MMCHS1, MMCHS_IE, BV(0));        // CC (command completed) interrupt
+    //hal_bitmask_set(MMCHS1, MMCHS_IE, BV(20));       // data timeout error
+    //hal_bitmask_set(MMCHS1, MMCHS_IE, BV(19));       // cmd index error
+    //hal_bitmask_set(MMCHS1, MMCHS_IE, BV(16));       // cto enable error
+    //hal_bitmask_set(MMCHS1, MMCHS_IE, BV(1));        // TC (transfer completed) interrupt
+    //hal_bitmask_set(MMCHS1, MMCHS_IE, BV(0));        // CC (command completed) interrupt
 
     // mmc host/bus configuration [22.5.1.5]
     // MMCHS_CON to configure specific data/cmd transfer
     hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(5));    // set DW8 (8 bit mode MMC) to 0 for SD/SDIO cards
     hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(12));	// CEATA mode to standard
+    hal_bitmask_set(MMCHS1, MMCHS_CON, BV(0));		// set OD
 
     // configure card voltage, pwr mode and data bus width
     //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(11));		// 0x5: 1.8V (Typical)
     //hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(10));		// 0x5: 1.8V (Typical)
     //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(9));			// 0x5: 1.8V (Typical)
     hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x6 << 9));		// 0x6 3V
+    hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(1));			// DTW_1_BIT
+    hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(8));			// SDBP_OFF
 
     //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(8));			// SD bus power on (SDBP)
-    hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x0 << 8));		// SD bus power on (SDBP)
-    hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(1));		// data transfer width to 1 bit (DTW)
+    //hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x0 << 8));		// SD bus power on (SDBP)
+    //hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(1));		// data transfer width to 1 bit (DTW)
+
 
     // Enable the input buffer of the clock output.
     // As a result, there is a loopback through the
@@ -85,18 +108,94 @@ void mmcsd_init()
     hal_bitmask_clear(MMCHS1, MMCHS_SYSCONFIG, BV(0));	// autoidle clock strgy: free running*/
 
 	// precard identification procedure (p. 3162)
-	mmcsd_precard_identification();
+	uint32_t identificationStatus = mmcsd_precard_identification();
+	if(identificationStatus != 0) {
+		printf("Failed to identify card. try again\n");
+		return;
+	}
 
 	//omap3530_mmchs_card_specific_data
+	mmcsd_card_data();
 
-	//  omap3530_mmchs_perform_card_configuration
+	// configure card for transfer mode
+	mmcsd_card_config();
 
 	// check media data
+	//mmchsMedia.LastBlock    = (cardInfo.NumBlocks - 1);
+	mmchsMedia.BlockSize    = cardInfo.BlockSize;
+	//gMMCHSMedia.ReadOnly     = (MmioRead32 (GPIO1_BASE + GPIO_DATAIN) & BIT23) == BIT23;
+	mmchsMedia.MediaPresent = true;
+	mmchsMedia.MediaId++;
 }
 
-void mmcsd_precard_identification()
+void mmcsd_card_data()
+{
+	uint32_t CardSize;
+    uint32_t *BlockSize;
+    uint32_t *NumBlocks;
+	uint32_t arg = cardInfo.RCA << 16;
+	uint32_t status = mmcsd_sendcmd(MMCHS_CMD9, arg);
+	if(status != 0)
+		return;
+
+    ((uint32_t *) &(cardInfo.CSDData))[0] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
+    ((uint32_t *) &(cardInfo.CSDData))[1] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP32) & BV(31)), 31);
+    ((uint32_t *) &(cardInfo.CSDData))[2] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP54) & BV(31)), 31);
+    ((uint32_t *) &(cardInfo.CSDData))[3] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP76) & BV(31)), 31);
+
+
+    // calculate number of blocks
+    if (cardInfo.CardType == SD_CARD_2_HIGH) {
+
+    } else {
+    	*BlockSize = (0x1UL << cardInfo.CSDData.READ_BL_LEN); // populate blocksize
+
+    	// calculate total number of blocks
+    	CardSize = cardInfo.CSDData.C_SIZELow2 | (cardInfo.CSDData.C_SIZEHigh10 << 2);
+    	*NumBlocks = (CardSize + 1) * (1 << (cardInfo.CSDData.C_SIZE_MULT + 2));
+    }
+
+    cardInfo.BlockSize = (BlockSize > 512) ? 512 : BlockSize; // max 2G
+    cardInfo.NumOfBlocks = NumBlocks;
+
+    // calculate max data transfer rate
+}
+
+void mmcsd_card_config()
+{
+	uint32_t arg = cardInfo.RCA << 16;
+	uint32_t status = mmcsd_sendcmd(MMCHS_CMD7, arg);
+	if(status != 0)
+		return;
+
+	if(cardInfo.CardType != UNKNOWN_CARD && cardInfo.CardType != MMC_CARD) {
+		status = mmcsd_sendcmd(MMCHS_CMD55, arg);
+		if(status == 0) {
+			status = mmcsd_sendcmd(MMCHS_CMD6, 0x2);
+			if(status == 0) {
+				// set controller to 4-bit
+				hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(1));
+			}
+		}
+	}
+
+	// send cmd16 (block length)
+	arg = cardInfo.BlockSize;
+	mmcsd_sendcmd(MMCHS_CMD16, arg);
+
+	mmcsd_change_clockfrequency(cardInfo.ClockFrequencySelect);
+}
+
+uint32_t mmcsd_precard_identification()
 {
 	// p. 3147
+	uint32_t cmdStatus;
+	uint8_t cmd8Supported = 0;
+	uint32_t response;
+
+	// activate all interrupts
+	hal_bitmask_write(MMCHS1, MMCHS_IE, MMCHS_IDENTIFY, 32);
+
 	hal_bitmask_set(MMCHS1, MMCHS_CON, BV(1)); // send init sequence
 	hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x00000000, 32);	// send dummy command
 
@@ -104,124 +203,151 @@ void mmcsd_precard_identification()
 	util_ksleep(1);
 
 	hal_bitmask_set(MMCHS1, MMCHS_STAT, BV(0));	// set 1 to clear flag
-	hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(1)); // stop sending init sequence
+	//hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(1)); // stop sending init sequence
+	hal_bitmask_set(MMCHS1, MMCHS_CON, BV(0)); // set OD
 	hal_bitmask_write(MMCHS1, MMCHS_STAT, 0xFFFFFFFF, 32);	// clear stat register
 
 	// change clock frequency to fit protocol
 	mmcsd_change_clockfrequency(MMCHS_CLK_FRQCY400);
 
 	// send cmd0
-	mmcsd_sendcmd(MMCHS_CMD0);
+	mmcsd_sendcmd(MMCHS_CMD0, 0x0);
 
-	// send cmd5
-	mmcsd_sendcmd(MMCHS_CMD5);
+	// send cmd5 (fails if no sdio card found)
+	cmdStatus = mmcsd_sendcmd(MMCHS_CMD5, 0x0);
+	if(cmdStatus == MMCHS_SUCCESS) {
+		printf("found sdio card. not yet implemented!\n");
+		return cmdStatus;
+	}
 
-	// read MMCHS_STAT and check CC and CTO
-	// cto = cmd timeout error
-	// cc = command complete
-	int cto;
-	int cc;
+	// Found SDIO-Card
+	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
+	uint32_t softResetDone;
+	do {
+		// wait until it returns 0x0
+		softResetDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25);
+	} while ( softResetDone != 0 );
 
+	// send cmd8
+	uint32_t cmd8Status = mmcsd_sendcmd(MMCHS_CMD8, CMD8_ARG);
+	if(cmd8Status == MMCHS_SUCCESS) {
+		uint32_t value_rsp10 = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
+		if(value_rsp10 != CMD8_ARG) {
+			printf("MMCSD: EFI Device error! Possible no card available?\n");
+		}
+
+		// supports sector mode, high capacity flag
+		cmd8Supported = 1;
+	} else {
+		printf("CMD8 fails. Not an sd2.0 card.\n");
+	}
+
+	// read MMCHS_STAT register
+	/*cc = 0;
+	cto = 0;
 	do {
 		cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
-		cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+		cto = BIT_TRIM_RIGHT((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16)), 16);
 
 		if(cc == 1) {
-			// it is an sdio-card!
+			// standard SD card compliant 2.0
 			break;
 		}
-	} while (cto != 1);
+	} while (cto == 0);
 
-	// check again
-	// it is an SDIO-card
+	// it is SD card compliant with standard 2.0 or later
 	if (cc == 1)
 	{
+		// standard specifiction
+		// END
 
-	}
-	else
-	{
-		hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
-		while ( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1) {}	// wait until it returns 0x0
-
-		// send cmd8
-		mmcsd_sendcmd(MMCHS_CMD8);
-
-		// read MMCHS_STAT register
-		cc = 0;
-		cto = 0;
-		do {
-			cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
-			cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
-
-			if(cc == 1) {
-				// standard SD card compliant 2.0
-				break;
-			}
-		} while (cto != 1);
-
-		// it is SD card compliant with standard 2.0 or later
-		if (cc == 1)
-		{
-			// standard specifiction
-			// END
+		uint32_t value_rsp10 = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
+		if(value_rsp10 != CMD8_ARG) {
+			printf("MMCSD: EFI Device error! Possible no card available?\n");
 		}
-		else
-		{
-			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
-			while( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1) {}	// wait until it returns 0x0
 
-			// do until card is not busy anymore
-			int value_rsp10;
-			int loopCount = 0;
-			do {
-				// send cmd55
-				mmcsd_sendcmd(MMCHS_CMD55);
+		// supports sector mode, high capacity flag
+		cmd8Supported = 1;
+	}*/
 
-				// send ACMD41 command
-				// TODO
+	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
+	util_ksleep(1);
 
-				// read MMCHS_STAT register
-				cc = 0;
-				cto = 0;
-				do {
-					cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
-					cto = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16)), 16);
+	softResetDone = 0;
+	do {
+		// wait until it returns 0x0
+		softResetDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25);
+	} while ( softResetDone != 0 );
 
-					if(cc == 1) {
-						// standard SD card compliant 2.0
-						break;
-					}
-				} while (cto != 1);
+	// do until card is not busy anymore
+	uint32_t value_rsp10;
+	int loopCount = 0;
+	do {
+		// send cmd55
+		uint32_t cmd55Status = mmcsd_sendcmd(MMCHS_CMD55, 0x0);
+		if(cmd55Status == MMCHS_SUCCESS) {
+			response = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
+			printf("succesfully detected sdcard. cmd5 response: %x\n", response);
+			cardInfo.CardType = SD_CARD;
 
-				// SD card compliant with standard 1.x
-				if (cc == 1)
-				{
-					// verify if card is busy
-					value_rsp10 = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
-				}
-				else
-				{
-					// it is an MMC card
-					// will be implemented later
-				}
+			// send ACMD41 command
+			uint32_t cmdArg = ((uint32_t *) &(cardInfo.OCRData))[0];
+			if(cmd8Supported)
+				cmdArg |= HCS;
 
-				loopCount++;
-			} while(value_rsp10 != 1 || loopCount < MAX_RETRY);
+			uint32_t cmd41Status = mmcsd_sendcmd(MMCHS_CMD41, cmdArg);
+			if(cmd41Status != 0)
+				return cmd41Status;
 
-			// send cmd2 to gather information about how to read sd card
-			mmcsd_sendcmd(MMCHS_CMD2);
+			((uint32_t *) &(cardInfo.OCRData))[0] = hal_get_register(MMCHS1, MMCHS_RSP10);
+			printf("SD card detected: OCR: %x\n", cardInfo.OCRData);
 
-			// send cmd3
-			mmcsd_sendcmd(MMCHS_CMD3);
-
-			// TODO: handle mmc card
-			// if mmc card -> more than one card connected? if only 1 or all are identified, go on then
-
-			// send cmd7
-			mmcsd_sendcmd(MMCHS_CMD7);
+		} else {
+			cardInfo.CardType = MMC_CARD;
+			// todo: not supported yet
+			printf("detected mmc card. not supported yet\n");
+			return cmdStatus;
 		}
-	}
 
+		// verify that card is not busy
+		if (cardInfo.OCRData.Busy == 1) {
+
+		  if (cmd8Supported)
+			  cardInfo.CardType = SD_CARD_2;
+
+		  // card is ready, check capacity modes
+		  if (cardInfo.OCRData.AccessMode & BV(1)) {
+			  cardInfo.CardType = SD_CARD_2_HIGH;
+			  printf("High capacity card\n");
+		  } else {
+			  printf("Standard capacity card\n");
+		  }
+
+		  // card is ready to use
+		  break;
+		}
+
+		loopCount++;
+		util_ksleep(1000);
+
+	} while(loopCount < MAX_RETRY);
+
+	// send cmd2 to gather information about how to read sd card
+	mmcsd_sendcmd(MMCHS_CMD2, 0x0);
+	// todo: parse card information
+
+	// send cmd3
+	mmcsd_sendcmd(MMCHS_CMD3, 0x0);
+	// read card relative address (rca)
+
+	// TODO: handle mmc card
+	// if mmc card -> more than one card connected? if only 1 or all are identified, go on then
+
+	// send cmd7
+	mmcsd_sendcmd(MMCHS_CMD7, 0x0);
+
+
+	return MMCHS_SUCCESS;
 }
 
 void mmcsd_change_clockfrequency(uint32_t clockfrequency)
@@ -242,7 +368,7 @@ void mmcsd_change_clockfrequency(uint32_t clockfrequency)
     hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(2));
 }
 
-void mmcsd_sendcmd(uint32_t cmd)
+uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg)
 {
 	// see p.3151 resp. 3155
 	// read/write transfer flow with polling and without DMA
@@ -253,111 +379,217 @@ void mmcsd_sendcmd(uint32_t cmd)
 	// Set Bitfields in MMCHS_CON
 	// set MIT, STR, but only for mmc cards (not gonna happen)
 
+	// Clear status register
+	hal_bitmask_write(MMCHS1, MMCHS_STAT, 0xFFFFFFFF, 32);
+
+	// reset timeout counter
+	//hal_bitmask_write(MMCHS1, MMCHS_SYSCTL, (0xFUL << 16), 32);
+	//hal_bitmask_write(MMCHS1, MMCHS_SYSCTL, (0xEUL << 16), 32);
+
 	// write MMCHS_CSRE if response type permits
 	// TODO: set bit for error code card status
 	//hal_bitmask_write(MMCHS1, MMCHS_CSRE, 0x00000000);
 
 	// Set Blocksize and number of Blocks
-	hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(9), 8); // 512 bytes (block length)
+	hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(9), 32); // 512 bytes (block length)
 	//hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(16)); // possible TODO: 0 no block transferred, 1 block (block count)
 
 	// MMCHS_ARG default
-	hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00000000, 8);
+	if(arg == 0x0) hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00000000, 32);
 
 	// if interrupts are used: MMCHS_ISE
 	// set to default?
+
+	hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
 
 	// Write command
 	// MMCHS_CMD and MMCHS_ISE
 	switch(cmd)
 	{
+		case 0:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00040001, 32);
+			//hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00040001, 8);
+			//hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x00000000, 32);
+		}
+		break;
+
 		case 1:
 		{
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x01020000, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00050001, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00050001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x01020000, 32);
 		}
 		break;
 
 		case 2:
 		{
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x02090000, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x02090000, 32);
 		}
 		break;
 
 		case 3:
 		{
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x031a0000, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x031a0000, 32);
+		}
+		break;
+
+		case 41:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_IE, ACMD41_INT_EN, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, arg, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, ACMD41, 32);
+		}
+		break;
+
+		case 5:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00050001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00050001, 32);
+			//hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x05020000, 32);
+		}
+		break;
+
+		case 6:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_IE, ACMD6_INT_EN, 32);
+			//hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00050001, 32);
+			//hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, ACMD6, 32);
+		}
+		break;
+
+		case 55:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x371a0000, 32);
 		}
 		break;
 
 		case 7:
 		{
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x071a0000, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x071a0000, 32);
+		}
+		break;
+
+		case 8:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x81a0000, 32);
 		}
 		break;
 
 		case 9:
 		{
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x09090000, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001, 8);
-			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x09090000, 32);
 		}
 		break;
+
+		case 16:
+		{
+			hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000020, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00000200, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x101a0000, 32);
+		}
+		break;
+
+		default:
+		{
+			printf("WARNING: tried to send unknown cmd to MMCSD\n");
+			return;
+		}
 	}
 
-	// read MMCHS_STAT register
-	uint32_t mmcStatus;
-	do {
-		mmcStatus = hal_get_address_value(MMCHS1, MMCHS_STAT);
-	} while(mmcStatus == 0);
-
-	// todo: fix status, not set!
-
-	while( ( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0)) != 1) && ( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16)) != 1)) { }
-	int cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
-	int cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
-	int ccrc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(17);
-
-	// conflict occured on mmci_cmd line
-	if (cto && ccrc)
+	int repeatSend = 0;
+	while(repeatSend < MAX_RETRY)
 	{
-		// set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
-		hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
-		while( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1 ) { }
-	}
-	else
-	{
-		if (cto && !ccrc)
+		// read MMCHS_STAT register
+		uint32_t mmcStatus;
+		do {
+			mmcStatus = hal_get_address_value(MMCHS1, MMCHS_STAT);
+		} while(mmcStatus == 0);
+
+		// check error interrupt
+		if( BIT_TRIM_RIGHT((mmcStatus & BV(15)), 15) != 0) {
+			// Soft reset
+			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(24));
+			uint32_t softResetAllDone;
+			do {
+				// wait until it returns 0x0
+				softResetAllDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(24)), 24);
+			} while ( softResetAllDone != 0 );
+
+			printf("error sending command: %x\n", mmcStatus);
+			return MMCHS_ERROR;
+		}
+
+		// check if cmd is completed (CC)
+		if((mmcStatus & BV(0)) == 1) {
+			hal_bitmask_set(MMCHS1, MMCHS_STAT, BV(0));
+			break;
+		}
+
+		/*while( ( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0)) != 1) && ( BIT_TRIM_RIGHT((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16)), 16) != 1)) { }
+		int cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
+		int cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
+		int ccrc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(17);
+
+		// conflict occured on mmci_cmd line
+		if (cto && ccrc)
 		{
 			// set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
 			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
 			while( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1 ) { }
 		}
-		else if (cc)
+		else
 		{
-			// read response type
-			// RESP_TYPE = MMCHS_CMD[17:16]
-			int RESP_TYPE = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_CMD) & (BV(17) | BV(16))), 16);
-
-			// a response is waiting
-			if(RESP_TYPE != 0x0)
+			if (cto && !ccrc)
 			{
-				// read MMCHS_RSP
-				int mmchsResponse = hal_get_address_value(MMCHS1, MMCHS_RSP10);
-
-				// read MMCHS_STAT CIE, CEB, CCRC and CERR
-				int CIE = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(19)), 19);
-				int CEB = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(18)), 18);
-				int CCRC = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(17)), 16);
-				int CERR = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(28)), 28);
+				// set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
+				hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
+				while( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1 ) { }
 			}
-		}
+			else if (cc)
+			{
+				// read response type
+				// RESP_TYPE = MMCHS_CMD[17:16]
+				int RESP_TYPE = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_CMD) & (BV(17) | BV(16))), 16);
+
+				// a response is waiting
+				if(RESP_TYPE != 0x0)
+				{
+					// read MMCHS_RSP
+					int mmchsResponse = hal_get_address_value(MMCHS1, MMCHS_RSP10);
+
+					// read MMCHS_STAT CIE, CEB, CCRC and CERR
+					int CIE = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(19)), 19);
+					int CEB = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(18)), 18);
+					int CCRC = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(17)), 16);
+					int CERR = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(28)), 28);
+				}
+			}
+		}*/
+
+		repeatSend++;
 	}
+
+	if(repeatSend == MAX_RETRY) {
+		printf("MMCHS send command timeout\n");
+		return MMCHS_ERROR;
+	}
+
+	return MMCHS_SUCCESS;
 }
 
 
