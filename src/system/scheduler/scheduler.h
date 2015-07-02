@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_
 
 #include "process.h"
+#include "../hal/omap3530/mmu/mmu.h"
 #include <stdlib.h>
 #include "../../tools/mutex.h"
 
@@ -41,5 +42,10 @@ void scheduler_run();
  * Kill a process and release its resources
  */
 void scheduler_killProcess(int processID);
+
+/**
+ * Get current process
+ */
+PCB_t* scheduler_getCurrentProcess();
 
 #endif /* SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_ */

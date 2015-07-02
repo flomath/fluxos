@@ -46,6 +46,7 @@ typedef struct {
 	uint32_t processID;
 	ProcessState_t state;
 	Registers_t registers;
+	uint32_t* pageTable;
 	void (*func)(void);
 } PCB_t;
 
