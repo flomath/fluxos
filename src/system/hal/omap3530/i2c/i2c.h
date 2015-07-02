@@ -8,7 +8,7 @@
 #ifndef SRC_SYSTEM_HAL_OMAP3530_I2C_I2C_H_
 #define SRC_SYSTEM_HAL_OMAP3530_I2C_I2C_H_
 
-#include "../system.h"
+#include "../../../system.h"
 
 /*
  * BeagleBoard System Reference 8.4.3 page 49
@@ -33,6 +33,25 @@
 #define I2C_SCLL	0x34	///< This register is used to determine the SCL low time value when master. [18-42]
 #define I2C_SCLH	0x38	///< This register is used to determine the SCL low time value when master. [18-44]
 
+#define I2C_STAT    0x08
+#define I2C_CNT     0x18
+#define I2C_DATA    0x1C
+#define I2C_CON     0x24
+#define I2C_SA      0x2C
+
+#define I2C_STAT_XDR 	BV(14)
+#define I2C_STAT_RDR 	BV(13)
+#define I2C_STAT_BB 	BV(12)
+#define I2C_STAT_XRDY 	BV(4)
+#define I2C_STAT_RRDY 	BV(3)
+#define I2C_STAT_ARDY 	BV(2)
+#define I2C_STAT_NACK 	BV(1)
+#define I2C_STAT_AL 	BV(0)
+#define I2C_STAT_BB		BV(12)
+
+#define I2C_CON1	0x8603
+#define I2C_CON2	0x8403
+
 /**
  * Enable the I²C device 1
  */
@@ -53,5 +72,39 @@ void i2c3_enable(void);
  * @param i2c The I²C device to initialize
  */
 void i2c_init(uint32_t i2c);
+
+/**
+ * Write the 8 bit data to the i2c device
+ * @param i2c The I2C module
+ * @param slave_address The slave address
+ * @param data The data to write
+ * @param address
+ */
+void i2c_write8(uint32_t i2c, uint8_t slave_address, uint8_t address, uint8_t data);
+
+/**
+ * Write the data to the i2c device
+ * @param i2c The I2C module
+ * @param slave_address The slave address
+ * @param data The data to write
+ * @param length The length of data
+ */
+void i2c_write(uint32_t i2c, uint8_t slave_address, uint8_t* data, size_t length);
+
+/**
+ * Sends the data
+ * @param i2c The I2C module
+ * @param con
+ * @param slave_address The slave address
+ * @param data The data to write
+ * @param length The length of data
+ */
+static void i2c_execute(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8_t* data, size_t length);
+
+/**
+ * Wait until device is idle
+ * @param i2c The I2C module
+ */
+static void i2c_wait(uint32_t i2c);
 
 #endif
