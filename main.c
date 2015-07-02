@@ -11,8 +11,11 @@
 #include "src/system/hal/omap3530/timer/timer.h"
 #include "src/system/hal/omap3530/clock/clock.h"
 #include "src/system/scheduler/scheduler.h"
-#include "src/system/hal/omap3530/mcbsp/mcbsp.h"
 #include "src/system/hal/omap3530/mmu/mmu.h"
+#include "src/system/hal/omap3530/tps65950/tps65950.h"
+#include "src/applications/audio/audio.h"
+#include "src/system/hal/omap3530/mcbsp/mcbsp.h"
+#include "src/system/hal/omap3530/i2c/i2c.h"
 
 interrupt_callback timer_irq;
 
@@ -33,7 +36,10 @@ void main(void) {
 
 	// Enable sound
 	mcbsp2_enable();
-	mcbsp_init_master(MCBSP2);
+	mcbsp_init_master2(MCBSP2);
+	i2c1_enable();
+//	i2c_init(I2C2);
+	tps_init();
 
 	// initialise MMU
 	mmu_init();
@@ -44,16 +50,18 @@ void main(void) {
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
 
-	scheduler_addProcess(test);
-	scheduler_addProcess(test2);
-	scheduler_addProcess(uart_process);
-	uart_driver_init(9600);
+	//scheduler_addProcess(test);
+	//scheduler_addProcess(test2);
+	//scheduler_addProcess(uart_process);
+	//uart_driver_init(9600);
 
 	// Enable interrupts globally
-	interrupt_enable();
+	//interrupt_enable();
 
 	// call software interrupt
 	//syscall(SYS_DEBUG, 0);
+
+	test();
 
 	// Execute
 	while(1) {
@@ -65,24 +73,27 @@ void test(void) {
 	int a = 1;
 	a++;
 
-	printf("%i\n", a);
+	//printf("%i\n", a);
 	syscall(SYS_DEBUG, 0);
 
 	a++;
-	printf("%i\n", a);
+	//printf("%i\n", a);
 
 	while(1) {
-		printf("[1] task test\n");
+		printf("[1] Test sound\n");
+		play_sample();
+		printf("[1] Sound test finished\n");
 		int x = 0;
 		x++;
 	}
 }
+
 void test2(void) {
-//	while(1) {
+	while(1) {
 		printf("[2] task test\n");
 		int y = 1;
 		y--;
-//	}
+	}
 }
 
 void uart_process(void) {
@@ -98,7 +109,7 @@ void uart_process(void) {
 			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
-			printf("No Data to process\n");
+			//printf("No Data to process\n");
 		}
 	}
 }

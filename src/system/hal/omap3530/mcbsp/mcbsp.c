@@ -25,8 +25,66 @@
 void mcbsp2_enable(void) {
 	// Activate PER_96M_FCLK (Internal Clock)
 	// Activate Clocks (page 2974)
-	hal_bitmask_set(PER_CM, CM_FCLKEN_PER, BV(0));
 	hal_bitmask_clear(CONTROL, CONTROL_DEVCONF0, BV(6));
+
+	hal_bitmask_set(PER_CM, CM_FCLKEN_PER, BV(0));
+	hal_bitmask_set(PER_CM, CM_ICLKEN_PER, BV(0));
+}
+
+void mcbsp_init_master2(uint32_t mcbsp) {
+	// Hardware and Software Reset
+	// McBSP2,3 and 4 belong to the PER Domain and their reset signal is the PER_RST from the RRCM module
+
+	// Set the transmitter in reset mode
+	hal_bitmask_clear(mcbsp, MCBSPLP_SPCR2_REG, BV(7));
+	hal_bitmask_clear(mcbsp, MCBSPLP_SPCR2_REG, BV(0));
+
+	// Set the receiver in reset mode
+	hal_bitmask_clear(mcbsp, MCBSPLP_SPCR1_REG, BV(0));
+
+	// disable gpio-mode
+	hal_bitmask_clear(mcbsp, MCBSPLP_PCR_REG, BV(13));
+
+	// xmit format
+	// XCR1
+	hal_bitmask_set(mcbsp, MCBSPLP_XCR1_REG, BV(6)); 	// 16-bit word length for phase 1
+	hal_bitmask_set(mcbsp, MCBSPLP_XCR1_REG, BV(8));	// framelength = 1 word
+
+	// XCR2
+	hal_bitmask_set(mcbsp, MCBSPLP_XCR2_REG, BV(15)); 	// 2 phase
+	hal_bitmask_set(mcbsp, MCBSPLP_XCR2_REG, BV(0));	// delay of 1 ms for i2s page
+	hal_bitmask_clear(mcbsp, MCBSPLP_XCR2_REG, BV(8));	// framelength = 1 word
+	hal_bitmask_set(mcbsp, MCBSPLP_XCR2_REG, BV(6));	// 16-bit word length for phase 2
+
+	// receive format
+	// RCR1
+	hal_bitmask_set(mcbsp, MCBSPLP_RCR1_REG, BV(6)); 	// 16-bit word length for phase 1
+	hal_bitmask_set(mcbsp, MCBSPLP_RCR1_REG, BV(8));	// framelength = 1 word
+
+	// RCR2
+	hal_bitmask_set(mcbsp, MCBSPLP_RCR2_REG, BV(15)); 	// 2 phase
+	hal_bitmask_set(mcbsp, MCBSPLP_RCR2_REG, BV(0));	// delay of 1 ms for i2s page
+	hal_bitmask_clear(mcbsp, MCBSPLP_RCR2_REG, BV(8));	// framelength = 1 word
+	hal_bitmask_set(mcbsp, MCBSPLP_RCR2_REG, BV(6));	// 16-bit word length for phase 2
+
+	// disable DMA
+	//hal_bitmask_set(MCBSP1_BASE, MCBSPLP_XCCR_REG, BV(0));
+
+	// clock polarity
+	// receiver
+	//hal_bitmask_set(MCBSP1, MCBSPLP_PCR_REG, BV(0)); // rising edge
+	//hal_bitmask_set(MCBSP1, MCBSPLP_PCR_REG, BV(1)); // falling edge
+
+	// Wait to allow settings to sync
+	int loop;
+	for (loop = 0; loop < 0XFF; loop++);
+
+	// Wake up the transmitter of reset mode (needed to configure)
+	hal_bitmask_set(mcbsp, MCBSPLP_SPCR2_REG, BV(7));
+	hal_bitmask_set(mcbsp, MCBSPLP_SPCR2_REG, BV(0));
+
+	// Wake up the receiver of reset mode (needed to configure)
+	hal_bitmask_set(mcbsp, MCBSPLP_SPCR1_REG, BV(0));
 }
 
 void mcbsp_init_master(uint32_t mcbsp) {
@@ -115,3 +173,4 @@ void mcbsp_init_master(uint32_t mcbsp) {
 
 	// Receiver and transmitter become active
 }
+

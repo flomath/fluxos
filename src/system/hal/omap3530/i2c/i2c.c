@@ -12,18 +12,18 @@
 #define TIMEOUT 1000
 
 void i2c1_enable(void) {
-	hal_bitmask_set(CM_ICLKEN1_CORE, 0, EN_I2C1);
-	hal_bitmask_set(CM_FCLKEN1_CORE, 0, EN_I2C1);
+	hal_bitmask_set(CM_ICLKEN1_CORE, 0, BV(EN_I2C1));
+	hal_bitmask_set(CM_FCLKEN1_CORE, 0, BV(EN_I2C1));
 }
 
 void i2c2_enable(void) {
-	hal_bitmask_set(CM_ICLKEN1_CORE, 0, EN_I2C2);
-	hal_bitmask_set(CM_FCLKEN1_CORE, 0, EN_I2C2);
+	hal_bitmask_set(CM_ICLKEN1_CORE, 0, BV(EN_I2C2));
+	hal_bitmask_set(CM_FCLKEN1_CORE, 0, BV(EN_I2C2));
 }
 
 void i2c3_enable(void) {
-	hal_bitmask_set(CM_ICLKEN1_CORE, 0, EN_I2C3);
-	hal_bitmask_set(CM_FCLKEN1_CORE, 0, EN_I2C3);
+	hal_bitmask_set(CM_ICLKEN1_CORE, 0, BV(EN_I2C3));
+	hal_bitmask_set(CM_FCLKEN1_CORE, 0, BV(EN_I2C3));
 }
 
 

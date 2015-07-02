@@ -3,6 +3,7 @@
  *
  *  Created on: 02.07.2015
  *      Author: Philip
+ *
  */
 
 #ifndef SRC_SYSTEM_HAL_OMAP3530_TPS65950_TPS65950_H_
@@ -10,7 +11,14 @@
 
 #include "../../../system.h"
 
-// Source: https://github.com/Wolfy42/itmOS/blob/bbd11044c57f252fb9675bd3b1d9ddf624864bd8/BOSS-Task/HAL/Audio/TPS65950/TPS65950SCD.h
+/*
+ * TPS65950SCD.h
+ *
+ * TPS65950 System Companion Device
+ *
+ * TPS65950 OMAP™ Power Management and System Companion Device ES 1.2 TRM (Rev. G)
+ * http://www.ti.com/product/tps65950
+ */
 
 // I2C addresses of audio-voice
 #define SCD_AUDIO_VOICE		0x49

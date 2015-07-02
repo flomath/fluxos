@@ -38,6 +38,8 @@
 
 #define MCBSPLP_MCR1_REG	0x034 ///< multichannel control
 
+#define MCBSP_XRDY 			BV(1)
+
 /**
  *
  */
@@ -48,5 +50,6 @@ void mcbsp2_enable(void);
  * @param mcbsp The MCBSP address to initialize
  */
 void mcbsp_init_master(uint32_t mcbsp);
+void mcbsp_init_master2(uint32_t mcbsp);
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_ */
