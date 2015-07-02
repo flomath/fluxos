@@ -33,6 +33,9 @@
 #define CM_CLKSTCTRL_PER  	0x048
 #define CM_CLKSTST_PER    	0x04C
 
+// core
+#define CM_FCLKEN1_CORE		0x48004A00		// Controls the modules functional clock activity [4-129]
+#define CM_ICLKEN1_CORE		0x48004A10		// Controls the modules interface clock activity [4-133]
 
 #define CONTROL				0x48002274
 #define CONTROL_DEVCONF0	0x004
