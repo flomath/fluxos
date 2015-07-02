@@ -42,13 +42,14 @@ void main(void) {
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
 
+
 	//scheduler_addProcess(test);
 	//scheduler_addProcess(test2);
-	//scheduler_addProcess(uart_process);
-	//uart_driver_init(9600);
+	scheduler_addProcess(uart_process);
+	uart_driver_init(9600);
 
 	// Load process
-	loader_load_process((uint32_t)&appdata + 0x524, 1332); // Program Data + Main offset
+	//loader_load_process((uint32_t)&appdata + 0x524, 1332); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();
@@ -99,7 +100,7 @@ void uart_process(void) {
 			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
-			printf("No Data to process\n");
+			//printf("No Data to process\n");
 		}
 	}
 }
