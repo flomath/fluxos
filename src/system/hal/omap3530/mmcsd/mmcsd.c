@@ -23,8 +23,8 @@ void mmcsd_card_detect()
 {
     // configure interface and functional clocks
     // p. 3161
-	hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(24));
-	hal_bitmask_set(CORE_CM, CM_ICLKEN1_CORE, BV(24));
+	hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(23));
+	hal_bitmask_set(CORE_CM, CM_ICLKEN1_CORE, BV(23));
 
     // softreset mmc/sd controller
 	mmcsd_softreset();
@@ -226,7 +226,7 @@ uint32_t mmcsd_precard_identification()
 	do {
 		// wait until it returns 0x0
 		softResetDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25);
-	} while ( softResetDone != 0 );
+	} while ( softResetDone == 1 );
 
 	// send cmd8
 	uint32_t cmd8Status = mmcsd_sendcmd(MMCHS_CMD8, CMD8_ARG);
@@ -242,34 +242,7 @@ uint32_t mmcsd_precard_identification()
 		printf("CMD8 fails. Not an sd2.0 card.\n");
 	}
 
-	// read MMCHS_STAT register
-	/*cc = 0;
-	cto = 0;
-	do {
-		cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
-		cto = BIT_TRIM_RIGHT((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16)), 16);
-
-		if(cc == 1) {
-			// standard SD card compliant 2.0
-			break;
-		}
-	} while (cto == 0);
-
-	// it is SD card compliant with standard 2.0 or later
-	if (cc == 1)
-	{
-		// standard specifiction
-		// END
-
-		uint32_t value_rsp10 = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
-		if(value_rsp10 != CMD8_ARG) {
-			printf("MMCSD: EFI Device error! Possible no card available?\n");
-		}
-
-		// supports sector mode, high capacity flag
-		cmd8Supported = 1;
-	}*/
-
+	// soft reset
 	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25)); // set to 1
 	util_ksleep(1);
 
@@ -280,7 +253,6 @@ uint32_t mmcsd_precard_identification()
 	} while ( softResetDone != 0 );
 
 	// do until card is not busy anymore
-	uint32_t value_rsp10;
 	int loopCount = 0;
 	do {
 		// send cmd55
@@ -310,7 +282,7 @@ uint32_t mmcsd_precard_identification()
 		}
 
 		// verify that card is not busy
-		if (cardInfo.OCRData.Busy == 1) {
+		if (cardInfo.OCRData.Busy == 0) {
 
 		  if (cmd8Supported)
 			  cardInfo.CardType = SD_CARD_2;
@@ -387,12 +359,19 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg)
 	//hal_bitmask_write(MMCHS1, MMCHS_SYSCTL, (0xEUL << 16), 32);
 
 	// write MMCHS_CSRE if response type permits
-	// TODO: set bit for error code card status
+	// set bit for error code card status
 	//hal_bitmask_write(MMCHS1, MMCHS_CSRE, 0x00000000);
 
 	// Set Blocksize and number of Blocks
 	hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(9), 32); // 512 bytes (block length)
 	//hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(16)); // possible TODO: 0 no block transferred, 1 block (block count)
+
+
+	// TODO: clear timer?
+	//hal_bitmask_write(MMCHS1, MMCHS_SYSCTL, BV(9), 32);
+    //MMCHS_REG(MMCHS_SYSCTL) &= ~DTO_MASK;
+    //MMCHS_REG(MMCHS_SYSCTL) |= DTO_VAL;
+
 
 	// MMCHS_ARG default
 	if(arg == 0x0) hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00000000, 32);
@@ -520,14 +499,26 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg)
 			mmcStatus = hal_get_address_value(MMCHS1, MMCHS_STAT);
 		} while(mmcStatus == 0);
 
+		// Ignore CRC errors on CMD2 and ACMD47, per relevant standards
+		// https://code.google.com/p/beagleboard-freebsd/source/browse/trunk/sys/arm/cortexa8/omap3/omap3_mmc.c?r=15#774
+		int val = BIT_TRIM_RIGHT( (mmcStatus & BV(17)), 17);
+		if (cmd == MMCHS_CMD2 && BIT_TRIM_RIGHT( (mmcStatus & BV(17)), 17) != 0){
+			mmcStatus &= ~(BV(17));
+			// clear ERRI if no other error is set
+			if ((mmcStatus & (0xFFFF0000)) == 0)
+			{
+				mmcStatus &= ~(BV(15));
+			}
+		}
+
 		// check error interrupt
 		if( BIT_TRIM_RIGHT((mmcStatus & BV(15)), 15) != 0) {
 			// Soft reset
-			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(24));
+			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
 			uint32_t softResetAllDone;
 			do {
 				// wait until it returns 0x0
-				softResetAllDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(24)), 24);
+				softResetAllDone = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25);
 			} while ( softResetAllDone != 0 );
 
 			printf("error sending command: %x\n", mmcStatus);
