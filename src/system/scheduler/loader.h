@@ -10,7 +10,7 @@
 
 #include "../system.h"
 
-#define CODE_START 0x00115000
+#define CODE_START 0x00150000
 #define CODE_MAIN_OFFSET 0xc
 
 /**

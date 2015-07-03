@@ -44,7 +44,7 @@ void main(void) {
 	gpt_timer_start(GPT_TIMER4);
 
 	uart_driver_init(9600);
-	//scheduler_addProcess(console_init);
+	scheduler_addProcess(console_init);
 	//scheduler_addProcess(test);
 	//scheduler_addProcess(test2);
 	//scheduler_addProcess(uart_process);
@@ -52,7 +52,7 @@ void main(void) {
 	// Load process
 	uint32_t proc1[2] = {
 		(uint32_t)&appdata,
-		820
+		819
 	};
 	syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
 
@@ -118,7 +118,7 @@ void uart_process(void) {
 
 void timer_irq(Registers_t* context) {
 	// This method will never return
-	button_driver_interrupt(context);
+	//button_driver_interrupt(context);
 	scheduler_run(context);
 
 	gpt_timer_reset(GPT_TIMER4);

@@ -115,6 +115,14 @@ void scheduler_run(Registers_t* context)
 			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
 			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
 			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
+
+			// if new pc (loading process) is set,
+			// set pc to new pc
+			if (contexts[SchedulerCurrentRunningProcess].newPC != 0) {
+				context->PC = contexts[SchedulerCurrentRunningProcess].newPC;
+				context->LR = (uint32_t)&scheduler_killCurrentProcess;
+				contexts[SchedulerCurrentRunningProcess].newPC = 0;
+			}
 //			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
 			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;
