@@ -35,7 +35,7 @@ static void console_main()
     println("Das ist unser Text");
 
     while (1) {
-
+    	println("wait for input");
     }
 }
 
@@ -46,7 +46,7 @@ static void print(char* text)
 
 static void newLine()
 {
-    print("\n");
+    print("\n\r");
 }
 
 static void println(char* text)

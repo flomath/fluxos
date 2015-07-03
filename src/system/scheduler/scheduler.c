@@ -27,12 +27,12 @@ void atom_end() {
 	atom = FALSE;
 }
 
-PCB_t* scheduler_addProcess(ProcFunc fct)
+void scheduler_addProcess(ProcFunc fct)
 {
 	int newProcessID = scheduler_getFreeProcessID();
 	if (newProcessID == SCHEDULER_INVALID_ID)
 	{
-		return NULL;
+		return;
 	}
 
 	contexts[newProcessID].processID = newProcessID;
@@ -45,8 +45,6 @@ PCB_t* scheduler_addProcess(ProcFunc fct)
 	contexts[newProcessID].registers.LR = (uint32_t)&scheduler_killCurrentProcess;
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
 	mmu_create_process(&contexts[newProcessID]);
-
-	return (&contexts[newProcessID]);
 }
 
 void scheduler_run(Registers_t* context)
@@ -123,6 +121,7 @@ void scheduler_run(Registers_t* context)
 				context->LR = (uint32_t)&scheduler_killCurrentProcess;
 				contexts[SchedulerCurrentRunningProcess].newPC = 0;
 			}
+
 //			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
 			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;

@@ -48,8 +48,6 @@ typedef struct {
 	Registers_t registers;
 	uint32_t* pageTable;
 	uint32_t newPC;
-	uint32_t* loadingAddress;
-	uint32_t loadingSize;
 	void (*func)(void);
 } PCB_t;
 

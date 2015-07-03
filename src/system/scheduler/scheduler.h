@@ -21,7 +21,7 @@ typedef void (*ProcFunc)();
 /**
  * Add a new process to the scheduler
  */
-PCB_t* scheduler_addProcess(ProcFunc fct);
+void scheduler_addProcess(ProcFunc fct);
 
 /**
  * Get a free process id slot
