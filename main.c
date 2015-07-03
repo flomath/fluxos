@@ -38,7 +38,7 @@ void main(void) {
 	mmu_init();
 
 	// Add IRQ handler
-	interrupt_add_listener(29, &timer_irq);
+	interrupt_add_listener(40, &timer_irq);
 
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
@@ -50,21 +50,21 @@ void main(void) {
 	//scheduler_addProcess(uart_process);
 
 	// Load process
-	//loader_load_process((uint32_t)&appdata + 0x524, 1332); // Program Data + Main offset
+	loader_load_process((uint32_t)&appdata + 0xc, 820); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();
 
-	uart_driver_write("hallo nino", 10);
-	syscall(SYS_PRINT, (uint32_t*)"hallo nino", 10);
+	//uart_driver_write("hallo nino", 10);
+	//syscall(SYS_PRINT, (uint32_t*)"hallo nino", 10);
 
 	// call software interrupt
 	//syscall(SYS_DEBUG, 0);
 
 	// Execute
 	while(1) {
-		uart_driver_write("hallo", 5);
-		//printf("..idle\n");
+		//uart_driver_write("hallo", 5);
+		printf("..idle\n");
 	}
 }
 

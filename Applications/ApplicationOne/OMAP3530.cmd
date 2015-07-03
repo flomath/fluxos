@@ -21,7 +21,10 @@ MEMORY
 
 SECTIONS
 {
-    .text          >  CODE
+    .text          >  CODE {
+    	boot.obj
+    	*(.text)
+    }
     .stack         >  CODE
     .bss           >  CODE
     .cio           >  CODE
