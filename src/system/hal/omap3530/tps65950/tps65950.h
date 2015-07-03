@@ -20,8 +20,8 @@
  * http://www.ti.com/product/tps65950
  */
 
-// I2C addresses of audio-voice
-#define SCD_AUDIO_VOICE		0x49
+#define SCD_AUDIO_VOICE		0x49		///< Group address 48 (includes audio-voice)
+#define SCD_LED				0x4a		///< Group address 4a (includes LED)
 
 // AUDIO_VOICE registers
 #define AV_CODEC_MODE 		0x00000001
@@ -116,11 +116,19 @@
 // ANAMICR settings
 #define AUXR_EN				(1<<2)
 
+#define VIBRA_CTL			0x00000045
+#define LED_EN				0x000000EE	///< LED Enable
+
 
 /**
- * Initialize the TPS module
+ * Initialize the TPS audio module
  */
 void tps_init(void);
+
+/**
+ * Initialize the TPS LED module
+ */
+void tps_led_init(void);
 
 /**
  * Send value to register

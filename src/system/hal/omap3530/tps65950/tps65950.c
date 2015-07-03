@@ -9,12 +9,14 @@
 
 #include "tps65950.h"
 #include "../i2c/i2c.h"
+#include "../../common/hal.h"
 
 static void tps_register_write(uint32_t address, uint32_t value) {
 	i2c_write8(I2C1, SCD_AUDIO_VOICE, address, value);
 }
 
 void tps_init(void) {
+
 	// turn it off to configure
 	tps_register_write(AV_CODEC_MODE, 0);
 
@@ -75,4 +77,25 @@ void tps_init(void) {
 	// now power it up, with sample rate and option 1 (2x stereo audio paths in and out)
 	tps_register_write(AV_CODEC_MODE, APPL_RATE_8 | 0 | OPT_MODE);
 	tps_register_write(AV_CODEC_MODE, APPL_RATE_48 | CODECPDZ | OPT_MODE);
+}
+
+void tps_led_init(void) {
+	uint8_t buffer[5] = {0};
+	i2c_read(I2C1, SCD_LED, LED_EN, buffer, 5);
+
+	int i;
+	for (i=0;i<5;i++) {
+		printf("Before: %d\n", buffer[i]);
+	}
+
+	// Disable the H-Bridge
+	i2c_write8(I2C1, SCD_LED, VIBRA_CTL, 0);
+	// Enable the LED and PWM
+	i2c_write8(I2C1, SCD_LED, LED_EN, BV(0) | BV(5));
+
+	i2c_read(I2C1, SCD_LED, LED_EN, buffer, 5);
+
+	for (i=0;i<5;i++) {
+		printf("After: %d\n", buffer[i]);
+	}
 }

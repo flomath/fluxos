@@ -49,8 +49,8 @@
 #define I2C_STAT_AL 	BV(0)
 #define I2C_STAT_BB		BV(12)
 
-#define I2C_CON1	0x8603
-#define I2C_CON2	0x8403
+#define I2C_CON1	0x8603	///< [15] I2C EN Module Enabled; [10] MST Master Mode; [9] TRX Transmitter Mode; [1] STP Stop condition queried; [0] STT Start condition queried
+#define I2C_CON2	0x8403	///< [15] I2C EN Module Enabled; [10] MST Master Mode; [9] = 0 TRX Receiver Mode; [1] STP Stop condition queried; [0] STT Start condition queried
 
 /**
  * Enable the I²C device 1
@@ -105,6 +105,11 @@ static void i2c_execute(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8
  * Wait until device is idle
  * @param i2c The I2C module
  */
-static void i2c_wait(uint32_t i2c);
+static bool_t i2c_wait(uint32_t i2c);
+
+/**
+ * Read from thevice
+ */
+void i2c_read(uint32_t i2c, uint8_t slave_address, uint8_t addr, uint8_t *buffer, size_t count);
 
 #endif

@@ -39,6 +39,7 @@ void main(void) {
 	mcbsp_init_master2(MCBSP2);
 	i2c1_enable();
 //	i2c_init(I2C2);
+	tps_led_init();
 	tps_init();
 
 	// initialise MMU

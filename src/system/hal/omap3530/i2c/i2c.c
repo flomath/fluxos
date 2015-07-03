@@ -28,10 +28,22 @@ void i2c3_enable(void) {
 
 
 void i2c_init(uint32_t i2c) {
-	// Sets I2C to 100Khz F/S mode
-	hal_bitmask_write(i2c, I2C_PSC, 0x17, 16);
+	// 18.5.1.1.1
+	hal_bitmask_write(i2c, I2C_PSC, 0x7, 8);
 	hal_bitmask_write(i2c, I2C_SCLL, 0x0d, 16);
 	hal_bitmask_write(i2c, I2C_SCLH, 0x0f, 16);
+
+	hal_bitmask_set(i2c, I2C_CON, BV(15));
+}
+
+void i2c_read(uint32_t i2c, uint8_t slave_address, uint8_t addr, uint8_t *buffer, size_t count) {
+	if (i2c_wait(i2c)) {
+		// Send address with no stop
+		i2c_execute(i2c, 0x8601, slave_address, &addr, 1);
+
+		// Send rest with stop
+		i2c_execute(i2c, 0x8403, slave_address, buffer, count);
+	}
 }
 
 void i2c_write8(uint32_t i2c, uint8_t slave_address, uint8_t address, uint8_t data) {
@@ -39,12 +51,15 @@ void i2c_write8(uint32_t i2c, uint8_t slave_address, uint8_t address, uint8_t da
 	buffer[0] = address;
 	buffer[1] = data;
 
-	i2c_write(i2c, slave_address, buffer, 2);
+	if (i2c_wait(i2c)) {
+		i2c_write(i2c, slave_address, buffer, 2);
+	}
 }
 
 void i2c_write(uint32_t i2c, uint8_t slave_address, uint8_t* data, size_t length) {
-	i2c_wait(i2c);
-	i2c_execute(i2c, I2C_CON1, slave_address, data, length);
+	if (i2c_wait(i2c)) {
+		i2c_execute(i2c, I2C_CON1, slave_address, data, length);
+	}
 }
 
 static void i2c_execute(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8_t* data, size_t length) {
@@ -80,16 +95,19 @@ static void i2c_execute(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8
 	    		redo = FALSE;
 
 	    	} else if (st & I2C_STAT_XRDY) {
+	    		// Ready to send
 	    		hal_bitmask_write(i2c, I2C_DATA, data[i++], 16);
 	    		hal_bitmask_write(i2c, I2C_STAT, I2C_STAT_XRDY, 16);
 	    		redo = FALSE;
 
 	    	} else if (st & I2C_STAT_RRDY) {
+	    		// Ready to receive
 	    		data[i++] = hal_get_address_value(i2c, I2C_DATA);
 	    		hal_bitmask_write(i2c, I2C_STAT, I2C_STAT_RRDY, 16);
 	    		redo = FALSE;
 
 	    	} else if (timeout-- == 0) {
+	    		printf("Timeout!");
 	    		return;
 	    	}
 	    }
@@ -106,12 +124,13 @@ static void i2c_execute(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8
 	hal_bitmask_write(i2c, I2C_STAT, I2C_STAT_ARDY, 16);
 }
 
-static void i2c_wait(uint32_t i2c) {
+static bool_t i2c_wait(uint32_t i2c) {
 	int timeout = TIMEOUT * 10;
 
 	while (hal_get_address_value(i2c, I2C_STAT) & I2C_STAT_BB) {
 		if (!timeout--) {
-			return;
+			return FALSE;
 	    }
 	}
+	return TRUE;
 }
