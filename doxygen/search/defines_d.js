@@ -9,5 +9,8 @@ var searchData=
   ['small_5fpage_5fbit_5fmask',['SMALL_PAGE_BIT_MASK',['../omap3530_2mmu_2mmu_8h.html#a05f12f3608794e0ca10a12d608e3d383',1,'mmu.h']]],
   ['small_5fpage_5fsize',['SMALL_PAGE_SIZE',['../omap3530_2mmu_2mmu_8h.html#a3d0ffb1de97be5d8d0509cc744781bc1',1,'mmu.h']]],
   ['small_5fpage_5fsize_5f4kb',['SMALL_PAGE_SIZE_4KB',['../omap3530_2mmu_2memory_manager_8h.html#ad006c6f3cbf3cb7ca77444b85ca0a76e',1,'memoryManager.h']]],
-  ['sys_5fdebug',['SYS_DEBUG',['../common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642',1,'interrupt_sw.h']]]
+  ['sys_5fdebug',['SYS_DEBUG',['../syscall_8h.html#a2960ae20008f05da8cc0714f36365642',1,'syscall.h']]],
+  ['sys_5fexit',['SYS_EXIT',['../syscall_8h.html#a1812279c69c5d8d2e1d3e9355c7b1304',1,'syscall.h']]],
+  ['sys_5fload_5fproc',['SYS_LOAD_PROC',['../syscall_8h.html#a4e5eb681d1b49a0e7f29aa65d87e1426',1,'syscall.h']]],
+  ['sys_5fprint',['SYS_PRINT',['../syscall_8h.html#a3919b887dc71761c488436e6c6599b24',1,'syscall.h']]]
 ];

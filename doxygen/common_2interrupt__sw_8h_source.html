@@ -80,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5d8ef43cc1a8ddd0d3ff97ad61cca1fe.html">src</a></li><li class="navelem"><a class="el" href="dir_273057130add0ac733a89b1df953db8b.html">system</a></li><li class="navelem"><a class="el" href="dir_1938b1ac32f73d80ea359d4b4811d550.html">hal</a></li><li class="navelem"><a class="el" href="dir_8fd5045951e41eead7071cb9753b4a90.html">common</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_d501334aeb1b78ad67cd3c72c37b1e87.html">system</a></li><li class="navelem"><a class="el" href="dir_3bbc96a91658c6a996646fdd7a67b8bb.html">hal</a></li><li class="navelem"><a class="el" href="dir_65a82520b02032e339a9c682a2b89b26.html">common</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -98,25 +98,17 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642">   13</a></span>&#160;<span class="preprocessor">#define SYS_DEBUG       10</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#pragma SWI_ALIAS(syscall, 0)</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa">syscall</a>(uint32_t swiID, uint32_t params[]);</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#a290900f99b0b9ed6592960dd4240c8fb">handle_interrupt_sw</a>(uint32_t swiID, uint32_t params[]);</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">extern</span> <span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#aa0b4f2a102b395e2c63205408e2d01fa">_switch_mode</a>(uint32_t mode);</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="common_2interrupt__sw_8h_html_a290900f99b0b9ed6592960dd4240c8fb"><div class="ttname"><a href="common_2interrupt__sw_8h.html#a290900f99b0b9ed6592960dd4240c8fb">handle_interrupt_sw</a></div><div class="ttdeci">void handle_interrupt_sw(uint32_t swiID, uint32_t params[])</div><div class="ttdef"><b>Definition:</b> interrupt_sw.c:10</div></div>
-<div class="ttc" id="common_2interrupt__sw_8h_html_aa0b4f2a102b395e2c63205408e2d01fa"><div class="ttname"><a href="common_2interrupt__sw_8h.html#aa0b4f2a102b395e2c63205408e2d01fa">_switch_mode</a></div><div class="ttdeci">void _switch_mode(uint32_t mode)</div></div>
-<div class="ttc" id="common_2interrupt__sw_8h_html_a79d73e39bd93c8114e104508baf518aa"><div class="ttname"><a href="common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa">syscall</a></div><div class="ttdeci">void syscall(uint32_t swiID, uint32_t params[])</div></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../../system.h&quot;</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../../../api/syscall.h&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> <a class="code" href="common_2interrupt__sw_8h.html#a14b6fb4c34d052f1664516ee1d1dc479">handle_interrupt_sw</a>(uint32_t swiID, uint32_t params[], <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> paramLength);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="common_2interrupt__sw_8h_html_a14b6fb4c34d052f1664516ee1d1dc479"><div class="ttname"><a href="common_2interrupt__sw_8h.html#a14b6fb4c34d052f1664516ee1d1dc479">handle_interrupt_sw</a></div><div class="ttdeci">void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLength)</div><div class="ttdef"><b>Definition:</b> interrupt_sw.c:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 10 2015 09:55:13 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 3 2015 14:19:03 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

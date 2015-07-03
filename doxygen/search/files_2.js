@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['gpio_2ec',['gpio.c',['../gpio_8c.html',1,'']]],
-  ['gpio_2eh',['gpio.h',['../omap3530_2gpio_2gpio_8h.html',1,'']]],
-  ['gpio_2eh',['gpio.h',['../common_2gpio_8h.html',1,'']]],
-  ['gpiodriver_2ec',['GPIODriver.c',['../_g_p_i_o_driver_8c.html',1,'']]],
-  ['gpiodriver_2eh',['GPIODriver.h',['../_g_p_i_o_driver_8h.html',1,'']]]
+  ['clock_2ec',['clock.c',['../clock_8c.html',1,'']]],
+  ['clock_2eh',['clock.h',['../omap3530_2clock_2clock_8h.html',1,'']]],
+  ['clock_2eh',['clock.h',['../common_2clock_8h.html',1,'']]],
+  ['console_2ec',['console.c',['../console_8c.html',1,'']]],
+  ['console_2eh',['console.h',['../console_8h.html',1,'']]],
+  ['core_2eh',['core.h',['../core_8h.html',1,'']]]
 ];

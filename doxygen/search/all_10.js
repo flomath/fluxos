@@ -25,8 +25,12 @@ var searchData=
   ['sp',['SP',['../struct_registers__t.html#af480483f058a97f77b90a32dd3e4082a',1,'Registers_t']]],
   ['state',['state',['../struct_p_c_b__t.html#a4ab8d1008641219f3d02f1ac61465961',1,'PCB_t']]],
   ['stop_5fbit',['stop_bit',['../struct_u_a_r_t_configuration__t.html#aa49a956e599b816be1a98d2046de7547',1,'UARTConfiguration_t']]],
-  ['swi_5fhandler',['swi_handler',['../interrupt_8c.html#a14f4f4ee40fc2423353cab91159e6ee1',1,'interrupt.c']]],
-  ['sys_5fdebug',['SYS_DEBUG',['../common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642',1,'interrupt_sw.h']]],
-  ['syscall',['syscall',['../common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa',1,'interrupt_sw.h']]],
+  ['swi_5fhandler',['swi_handler',['../interrupt_8c.html#a8e964944b96f076f57fe3d12bfa8296d',1,'interrupt.c']]],
+  ['sys_5fdebug',['SYS_DEBUG',['../syscall_8h.html#a2960ae20008f05da8cc0714f36365642',1,'syscall.h']]],
+  ['sys_5fexit',['SYS_EXIT',['../syscall_8h.html#a1812279c69c5d8d2e1d3e9355c7b1304',1,'syscall.h']]],
+  ['sys_5fload_5fproc',['SYS_LOAD_PROC',['../syscall_8h.html#a4e5eb681d1b49a0e7f29aa65d87e1426',1,'syscall.h']]],
+  ['sys_5fprint',['SYS_PRINT',['../syscall_8h.html#a3919b887dc71761c488436e6c6599b24',1,'syscall.h']]],
+  ['syscall',['syscall',['../syscall_8h.html#a315e3f55e41c7ba95ef7107b3f1f9707',1,'syscall.h']]],
+  ['syscall_2eh',['syscall.h',['../syscall_8h.html',1,'']]],
   ['system_2eh',['system.h',['../system_8h.html',1,'']]]
 ];

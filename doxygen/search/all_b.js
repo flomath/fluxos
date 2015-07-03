@@ -5,5 +5,8 @@ var searchData=
   ['large_5fpage_5fsize',['LARGE_PAGE_SIZE',['../omap3530_2mmu_2mmu_8h.html#a5e794872b12686cc064052cdf6b38f9f',1,'mmu.h']]],
   ['led1',['LED1',['../_g_p_i_o_driver_8c.html#a8aa85ae9867fabf70ec72cd3bf6fb6b9',1,'GPIODriver.c']]],
   ['led2',['LED2',['../_g_p_i_o_driver_8c.html#ad09fe5bf321b9a2de26bd5e5b9af6424',1,'GPIODriver.c']]],
+  ['loader_2ec',['loader.c',['../loader_8c.html',1,'']]],
+  ['loader_2eh',['loader.h',['../loader_8h.html',1,'']]],
+  ['loader_5fload_5fprocess',['loader_load_process',['../loader_8c.html#a2994edb21868ffce62230ce120562bf4',1,'loader_load_process(uint32_t *address, size_t size):&#160;loader.c'],['../loader_8h.html#a2994edb21868ffce62230ce120562bf4',1,'loader_load_process(uint32_t *address, size_t size):&#160;loader.c']]],
   ['lr',['LR',['../struct_registers__t.html#a3b278bea96f91904f3614cfee77f0843',1,'Registers_t']]]
 ];

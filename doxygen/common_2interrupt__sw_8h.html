@@ -80,67 +80,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5d8ef43cc1a8ddd0d3ff97ad61cca1fe.html">src</a></li><li class="navelem"><a class="el" href="dir_273057130add0ac733a89b1df953db8b.html">system</a></li><li class="navelem"><a class="el" href="dir_1938b1ac32f73d80ea359d4b4811d550.html">hal</a></li><li class="navelem"><a class="el" href="dir_8fd5045951e41eead7071cb9753b4a90.html">common</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_d501334aeb1b78ad67cd3c72c37b1e87.html">system</a></li><li class="navelem"><a class="el" href="dir_3bbc96a91658c6a996646fdd7a67b8bb.html">hal</a></li><li class="navelem"><a class="el" href="dir_65a82520b02032e339a9c682a2b89b26.html">common</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">interrupt_sw.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &lt;stdint.h&gt;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="system_8h_source.html">../../system.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="syscall_8h_source.html">../../../api/syscall.h</a>&quot;</code><br />
 </div>
 <p><a href="common_2interrupt__sw_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a2960ae20008f05da8cc0714f36365642"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2interrupt__sw_8h.html#a2960ae20008f05da8cc0714f36365642">SYS_DEBUG</a>&#160;&#160;&#160;10</td></tr>
-<tr class="separator:a2960ae20008f05da8cc0714f36365642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a79d73e39bd93c8114e104508baf518aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2interrupt__sw_8h.html#a79d73e39bd93c8114e104508baf518aa">syscall</a> (uint32_t swiID, uint32_t params[])</td></tr>
-<tr class="separator:a79d73e39bd93c8114e104508baf518aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a290900f99b0b9ed6592960dd4240c8fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2interrupt__sw_8h.html#a290900f99b0b9ed6592960dd4240c8fb">handle_interrupt_sw</a> (uint32_t swiID, uint32_t params[])</td></tr>
-<tr class="separator:a290900f99b0b9ed6592960dd4240c8fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0b4f2a102b395e2c63205408e2d01fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2interrupt__sw_8h.html#aa0b4f2a102b395e2c63205408e2d01fa">_switch_mode</a> (uint32_t mode)</td></tr>
-<tr class="separator:aa0b4f2a102b395e2c63205408e2d01fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14b6fb4c34d052f1664516ee1d1dc479"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="common_2interrupt__sw_8h.html#a14b6fb4c34d052f1664516ee1d1dc479">handle_interrupt_sw</a> (uint32_t swiID, uint32_t params[], unsigned int paramLength)</td></tr>
+<tr class="separator:a14b6fb4c34d052f1664516ee1d1dc479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a2960ae20008f05da8cc0714f36365642"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define SYS_DEBUG&#160;&#160;&#160;10</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="aa0b4f2a102b395e2c63205408e2d01fa"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void _switch_mode </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a290900f99b0b9ed6592960dd4240c8fb"></a>
+<a class="anchor" id="a14b6fb4c34d052f1664516ee1d1dc479"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -154,33 +115,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>params</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="a79d73e39bd93c8114e104508baf518aa"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void syscall </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>swiID</em>, </td>
+          <td class="paramname"><em>params</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>params</em>[]&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>paramLength</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -195,7 +136,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 10 2015 09:55:13 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Fri Jul 3 2015 14:19:03 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
