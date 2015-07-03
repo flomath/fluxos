@@ -16,7 +16,7 @@
 MEMORY
 {
     CODE:           o = 0x00115000  l = 0x00010000  /* 64kB Internal CODE */
-    STACK: 			o = 0x10000000	l = 0x00002000 /* 8kB Stack */
+    STACK: 			o = 0x10000000	l = 0x00020000 /* 8kB Stack */
 }
 
 SECTIONS
