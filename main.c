@@ -50,7 +50,11 @@ void main(void) {
 	//scheduler_addProcess(uart_process);
 
 	// Load process
-	loader_load_process((uint32_t)&appdata + 0xc, 820); // Program Data + Main offset
+	uint32_t proc1[2] = {
+		(uint32_t)&appdata,
+		820
+	};
+	syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();

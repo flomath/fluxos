@@ -8,8 +8,10 @@
 #include "interrupt_sw.h"
 #include "../../../scheduler/scheduler.h"
 #include "../../../driver/uart/UartDriver.h"
+#include "../../../scheduler/loader.h"
 
 static void sys_print(char* message, unsigned int length);
+static void sys_load_proc(uint32_t* address, size_t size);
 
 void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLength)
 {
@@ -33,6 +35,10 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLe
 		case SYS_PRINT:
 			sys_print((char*) params, paramLength);
 			break;
+		case SYS_LOAD_PROC:
+			if (paramLength == 2) {
+				sys_load_proc((uint32_t*)params[0], (size_t)params[1]);
+			}
 		default:
 			break;
 	}
@@ -45,8 +51,7 @@ static void sys_print(char* message, unsigned int length)
 	uart_driver_write(message, length);
 }
 
-static void sys_read()
+static void sys_load_proc(uint32_t* address, size_t size)
 {
-	//TODO
-	return;
+	loader_load_process(address, size);
 }

@@ -27,12 +27,12 @@ void atom_end() {
 	atom = FALSE;
 }
 
-void scheduler_addProcess(ProcFunc fct)
+PCB_t* scheduler_addProcess(ProcFunc fct)
 {
 	int newProcessID = scheduler_getFreeProcessID();
 	if (newProcessID == SCHEDULER_INVALID_ID)
 	{
-		return;
+		return NULL;
 	}
 
 	contexts[newProcessID].processID = newProcessID;
@@ -45,6 +45,8 @@ void scheduler_addProcess(ProcFunc fct)
 	contexts[newProcessID].registers.LR = (uint32_t)&scheduler_killCurrentProcess;
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
 	mmu_create_process(&contexts[newProcessID]);
+
+	return (&contexts[newProcessID]);
 }
 
 void scheduler_run(Registers_t* context)
