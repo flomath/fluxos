@@ -1,7 +1,13 @@
 eclipse.preferences.version=1
+encoding//Debug/Applications/ApplicationOne/Debug/subdir_rules.mk=UTF-8
+encoding//Debug/Applications/ApplicationOne/Debug/subdir_vars.mk=UTF-8
+encoding//Debug/Applications/ApplicationOne/subdir_rules.mk=UTF-8
+encoding//Debug/Applications/ApplicationOne/subdir_vars.mk=UTF-8
 encoding//Debug/makefile=UTF-8
 encoding//Debug/objects.mk=UTF-8
 encoding//Debug/sources.mk=UTF-8
+encoding//Debug/src/console/subdir_rules.mk=UTF-8
+encoding//Debug/src/console/subdir_vars.mk=UTF-8
 encoding//Debug/src/system/driver/button/subdir_rules.mk=UTF-8
 encoding//Debug/src/system/driver/button/subdir_vars.mk=UTF-8
 encoding//Debug/src/system/driver/gpio/subdir_rules.mk=UTF-8
