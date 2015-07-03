@@ -79,8 +79,8 @@ void mmcsd_card_detect()
 
     // mmc host/bus configuration [22.5.1.5]
     // MMCHS_CON to configure specific data/cmd transfer
-    hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(0));	// set OD to 0
-    hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(5));    // set DW8 (8 bit mode MMC) to 0 for SD/SDIO cards
+    hal_bitmask_set(MMCHS1, MMCHS_CON, BV(0));	// set OD to 0
+    hal_bitmask_set(MMCHS1, MMCHS_CON, BV(5));    // set DW8 (8 bit mode MMC) to 0 for SD/SDIO cards
     hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(12));	// CEATA mode to standard
 
     // configure card voltage, pwr mode and data bus width
@@ -88,13 +88,12 @@ void mmcsd_card_detect()
     //hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(10));		// 0x5: 1.8V (Typical)
     //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(9));			// 0x5: 1.8V (Typical)
     hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x6 << 9));		// 0x6 3V
-    hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(1));			// DTW_1_BIT
+    hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(1));			// DTW_1_BIT
     hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(8));			// SDBP_OFF
 
     //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(8));			// SD bus power on (SDBP)
     //hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x0 << 8));		// SD bus power on (SDBP)
     //hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(1));		// data transfer width to 1 bit (DTW)
-
 
     // Enable the input buffer of the clock output.
     // As a result, there is a loopback through the
