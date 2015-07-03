@@ -99,6 +99,11 @@ void mmcsd_card_detect();
 void mmcsd_softreset();
 
 /**
+ * parse card CID info
+ */
+void mmcsd_card_parse_cid();
+
+/**
  * pre card identifaction procedure
  */
 uint32_t mmcsd_precard_identification();
@@ -106,7 +111,7 @@ uint32_t mmcsd_precard_identification();
 /**
  * get card specific data
  */
-void mmcsd_card_data();
+uint32_t mmcsd_card_data();
 
 /**
  * configure card
@@ -125,10 +130,13 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie);
  */
 void mmcsd_change_clockfrequency(uint32_t clockfrequency);
 
+void mmcsd_calculate_card_clk (uint32_t *ClockFrequencySelect);
+
 /*
  * following definitions (defines only) by apple inc.
  * https://github.com/vathpela/edk2/
  */
+#define MMC_REFERENCE_CLK (96000000)
 #define CC_EN             (0x01 << 0)
 #define TC_EN             (0x01 << 1)
 #define BWR_EN            (0x01 << 4)
@@ -288,6 +296,41 @@ typedef struct {
   uint8_t   RESERVED_5:         6; // Reserved [125:120]
   uint8_t   CSD_STRUCTURE:      2; // CSD structure [127:126]
 } CSD;
+
+typedef struct {
+	uint8_t   NOT_USED:           1; // Not used, always 1 [0:0]
+	uint8_t   CRC:                7; // CRC [7:1]
+	uint8_t   RESERVED_1:         2; // Reserved [9:8]
+	uint8_t   FILE_FORMAT:        2; // File format [11:10]
+	uint8_t   TMP_WRITE_PROTECT:  1; // Temporary write protection [12:12]
+	uint8_t   PERM_WRITE_PROTECT: 1; // Permanent write protection [13:13]
+	uint8_t   COPY:               1; // Copy flag (OTP) [14:14]
+	uint8_t   FILE_FORMAT_GRP:    1; // File format group [15:15]
+	uint16_t  RESERVED_2:         5; // Reserved [20:16]
+	uint16_t  WRITE_BL_PARTIAL:   1; // Partial blocks for write allowed [21:21]
+	uint16_t  WRITE_BL_LEN:       4; // Max. write data block length [25:22]
+	uint16_t  R2W_FACTOR:         3; // Write speed factor [28:26]
+	uint16_t  RESERVED_3:         2; // Reserved [30:29]
+	uint16_t  WP_GRP_ENABLE:      1; // Write protect group enable [31:31]
+	uint16_t  WP_GRP_SIZE:        7; // Write protect group size [38:32]
+  uint16_t  SECTOR_SIZE:        7; // Erase sector size [45:39]
+  uint16_t  ERASE_BLK_EN:       1; // Erase single block enable [46:46]
+  uint16_t  RESERVED_4:         1; // Reserved [47:47]
+  uint32_t  C_SIZELow16:        16;// Device size [69:48]
+  uint32_t  C_SIZEHigh6:        6; // Device size [69:48]
+  uint32_t  RESERVED_5:         6; // Reserved [75:70]
+  uint32_t  DSR_IMP:            1; // DSR implemented [76:76]
+  uint32_t  READ_BLK_MISALIGN:  1; // Read block misalignment [77:77]
+  uint32_t  WRITE_BLK_MISALIGN: 1; // Write block misalignment [78:78]
+  uint32_t  READ_BL_PARTIAL:    1; // Partial blocks for read allowed [79:79]
+  uint16_t  READ_BL_LEN:        4; // Max. read data block length [83:80]
+  uint16_t  CCC:                12;// Card command classes [95:84]
+  uint8_t   TRAN_SPEED          ;  // Max. bus clock frequency [103:96]
+  uint8_t   NSAC                ;  // Data read access-time 2 in CLK cycles (NSAC*100) [111:104]
+  uint8_t   TAAC                ;  // Data read access-time 1 [119:112]
+  uint8_t   RESERVED_6:         6; // 0 [125:120]
+  uint8_t   CSD_STRUCTURE:      2; // CSD structure [127:126]
+}CSD_SDV2;
 
 typedef struct  {
   uint16_t  RCA;

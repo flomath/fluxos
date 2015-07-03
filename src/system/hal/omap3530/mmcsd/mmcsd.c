@@ -9,7 +9,7 @@
 
 CARD_INFO cardInfo;
 EFI_BLOCK_MEDIA mmchsMedia = {
-	1704,
+	1703, // wolfy media id
 	true,
     false,
 	false,
@@ -143,37 +143,193 @@ void mmcsd_card_detect()
 	mmchsMedia.MediaId++;
 }
 
-void mmcsd_card_data()
+void mmcsd_card_parse_cid() {
+	uint32_t r0 = hal_get_address_value(MMCHS1, MMCHS_RSP10);
+	uint32_t r1 = hal_get_address_value(MMCHS1, MMCHS_RSP32);
+	uint32_t r2 = hal_get_address_value(MMCHS1, MMCHS_RSP54);
+	uint32_t r3 = hal_get_address_value(MMCHS1, MMCHS_RSP76);
+
+	cardInfo.CIDData.MDT = ((r0 >> 8) & 0xFFF);
+	cardInfo.CIDData.PSN = (((r0 >> 24) & 0xFF) | ((r1 & 0xFFFFFF) << 8));
+	cardInfo.CIDData.PRV = ((r1 >> 24) & 0xFF);
+	cardInfo.CIDData.PNM[4] = ((r2) & 0xFF);
+	cardInfo.CIDData.PNM[3] = ((r2 >> 8) & 0xFF);
+	cardInfo.CIDData.PNM[2] = ((r2 >> 16) & 0xFF);
+	cardInfo.CIDData.PNM[1] = ((r2 >> 24) & 0xFF);
+	cardInfo.CIDData.PNM[0] = ((r3) & 0xFF);
+	cardInfo.CIDData.OID = ((r3 >> 8) & 0xFFFF);
+	cardInfo.CIDData.MID = ((r3 >> 24) & 0xFF);
+}
+
+uint32_t mmcsd_card_data()
 {
+	CSD_SDV2* csdData;
 	uint32_t CardSize;
-    uint32_t *BlockSize;
-    uint32_t *NumBlocks;
+
 	uint32_t arg = cardInfo.RCA << 16;
 	uint32_t status = mmcsd_sendcmd(CMD9, arg, CMD9_INT_EN);
 	if(status != 0)
-		return;
+		return status;
 
-    ((uint32_t *) &(cardInfo.CSDData))[0] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
-    ((uint32_t *) &(cardInfo.CSDData))[1] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP32) & BV(31)), 31);
-    ((uint32_t *) &(cardInfo.CSDData))[2] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP54) & BV(31)), 31);
-    ((uint32_t *) &(cardInfo.CSDData))[3] = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP76) & BV(31)), 31);
+    ((uint32_t *) &(cardInfo.CSDData))[0] = hal_get_address_value(MMCHS1, MMCHS_RSP10);
+    ((uint32_t *) &(cardInfo.CSDData))[1] = hal_get_address_value(MMCHS1, MMCHS_RSP32);
+    ((uint32_t *) &(cardInfo.CSDData))[2] = hal_get_address_value(MMCHS1, MMCHS_RSP54);
+    ((uint32_t *) &(cardInfo.CSDData))[3] = hal_get_address_value(MMCHS1, MMCHS_RSP76);
 
+    // get card configuration
+    uint32_t  BlockSize;
+    uint32_t  NumBlocks;
+    uint32_t  ClockFrequencySelect;
 
-    // calculate number of blocks
-    if (cardInfo.CardType == SD_CARD_2_HIGH) {
+    //Calculate BlockSize and Total number of blocks in the detected card.
+    CSD_SDV2 *CsdSDV2Data;
 
-    } else {
-    	*BlockSize = (0x1UL << cardInfo.CSDData.READ_BL_LEN); // populate blocksize
+	if (cardInfo.CardType == SD_CARD_2_HIGH) {
+		CsdSDV2Data = (CSD_SDV2 *)&cardInfo.CSDData;
 
-    	// calculate total number of blocks
-    	CardSize = cardInfo.CSDData.C_SIZELow2 | (cardInfo.CSDData.C_SIZEHigh10 << 2);
-    	*NumBlocks = (CardSize + 1) * (1 << (cardInfo.CSDData.C_SIZE_MULT + 2));
-    }
+		//Populate BlockSize.
+		BlockSize = (0x1UL << CsdSDV2Data->READ_BL_LEN);
 
-    cardInfo.BlockSize = (BlockSize > 512) ? 512 : BlockSize; // max 2G
-    cardInfo.NumOfBlocks = NumBlocks;
+		//Calculate Total number of blocks.
+		CardSize = CsdSDV2Data->C_SIZELow16 | (CsdSDV2Data->C_SIZEHigh6 << 2);
+		NumBlocks = ((CardSize + 1) * 1024);
+	} else {
+		//Populate BlockSize.
+		BlockSize = (0x1UL << cardInfo.CSDData.READ_BL_LEN);
+
+		//Calculate Total number of blocks.
+		CardSize = cardInfo.CSDData.C_SIZELow2 | (cardInfo.CSDData.C_SIZEHigh10 << 2);
+		NumBlocks = (CardSize + 1) * (1 << (cardInfo.CSDData.C_SIZE_MULT + 2));
+	}
+
+	//For >=2G card, BlockSize may be 1K, but the transfer size is 512 bytes.
+	if (BlockSize > 512) {
+		// TODO
+		//NumBlocks = MultU64x32(NumBlocks, BlockSize/2);
+		BlockSize = 512;
+	}
+
+	cardInfo.BlockSize = BlockSize;
+	cardInfo.NumOfBlocks = NumBlocks;
+
+	//Calculate Card clock divider value.
+	mmcsd_calculate_card_clk(&ClockFrequencySelect);
+	cardInfo.ClockFrequencySelect = ClockFrequencySelect;
 
     // calculate max data transfer rate
+
+    return MMCHS_SUCCESS;
+}
+
+void mmcsd_calculate_card_clk (uint32_t *ClockFrequencySelect)
+{
+  uint8_t    MaxDataTransferRate;
+  uint32_t    TransferRateValue = 0;
+  uint32_t    TimeValue = 0 ;
+  uint32_t    Frequency = 0;
+
+  MaxDataTransferRate = cardInfo.CSDData.TRAN_SPEED;
+
+  // For SD Cards  we would need to send CMD6 to set
+  // speeds abouve 25MHz. High Speed mode 50 MHz and up
+
+  //Calculate Transfer rate unit (Bits 2:0 of TRAN_SPEED)
+  switch (MaxDataTransferRate & 0x7) {
+    case 0:
+      TransferRateValue = 100 * 1000;
+      break;
+
+    case 1:
+      TransferRateValue = 1 * 1000 * 1000;
+      break;
+
+    case 2:
+      TransferRateValue = 10 * 1000 * 1000;
+      break;
+
+    case 3:
+      TransferRateValue = 100 * 1000 * 1000;
+      break;
+
+    default:
+      //DEBUG((EFI_D_ERROR, "Invalid parameter.\n"));
+      return;
+      //ASSERT(FALSE);
+  }
+
+  //Calculate Time value (Bits 6:3 of TRAN_SPEED)
+  switch ((MaxDataTransferRate >> 3) & 0xF) {
+    case 1:
+      TimeValue = 10;
+      break;
+
+    case 2:
+      TimeValue = 12;
+      break;
+
+    case 3:
+      TimeValue = 13;
+      break;
+
+    case 4:
+      TimeValue = 15;
+      break;
+
+    case 5:
+      TimeValue = 20;
+      break;
+
+    case 6:
+      TimeValue = 25;
+      break;
+
+    case 7:
+      TimeValue = 30;
+      break;
+
+    case 8:
+      TimeValue = 35;
+      break;
+
+    case 9:
+      TimeValue = 40;
+      break;
+
+    case 10:
+      TimeValue = 45;
+      break;
+
+    case 11:
+      TimeValue = 50;
+      break;
+
+    case 12:
+      TimeValue = 55;
+      break;
+
+    case 13:
+      TimeValue = 60;
+      break;
+
+    case 14:
+      TimeValue = 70;
+      break;
+
+    case 15:
+      TimeValue = 80;
+      break;
+
+    default:
+      //DEBUG((EFI_D_ERROR, "Invalid parameter.\n"));
+      //ASSERT(FALSE);
+  }
+
+  Frequency = TransferRateValue * TimeValue/10;
+
+  //Calculate Clock divider value to program in MMCHS_SYSCTL[CLKD] field.
+  *ClockFrequencySelect = ((MMC_REFERENCE_CLK/Frequency) + 1);
+
+  //DEBUG ((EFI_D_INFO, "MaxDataTransferRate: 0x%x, Frequency: %d KHz, ClockFrequencySelect: %x\n", MaxDataTransferRate, Frequency/1000, *ClockFrequencySelect));
 }
 
 void mmcsd_card_config()
@@ -298,7 +454,7 @@ uint32_t mmcsd_precard_identification()
 			if(cmd41Status != 0)
 				return cmd41Status;
 
-			((uint32_t *) &(cardInfo.OCRData))[0] = hal_get_register(MMCHS1, MMCHS_RSP10);
+			((uint32_t *) &(cardInfo.OCRData))[0] = hal_get_address_value(MMCHS1, MMCHS_RSP10); //hal_get_register(MMCHS1, MMCHS_RSP10);
 			printf("SD card detected: OCR: %x\n", cardInfo.OCRData);
 
 		} else {
@@ -332,19 +488,29 @@ uint32_t mmcsd_precard_identification()
 	} while(loopCount < MAX_RETRY);
 
 	// send cmd2 to gather information about how to read sd card
-	mmcsd_sendcmd(CMD2, 0x0, CMD2_INT_EN);
-	// todo: parse card information
+	cmdStatus = mmcsd_sendcmd(CMD2, 0x0, CMD2_INT_EN);
+	if(cmdStatus != 0)
+		return cmdStatus;
+
+	// parse card information
+	mmcsd_card_parse_cid();
 
 	// send cmd3
-	mmcsd_sendcmd(CMD3, 0x0, CMD3_INT_EN);
-	// read card relative address (rca)
+	cmdStatus = mmcsd_sendcmd(CMD3, 0x0, CMD3_INT_EN);
+	if(cmdStatus != 0)
+		return cmdStatus;
+
+	cardInfo.RCA = (hal_get_address_value(MMCHS1, MMCHS_RSP10) >> 16); //(MMCHS_REG(MMCHS_RSP10) >> 16);
+
+	hal_bitmask_clear(MMCHS1, MMCHS_CON, BV(0)); 		// OD
+	hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x6 << 9));	// sdvs_3v
+	mmcsd_change_clockfrequency(MMCHS_CLK_FRQCY400);
 
 	// TODO: handle mmc card
 	// if mmc card -> more than one card connected? if only 1 or all are identified, go on then
 
 	// send cmd7
-	mmcsd_sendcmd(CMD7, 0x0, CMD7_INT_EN);
-
+	//mmcsd_sendcmd(CMD7, 0x0, CMD7_INT_EN);
 
 	return MMCHS_SUCCESS;
 }
