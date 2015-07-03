@@ -11,6 +11,11 @@
 
 static void sys_print(char* message, unsigned int length);
 
+void syscall(uint32_t swiID, uint32_t params[], unsigned int paramLength)
+{
+	swi_syscall(swiID, params, paramLength);
+}
+
 void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLength)
 {
 	atom_begin();
@@ -32,7 +37,6 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLe
 			break;
 		case SYS_PRINT:
 			sys_print((char*) params, paramLength);
-			//TODO: wait till everything in buffer was written
 			break;
 		default:
 			break;
@@ -44,30 +48,10 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLe
 static void sys_print(char* message, unsigned int length)
 {
 	uart_driver_write(message, length);
-//	int i = 0;
-//	char buffer[8];
-//	while (i < length) {
-//		int bufferCount = i % 8;
-//		buffer[bufferCount] = message[i++];
-//
-//		if ( (bufferCount == 0 && i != 1) || length - i == 0) {
-//			uart_driver_write(buffer, bufferCount > 0 ? bufferCount : 8);
-//		}
-//	}
 }
 
 static void sys_read()
 {
-	/*int count = 0;
-
-	char buffer[8];
-	while (count < length) {
-		//int count = uart_driver_count();
-		if ( count > 0 ) {
-			//uart_driver_read(buffer, 8);
-
-			uart_driver_write(buffer, count < 8 ? count : 8);
-		}
-	}*/
+	//TODO
 	return;
 }
