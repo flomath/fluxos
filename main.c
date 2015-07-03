@@ -12,12 +12,16 @@
 #include "src/system/hal/omap3530/prcm/percm.h"
 #include "src/system/scheduler/scheduler.h"
 #include "src/system/hal/omap3530/mmu/mmu.h"
+#include "src/system/scheduler/loader.h"
+#include "src/console/console.h"
 
 interrupt_callback timer_irq;
 
 void test(void);
 void test2(void);
 void uart_process(void);
+
+extern char appdata[];
 
 #pragma TASK(main)
 void main(void) {
@@ -39,19 +43,31 @@ void main(void) {
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
 
-	scheduler_addProcess(test);
-	scheduler_addProcess(test2);
-	scheduler_addProcess(uart_process);
 	uart_driver_init(9600);
+	scheduler_addProcess(console_init);
+	//scheduler_addProcess(test);
+	//scheduler_addProcess(test2);
+	//scheduler_addProcess(uart_process);
+
+	// Load process
+	uint32_t proc1[2] = {
+		(uint32_t)&appdata,
+		819
+	};
+	syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();
+
+	//uart_driver_write("hallo nino", 10);
+	//syscall(SYS_PRINT, (uint32_t*)"hallo nino", 10);
 
 	// call software interrupt
 	//syscall(SYS_DEBUG, 0);
 
 	// Execute
 	while(1) {
+		//uart_driver_write("hallo", 5);
 		printf("..idle\n");
 	}
 }
@@ -61,7 +77,8 @@ void test(void) {
 	a++;
 
 	printf("%i\n", a);
-	syscall(SYS_DEBUG, 0);
+	char* test = "test";
+	syscall(SYS_PRINT, (uint32_t*)test, 5);
 
 	a++;
 	printf("%i\n", a);
@@ -73,11 +90,12 @@ void test(void) {
 	}
 }
 void test2(void) {
-//	while(1) {
+	while(1) {
 		printf("[2] task test\n");
 		int y = 1;
 		y--;
-//	}
+		printf("[2] further test\n");
+	}
 }
 
 void uart_process(void) {
@@ -93,13 +111,14 @@ void uart_process(void) {
 			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
-			printf("No Data to process\n");
+			//printf("No Data to process\n");
 		}
 	}
 }
 
 void timer_irq(Registers_t* context) {
 	// This method will never return
+	//button_driver_interrupt(context);
 	scheduler_run(context);
 
 	gpt_timer_reset(GPT_TIMER4);

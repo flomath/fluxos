@@ -10,6 +10,7 @@
 #include <string.h>
 #include "../../../scheduler/scheduler.h"
 #include "mmu.h"
+#include "../../../scheduler/process.h"
 
 /**
  * Array of page tables and page frames
@@ -203,6 +204,9 @@ void mmu_dabt_handler(void)
     unsigned int dataFaultStatus = ((dataFaultStatusRegister & 0x400) >> 6) | (dataFaultStatusRegister & 0xF);
 
     PCB_t* currentProcess = scheduler_getCurrentProcess();
+    if (currentProcess == NULL || currentProcess->state != PROCESS_RUNNING) {
+        return;
+    }
     //TODO: check dataFault stuff
 
     // check

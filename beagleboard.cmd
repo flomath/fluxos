@@ -53,4 +53,7 @@ SECTIONS
         __stackSvc = .;
         . = . + stackSize;
     }
+
+    /* Application Test Data */
+    .DDR0_TEST_P   >  DDR0
 }

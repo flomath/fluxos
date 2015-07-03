@@ -15,17 +15,24 @@
  */
 PCB_t contexts[SCHEDULER_MAX_PROCESSES];
 int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
+static bool_t atom = FALSE;
 
 static void scheduler_killCurrentProcess(void);
 
+void atom_begin() {
+	atom = TRUE;
+}
+
+void atom_end() {
+	atom = FALSE;
+}
+
 void scheduler_addProcess(ProcFunc fct)
 {
-	mutex_lock();
-
 	int newProcessID = scheduler_getFreeProcessID();
 	if (newProcessID == SCHEDULER_INVALID_ID)
 	{
-		mutex_release();
+		return;
 	}
 
 	contexts[newProcessID].processID = newProcessID;
@@ -38,16 +45,21 @@ void scheduler_addProcess(ProcFunc fct)
 	contexts[newProcessID].registers.LR = (uint32_t)&scheduler_killCurrentProcess;
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
 	mmu_create_process(&contexts[newProcessID]);
-
-	mutex_release();
 }
 
 void scheduler_run(Registers_t* context)
 {
-	mutex_lock();
+	if (atom == TRUE) {
+		return;
+	}
+
+	atom_begin();
 
 	int nextProcess = scheduler_getNextProcess();
-	if(nextProcess == SCHEDULER_INVALID_ID) return;
+	if(nextProcess == SCHEDULER_INVALID_ID) {
+		atom_end();
+		return;
+	}
 
 	switch(contexts[nextProcess].state) {
 		case PROCESS_RUNNING: break;
@@ -101,13 +113,23 @@ void scheduler_run(Registers_t* context)
 			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
 			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
 			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
+
+			// if new pc (loading process) is set,
+			// set pc to new pc
+			if (contexts[SchedulerCurrentRunningProcess].newPC != 0) {
+				context->PC = contexts[SchedulerCurrentRunningProcess].newPC;
+				context->LR = (uint32_t)&scheduler_killCurrentProcess;
+				contexts[SchedulerCurrentRunningProcess].newPC = 0;
+			}
+
 //			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
 			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;
 
 		default: break;
 	}
-	mutex_release();
+
+	atom_end();
 }
 
 int scheduler_getNextProcess()
@@ -135,25 +157,30 @@ int scheduler_getNextProcess()
 
 static void scheduler_killCurrentProcess()
 {
-	//TODO: extract to syscall
+	syscall(SYS_EXIT, 0, 0);
 
-	// get current process for id
-	// and kill it
-	PCB_t* process = scheduler_getCurrentProcess();
-	if (process != NULL) {
-		scheduler_killProcess(process->processID);
-	}
+	// wait until timer or other interrupt occurs
+	// needed for preventing process to jump back to ended routine
+	while(1) {}
 }
 
 void scheduler_killProcess(int processID)
 {
-	//TODO: this function has to be fully executed!!!
-	//contexts[processID].state = PROCESS_TERMINATED;
+	atom_begin();
+
+	if (contexts[processID].state == PROCESS_CREATED || contexts[processID].state == PROCESS_TERMINATED ) {
+		atom_end();
+		return;
+	}
+
+	contexts[processID].state = PROCESS_TERMINATED;
 	contexts[processID].func = NULL;
 
 	mmu_kill_process(&contexts[processID]);
 
 	contexts[processID].state = PROCESS_CREATED;
+
+	atom_end();
 }
 
 int scheduler_getFreeProcessID() 

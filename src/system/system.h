@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "../api/syscall.h"
 
 #ifndef NULL
 #define NULL ((void*) 0)
