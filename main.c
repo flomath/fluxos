@@ -44,7 +44,12 @@ void main(void) {
 
 	mmcsd_configure_clocks();
 
-	mmcsd_card_detect();
+	int buffy[128] = {0};
+
+	mmcsd_read_write(0, buffy, sizeof(buffy),0);
+	mmcsd_read_write(1, buffy, sizeof(buffy),0);
+	mmcsd_read_write(2, buffy, sizeof(buffy),0);
+	//mmcsd_card_detect();
 
 	// Enable interrupts globally
 	//interrupt_enable();

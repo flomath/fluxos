@@ -15,7 +15,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 #define MMCHS1      0x4809C000
 #define MMCHS2      0x480B4000
 #define MMCHS3      0x480AD000
@@ -82,6 +81,10 @@ typedef volatile unsigned int * memory_mapped_io_t;
 
 #define MMCHS_SUCCESS	0
 #define MMCHS_ERROR		1
+#define MMCHS_NOMEDIA	10
+#define MMCHS_INVALIDPARAM	11
+#define MMCHS_BADBFRSIZE	12
+#define MMCHS_TIMEOUT	13
 
 /**
  * configure functional clocks
@@ -91,7 +94,7 @@ void mmcsd_configure_clocks();
 /**
  * initialize mmc/sd controller
  */
-void mmcsd_card_detect();
+uint32_t mmcsd_card_detect();
 
 /**
  * soft-reset the mmc/sd controller
@@ -131,6 +134,12 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie);
 void mmcsd_change_clockfrequency(uint32_t clockfrequency);
 
 void mmcsd_calculate_card_clk (uint32_t *ClockFrequencySelect);
+
+uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t operationType);
+
+uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType);
+
+uint32_t omap3530_mmchs_read_block_data(void *buffer);
 
 /*
  * following definitions (defines only) by apple inc.
@@ -356,6 +365,7 @@ typedef struct {
   uint32_t  IoAlign;
 
   //EFI_LBA LastBlock;
+  uint64_t	LastBlock;
 
   //EFI_LBA LowestAlignedLba;
   uint32_t  LogicalBlocksPerPhysicalBlock;
