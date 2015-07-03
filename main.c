@@ -12,6 +12,7 @@
 #include "src/system/hal/omap3530/prcm/percm.h"
 #include "src/system/scheduler/scheduler.h"
 #include "src/system/hal/omap3530/mmu/mmu.h"
+#include "src/console/console.h"
 
 interrupt_callback timer_irq;
 
@@ -34,25 +35,30 @@ void main(void) {
 	mmu_init();
 
 	// Add IRQ handler
-	interrupt_add_listener(40, &timer_irq);
+	interrupt_add_listener(29, &timer_irq);
 
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
 
-	scheduler_addProcess(test);
-	scheduler_addProcess(test2);
-	scheduler_addProcess(uart_process);
 	uart_driver_init(9600);
+	//scheduler_addProcess(console_init);
+	//scheduler_addProcess(test);
+	//scheduler_addProcess(test2);
+	//scheduler_addProcess(uart_process);
 
 	// Enable interrupts globally
 	interrupt_enable();
+
+	uart_driver_write("hallo nino", 10);
+	syscall(SYS_PRINT, (uint32_t*)"hallo nino", 10);
 
 	// call software interrupt
 	//syscall(SYS_DEBUG, 0);
 
 	// Execute
 	while(1) {
-		printf("..idle\n");
+		uart_driver_write("hallo", 5);
+		//printf("..idle\n");
 	}
 }
 
@@ -61,7 +67,8 @@ void test(void) {
 	a++;
 
 	printf("%i\n", a);
-	syscall(SYS_DEBUG, 0);
+	char* test = "test";
+	syscall(SYS_PRINT, (uint32_t*)test, 5);
 
 	a++;
 	printf("%i\n", a);
@@ -94,14 +101,14 @@ void uart_process(void) {
 			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
-			printf("No Data to process\n");
+			//printf("No Data to process\n");
 		}
 	}
 }
 
 void timer_irq(Registers_t* context) {
 	// This method will never return
-	//button_driver_interrupt(context);
+	button_driver_interrupt(context);
 	scheduler_run(context);
 
 	gpt_timer_reset(GPT_TIMER4);

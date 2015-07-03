@@ -148,7 +148,7 @@ int scheduler_getNextProcess()
 
 static void scheduler_killCurrentProcess()
 {
-	syscall(SYS_EXIT, 0);
+	syscall(SYS_EXIT, 0, 0);
 
 	// wait until timer or other interrupt occurs
 	// needed for preventing process to jump back to ended routine
