@@ -11,11 +11,6 @@
 
 static void sys_print(char* message, unsigned int length);
 
-void syscall(uint32_t swiID, uint32_t params[], unsigned int paramLength)
-{
-	swi_syscall(swiID, params, paramLength);
-}
-
 void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLength)
 {
 	atom_begin();
