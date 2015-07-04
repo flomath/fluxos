@@ -9,11 +9,11 @@
 #include "../scheduler/scheduler.h"
 #include <string.h>
 
-sem_node_t* sem_list;
+static sem_node_t* sem_list;
 
 sem_t* sem_create(const char* name) {
 	sem_t* sem = (sem_t*) malloc(sizeof(sem_t));
-	strcpy(sem->name, name);
+	strncpy(sem->name, name, 16);
 	sem->queue = NULL;
 	sem->value = 0;
 
@@ -84,14 +84,19 @@ sem_t* sem_get(const char* name) {
 int sem_wait(sem_t* sem) {
 	atom_begin();
 
-	sem--;
-	if (sem < 0) {
+	sem->value--;
+	if (sem->value < 0) {
 		int process = scheduler_getCurrentProcessId();
 		sem_enqueue(sem, process);
 
 		scheduler_suspend(process);
 
-		// Todo: Schedule away
+		atom_end();
+
+		// Wait until state has changed again
+		while (scheduler_getCurrentProcess()->state != PROCESS_RUNNING);
+
+		return 0;
 	}
 
 	atom_end();
@@ -102,8 +107,8 @@ int sem_wait(sem_t* sem) {
 int sem_post(sem_t* sem) {
 	atom_begin();
 
-	sem++;
-	if (sem <= 0) {
+	sem->value++;
+	if (sem->value <= 0) {
 		int process = sem_dequeue(sem);
 
 		scheduler_continue(process);
@@ -114,7 +119,7 @@ int sem_post(sem_t* sem) {
 	return 0;
 }
 
-void sem_enqueue(sem_t* sem, int pid) {
+static void sem_enqueue(sem_t* sem, int pid) {
 	node_t* node = (node_t*)malloc(sizeof(node_t));
 	node->pid = pid;
 	node->next = NULL;
@@ -133,7 +138,7 @@ void sem_enqueue(sem_t* sem, int pid) {
 	current->next = node;
 }
 
-int sem_dequeue(sem_t* sem) {
+static int sem_dequeue(sem_t* sem) {
 	if(sem->queue == NULL) {
 		return -1;
 	}

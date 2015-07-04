@@ -9,6 +9,7 @@
 #include "../../../scheduler/scheduler.h"
 #include "../../../driver/uart/UartDriver.h"
 #include "../../../scheduler/loader.h"
+#include "../../../ipc/semaphore.h"
 
 static void sys_print(char* message, unsigned int length);
 static void sys_load_proc(uint32_t* address, size_t size);
@@ -39,6 +40,28 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLe
 			if (paramLength == 2) {
 				sys_load_proc((uint32_t*)params[0], (size_t)params[1]);
 			}
+			break;
+		case SYS_SEM_CREATE:
+			sem_create((char*) params);
+			break;
+		case SYS_SEM_DESTROY:
+			sem_destroy((char*) params);
+			break;
+		case SYS_SEM_GET:
+			if (paramLength > 1) {
+				// Param 0 -> Semaphore
+				// Param 1 -> Name
+				params[0] = (uint32_t)sem_get((char*)params[1]);
+			}
+
+			break;
+		case SYS_SEM_WAIT:
+			if (paramLength > 0)
+				sem_wait((sem_t*) params[0]);
+			break;
+		case SYS_SEM_POST:
+			sem_post((sem_t*) params[0]);
+			break;
 		default:
 			break;
 	}

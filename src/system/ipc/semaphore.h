@@ -18,7 +18,7 @@ struct sem_process_node {
 
 typedef struct {
 	int value;
-	char* name;
+	char name[16];
 	node_t* queue;
 } sem_t;
 
@@ -55,11 +55,11 @@ int sem_post(sem_t* sem);
 /**
  * Enqueue the process to the queue
  */
-void sem_enqueue(sem_t* sem, int pid);
+static void sem_enqueue(sem_t* sem, int pid);
 
 /**
  * Dequeue the next process
  */
-int sem_dequeue(sem_t* sem);
+static int sem_dequeue(sem_t* sem);
 
 #endif /* SRC_SYSTEM_IPC_SEMAPHORE_H_ */

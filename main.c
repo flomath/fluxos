@@ -14,6 +14,7 @@
 #include "src/system/hal/omap3530/mmu/mmu.h"
 #include "src/system/scheduler/loader.h"
 #include "src/console/console.h"
+#include "src/system/ipc/semaphore.h"
 
 interrupt_callback timer_irq;
 
@@ -44,10 +45,10 @@ void main(void) {
 	gpt_timer_start(GPT_TIMER4);
 
 	uart_driver_init(9600);
-	scheduler_addProcess(console_init);
+	//scheduler_addProcess(console_init);
 	//scheduler_addProcess(test);
 	//scheduler_addProcess(test2);
-	//scheduler_addProcess(uart_process);
+	scheduler_addProcess(uart_process);
 
 	// Load process
 	uint32_t proc1[2] = {
@@ -100,6 +101,11 @@ void test2(void) {
 
 void uart_process(void) {
 	while (1) {
+		uint32_t params[] = { 0, (uint32_t)UART_SEM };
+		syscall(SYS_SEM_GET, params, 2);
+
+		syscall(SYS_SEM_WAIT, (uint32_t*) &params[0], 1);
+
 		int count = uart_driver_count();
 		if ( count > 0 ) {
 			char buffer[8];
@@ -111,7 +117,7 @@ void uart_process(void) {
 			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
-			//printf("No Data to process\n");
+			printf("No Data to process\n");
 		}
 	}
 }
