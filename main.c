@@ -46,16 +46,18 @@ void main(void) {
 
 	uart_driver_init(9600);
 	//scheduler_addProcess(console_init);
-	//scheduler_addProcess(test);
-	//scheduler_addProcess(test2);
+	scheduler_addProcess(test);
+	scheduler_addProcess(test2);
 	scheduler_addProcess(uart_process);
+
+	sem_create("test_sem");
 
 	// Load process
 	uint32_t proc1[2] = {
 		(uint32_t)&appdata,
 		819
 	};
-	syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
+	//syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();
@@ -84,37 +86,32 @@ void test(void) {
 	a++;
 	printf("%i\n", a);
 
+	sem_t* sem = sem_get("test_sem");
 	while(1) {
-		printf("[1] task test\n");
-		int x = 0;
-		x++;
+		sem_post(sem);
+		printf("%d\n", sem->value);
 	}
 }
 void test2(void) {
+	sem_t* sem = sem_get("test_sem");
 	while(1) {
-		printf("[2] task test\n");
-		int y = 1;
-		y--;
-		printf("[2] further test\n");
+		sem_wait(sem);
+		//char buffer[32];
+		//sprintf(buffer, "[2] semaphore reduced: %d\n\r", sem->value);
+		//syscall(SYS_PRINT, (uint32_t*)buffer, 1);
+		//printf("[2] semaphore reduced\n");
 	}
 }
 
 void uart_process(void) {
+	sem_t* sem = sem_get(UART_SEM);
 	while (1) {
-		uint32_t params[] = { 0, (uint32_t)UART_SEM };
-		syscall(SYS_SEM_GET, params, 2);
-
-		syscall(SYS_SEM_WAIT, (uint32_t*) &params[0], 1);
+		sem_wait(sem);
 
 		int count = uart_driver_count();
 		if ( count > 0 ) {
 			char buffer[8];
 			uart_driver_read(buffer, 8);
-
-			int i;
-			for ( i = 0; i < 8 && i < count; i++ ) {
-				printf("%c", buffer[i]);
-			}
 			uart_driver_write(buffer, count < 8 ? count : 8);
 		} else {
 			printf("No Data to process\n");
@@ -123,7 +120,6 @@ void uart_process(void) {
 }
 
 void timer_irq(Registers_t* context) {
-	// This method will never return
 	//button_driver_interrupt(context);
 	scheduler_run(context);
 

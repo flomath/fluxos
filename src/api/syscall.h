@@ -14,11 +14,6 @@
 #define SYS_EXIT	    20
 #define SYS_PRINT       30
 #define SYS_LOAD_PROC   40
-#define SYS_SEM_CREATE	50
-#define SYS_SEM_DESTROY	51
-#define SYS_SEM_GET		52
-#define SYS_SEM_WAIT	53
-#define SYS_SEM_POST	54
 
 #pragma SWI_ALIAS(syscall, 0)
 void syscall(uint32_t swiID, uint32_t params[], unsigned int paramLength);

@@ -204,7 +204,7 @@ void mmu_dabt_handler(void)
     unsigned int dataFaultStatus = ((dataFaultStatusRegister & 0x400) >> 6) | (dataFaultStatusRegister & 0xF);
 
     PCB_t* currentProcess = scheduler_getCurrentProcess();
-    if (currentProcess == NULL || currentProcess->state != PROCESS_RUNNING) {
+    if (currentProcess == NULL) {
         return;
     }
     //TODO: check dataFault stuff

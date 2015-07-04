@@ -90,11 +90,16 @@ int sem_wait(sem_t* sem) {
 		sem_enqueue(sem, process);
 
 		scheduler_suspend(process);
+		PCB_t* pcb = scheduler_getCurrentProcess();
 
 		atom_end();
 
 		// Wait until state has changed again
-		while (scheduler_getCurrentProcess()->state != PROCESS_RUNNING);
+		while (pcb->state == PROCESS_BLOCKED);
+		if (pcb->state == PROCESS_READY) {
+			// May happen when there is only one process so that the scheduler won't schedule away
+			pcb->state = PROCESS_RUNNING;
+		}
 
 		return 0;
 	}
