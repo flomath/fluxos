@@ -25,10 +25,29 @@ void console_clear()
 
 }
 
-void console_command(char* cmd, int argc, char** argv)
+extern char appdata[];
+
+void console_command(char* cmd, int argc, char* argv[])
 {
     //TODO: syscall for executing cmd?
     //TODO: free cmd and argv
+	if (strcmp(cmd, "echo") == 0) {
+		println(argv[0]);
+	} else if (strcmp(cmd, "greetings") == 0) {
+		uint32_t proc1[2] = {
+			(uint32_t)&appdata,
+			820
+		};
+		syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
+	}
+
+	int i;
+	for ( i = 0; i < argc; i++) {
+		*(argv[i]) = '\0';
+		free(argv[i]);
+	}
+	*cmd = '\0';
+	free(cmd);
 }
 
 static void console_main()
@@ -43,9 +62,14 @@ static void console_main()
 
         // read input
         line = console_read(&lineLength);
+        newLine();
 
-        // process read line
-        console_split_line(line, lineLength);
+        // There is at least one ' ' char
+        if (lineLength > 1) {
+            // process read line
+            console_split_line(line, lineLength);
+        }
+
         free(line);
     }
 }
@@ -57,7 +81,7 @@ static void print(char* text)
 
 static void newLine()
 {
-    print("\n\r");
+    print("\r\n");
 }
 
 static void println(char* text)
@@ -79,16 +103,20 @@ static char* console_read(uint32_t* length)
         //TODO: should whole input be read in syscall or really just each single char?
         syscall(SYS_READ, (uint32_t*)&c, 1);
 
-        // if input char is \n break and process command
-        if (c == '\n') {
-            break;
-        }
-        //TODO: if input char == delete or other char which can "overwrite" other chars, handle it (arrow left...)
-        // else if (...) {...}
-        else if (c >= 'a' && c <= 'z') {
-            //TODO: check for valid character
-            line[lineIndex] = c;
-            lineIndex++;
+        if (c != '\0') {
+        	// if input char is \n break and process command
+			if (c == '\r' || c == '\n') {
+				line[lineIndex] = ' ';
+				lineIndex++;
+				break;
+			}
+			//TODO: if input char == delete or other char which can "overwrite" other chars, handle it (arrow left...)
+			// else if (...) {...}
+			else if ((c >= 'a' && c <= 'z') || c == ' ') {
+				//TODO: check for valid character
+				line[lineIndex] = c;
+				lineIndex++;
+			}
         }
     }
 
@@ -99,14 +127,14 @@ static char* console_read(uint32_t* length)
 
 static void console_split_line(char* line, uint32_t length)
 {
-    char** argv = malloc(COMMAND_MAXPARAMS * sizeof(char*));
+    char* argv[COMMAND_MAXPARAMS];
     int argc = 0;
-    char* cmd;
+    char* cmd = NULL;
+    char char_container[COMMAND_MAXLENGTH];
 
     int i;
     bool_t paramQuote = FALSE;
     int char_index = 0;
-    char* char_container = malloc(COMMAND_MAXLENGTH * sizeof(char));
     for (i = 0; i < length; i++) {
         if (line[i] == '"') {
             paramQuote = !paramQuote;
@@ -114,11 +142,14 @@ static void console_split_line(char* line, uint32_t length)
             // if cmd is null, first add as cmd
             // afterwards
             if (cmd == NULL) {
-                cmd = char_container;
+            	cmd = (char*)malloc(COMMAND_MAXLENGTH * sizeof(char));
+                strncpy(cmd, char_container, COMMAND_MAXLENGTH);
             } else {
-                argv[argc++] = char_container;
+            	char* argument = (char*)malloc(COMMAND_MAXLENGTH * sizeof(char));
+            	strncpy(argument, char_container, COMMAND_MAXLENGTH);
+            	argv[argc++] = argument;
             }
-            char_container = malloc(COMMAND_MAXLENGTH * sizeof(char));
+            char_index = 0;
         } else {
             char_container[char_index++] = line[i];
             char_container[char_index] = '\0'; //TODO: needed?

@@ -152,6 +152,10 @@ int scheduler_getNextProcess()
 		nextProcess = nextProcess % SCHEDULER_MAX_PROCESSES;
 	}
 
+	if (contexts[SchedulerCurrentRunningProcess].state == PROCESS_READY) {
+		return SchedulerCurrentRunningProcess;
+	}
+
 	return SCHEDULER_INVALID_ID;
 }
 

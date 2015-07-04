@@ -27,6 +27,7 @@ static void start_process()
 	// get current process to switch afterwards back
 	PCB_t* currentProcess = scheduler_getCurrentProcess();
 	currentProcess->newPC = (uint32_t)(CODE_START + CODE_MAIN_OFFSET) + 4;
+	currentProcess->state = PROCESS_READY;
 
 	//magic while
 	while(1) {}

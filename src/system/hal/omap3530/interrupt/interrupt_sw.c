@@ -65,6 +65,8 @@ static void sys_read(uint32_t* c)
 		uart_driver_read(buffer, 1);
 		uart_driver_write(buffer, 1);
 		*c = buffer[0];
+	} else {
+		*c = '\0';
 	}
 }
 
