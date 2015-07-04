@@ -40,7 +40,7 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 	uint32_t BytesRemainingToBeTransfered;
 	//EFI_TPL    OldTpl;
 
-	if (cardMediaChange == TRUE) {
+	/*if (cardMediaChange == TRUE) {
 		cmdStatus = mmcsd_card_detect();
 		cardMediaChange = FALSE;
 
@@ -52,7 +52,8 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 
 			return cmdStatus;
 		}
-	} else if (mmchsMedia.MediaPresent == FALSE) {
+	} else if (*/
+	if (mmchsMedia.MediaPresent == FALSE) {
 		return MMCHS_NOMEDIA;
 	}
 
@@ -69,7 +70,7 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 
 	// datalines are not in use anymore?
 	int retries = 0;
-	while (retries++ < MAX_RETRY && ((hal_get_address_value(MMCHS1, MMCHS_PSTATE) & BV(0)) != 0));
+	while (retries++ < MAX_RETRY && (BIT_TRIM_RIGHT((hal_get_address_value(MMCHS1, MMCHS_PSTATE) & BV(1)), 1) != 0));
 
 	if (retries == MAX_RETRY)
 		return MMCHS_TIMEOUT;
@@ -84,8 +85,9 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 		BlockCount = BytesToBeTranferedThisPass / mmchsMedia.BlockSize;
 
 		cmdStatus = mmcsd_transfer_block(lba, buffer, operationType);
-		if (cmdStatus != 0)
+		if (cmdStatus != 0) {
 			return cmdStatus;
+		}
 
 		BytesRemainingToBeTransfered -= BytesToBeTranferedThisPass;
 		lba += BlockCount;
@@ -107,7 +109,7 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 		// Single block read
 		case 0:
 			cmd = CMD17;
-			cmdInterruptEnable = CMD18_INT_EN; // cmd18_int?
+			cmdInterruptEnable = CMD17_INT_EN; // cmd18_int?
 			break;
 
 		// Single block Write
@@ -145,19 +147,19 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 
 	while (retryCount < MAX_RETRY) {
 		do {
-			mmcStatus = MMCHS_REG(MMCHS_STAT);
+			mmcStatus = hal_get_address_value(MMCHS1, MMCHS_STAT);
 		} while (mmcStatus == 0);
 
 		// If the transfer is complete (TC)
-		if (BIT_TRIM_RIGHT( (mmcStatus & BV(1)), 1)) {
+		if (BIT_TRIM_RIGHT( (mmcStatus & BV(1)), 1) == 1) {
 			break;
 		}
 
 		// Handle errors
 		// DEB, DCRC, DTO
 		if ((mmcStatus & BV(22)) || (mmcStatus & BV(21)) || (mmcStatus & BV(20))) {
-			MMCHS_REG(MMCHS_SYSCTL) |= BV(26); // SRD
-			while ((MMCHS_REG(MMCHS_SYSCTL) & BV(26)) != 0x0); // SRD
+			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(26)); // SRD
+			while (BIT_TRIM_RIGHT((hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(26)), 26) != 0); // SRD
 
 			return MMCHS_ERROR;
 		}
@@ -174,7 +176,7 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 uint32_t mmcsd_read_block_data(void *buffer)
 {
 	uint32_t mmcStatus;
-	uint32_t *dataBuffer = buffer;
+	uint32_t* dataBuffer = buffer;
 	uint32_t dataSize = mmchsMedia.BlockSize / 4;
 	uint32_t count;
 	uint32_t retries = 0;
@@ -182,26 +184,27 @@ uint32_t mmcsd_read_block_data(void *buffer)
 	while (retries < MAX_RETRY)
 	{
 		do {
-			mmcStatus = MMCHS_REG(MMCHS_STAT);
+			mmcStatus = hal_get_address_value(MMCHS1, MMCHS_STAT);
 		} while (mmcStatus == 0);
 
 		// Wait till buffer is ready (BRR)
 		if (mmcStatus & BV(5))
 		{
-			MMCHS_REG(MMCHS_STAT) |= BV(5);
+			hal_bitmask_set(MMCHS1, MMCHS_STAT, BV(5));
 
 			// Read the data
 			for (count = 0; count < dataSize; count++)
 			{
-				*dataBuffer++ = MMCHS_REG(MMCHS_DATA);
+				*dataBuffer++ = hal_get_address_value(MMCHS1, MMCHS_DATA);
 			}
 			break;
 		}
 		retries++;
 	}
 
-	if (retries == MAX_RETRY)
+	if (retries == MAX_RETRY) {
 		return MMCHS_TIMEOUT;
+	}
 
 	return MMCHS_SUCCESS;
 }
@@ -211,14 +214,13 @@ uint32_t mmcsd_initialize() {
 	uint32_t cmdStatus;
 	// configure interface and functional clocks
 	// p. 3161
-	hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(24));
-	hal_bitmask_set(CORE_CM, CM_ICLKEN1_CORE, BV(24));
+	hal_bitmask_set(CORE_CM, CM_ICLKEN1_CORE, BV(23));
+	hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(23));
 
 	memset(&cardInfo, 0, sizeof(cardInfo));
 
 	if (cardMediaChange == TRUE) {
 		cmdStatus = mmcsd_card_detect();
-		cardMediaChange = FALSE;
 
 		if (cmdStatus != 0) {
 			mmchsMedia.BlockSize = 512;
@@ -227,10 +229,14 @@ uint32_t mmcsd_initialize() {
 			mmchsMedia.LastBlock = 0;
 
 			return cmdStatus;
+		} else {
+			cardMediaChange = FALSE;
+			mmchsMedia.MediaPresent = TRUE;
 		}
-	} else if (mmchsMedia.MediaPresent == FALSE) {
-		return MMCHS_NOMEDIA;
 	}
+	/*else if (mmchsMedia.MediaPresent == FALSE) {
+		return MMCHS_NOMEDIA;
+	}*/
 
 	return MMCHS_SUCCESS;
 }
@@ -242,22 +248,22 @@ uint32_t mmcsd_card_detect() {
 	mmcsd_softreset();
 
 // Softreset MMC controller
-	hal_bitmask_set(MMCHS1, MMCHS_SYSCONFIG, BV(1));
+	/*hal_bitmask_set(MMCHS1, MMCHS_SYSCONFIG, BV(1));
 	uint32_t softResetMMC;
 	do {
 		// wait until it returns 0x0
 		softResetMMC = BIT_TRIM_RIGHT(
 				(hal_get_address_value(MMCHS1, MMCHS_SYSCONFIG) & BV(1)), 1);
-	} while (softResetMMC != 0);
+	} while (softResetMMC != 0);*/
 
 // Softreset for all
-	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(24)); // set to 1
+	/*hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(24)); // set to 1
 	uint32_t softResetAllDone;
 	do {
 		// wait until it returns 0x0
 		softResetAllDone = BIT_TRIM_RIGHT(
 				(hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(24)), 24);
-	} while (softResetAllDone != 0);
+	} while (softResetAllDone != 0);*/
 
 // set default capabilities [22.5.1.3]
 // all settings are for MMCHS1 [p. 3206]
@@ -294,6 +300,7 @@ uint32_t mmcsd_card_detect() {
 //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(11));		// 0x5: 1.8V (Typical)
 //hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(10));		// 0x5: 1.8V (Typical)
 //hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(9));			// 0x5: 1.8V (Typical)
+	hal_bitmask_write(MMCHS1, MMCHS_HCTL, 0x0, 32);
 	hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x6 << 9));		// 0x6 3V
 	hal_bitmask_set(MMCHS1, MMCHS_HCTL, BV(1));			// DTW_1_BIT
 	hal_bitmask_clear(MMCHS1, MMCHS_HCTL, BV(8));			// SDBP_OFF
@@ -332,17 +339,23 @@ uint32_t mmcsd_card_detect() {
 	 hal_bitmask_clear(MMCHS1, MMCHS_SYSCONFIG, BV(0));	// autoidle clock strgy: free running*/
 
 // precard identification procedure (p. 3162)
-	uint32_t identificationStatus = mmcsd_precard_identification();
-	if (identificationStatus != 0) {
+	uint32_t status = mmcsd_precard_identification();
+	if (status != 0) {
 		printf("Failed to identify card. try again\n");
 		return MMCHS_ERROR;
 	}
 
 //omap3530_mmchs_card_specific_data
-	mmcsd_card_data();
+	status = mmcsd_card_data();
+	if (status != 0) {
+		return MMCHS_ERROR;
+	}
 
 // configure card for transfer mode
-	mmcsd_card_config();
+	status = mmcsd_card_config();
+	if (status != 0) {
+		return MMCHS_ERROR;
+	}
 
 // check media data
 	mmchsMedia.LastBlock    = (cardInfo.NumOfBlocks - 1);
@@ -373,13 +386,13 @@ void mmcsd_card_parse_cid() {
 }
 
 uint32_t mmcsd_card_data() {
-	CSD_SDV2* csdData;
 	uint32_t CardSize;
 
 	uint32_t arg = cardInfo.RCA << 16;
 	uint32_t status = mmcsd_sendcmd(CMD9, arg, CMD9_INT_EN);
-	if (status != 0)
+	if (status != 0) {
 		return status;
+	}
 
 	((uint32_t *) &(cardInfo.CSDData))[0] = hal_get_address_value(
 	MMCHS1,
@@ -418,6 +431,7 @@ uint32_t mmcsd_card_data() {
 		//Calculate Total number of blocks.
 		CardSize = cardInfo.CSDData.C_SIZELow2
 				| (cardInfo.CSDData.C_SIZEHigh10 << 2);
+		//TODO: right calculation?
 		NumBlocks = (CardSize + 1) * (1 << (cardInfo.CSDData.C_SIZE_MULT + 2));
 	}
 
@@ -540,6 +554,7 @@ void mmcsd_calculate_card_clk(uint32_t *ClockFrequencySelect) {
 	default:
 		//DEBUG((EFI_D_ERROR, "Invalid parameter.\n"));
 		//ASSERT(FALSE);
+		break;
 	}
 
 	Frequency = TransferRateValue * TimeValue / 10;
@@ -550,11 +565,12 @@ void mmcsd_calculate_card_clk(uint32_t *ClockFrequencySelect) {
 //DEBUG ((EFI_D_INFO, "MaxDataTransferRate: 0x%x, Frequency: %d KHz, ClockFrequencySelect: %x\n", MaxDataTransferRate, Frequency/1000, *ClockFrequencySelect));
 }
 
-void mmcsd_card_config() {
+uint32_t mmcsd_card_config() {
 	uint32_t arg = cardInfo.RCA << 16;
 	uint32_t status = mmcsd_sendcmd(CMD7, arg, CMD7_INT_EN);
-	if (status != 0)
-		return;
+	if (status != 0) {
+		return status;
+	}
 
 	if (cardInfo.CardType != UNKNOWN_CARD && cardInfo.CardType != MMC_CARD) {
 		status = mmcsd_sendcmd(CMD55, arg, CMD55_INT_EN);
@@ -569,28 +585,32 @@ void mmcsd_card_config() {
 
 	// send cmd16 (block length)
 	arg = cardInfo.BlockSize;
-	mmcsd_sendcmd(CMD16, arg, CMD16_INT_EN);
+	status = mmcsd_sendcmd(CMD16, arg, CMD16_INT_EN);
+	if (status != 0) {
+		return status;
+	}
 
 	mmcsd_change_clockfrequency(cardInfo.ClockFrequencySelect);
+	return MMCHS_SUCCESS;
 }
 
 uint32_t mmcsd_precard_identification() {
 // p. 3147
+	int cmdArg = 0;
 	uint32_t cmdStatus;
 	uint8_t cmd8Supported = 0;
-	uint32_t response;
 
 // activate all interrupts
 	hal_bitmask_write(MMCHS1, MMCHS_IE, MMCHS_IDENTIFY, 32);
 
 	hal_bitmask_set(MMCHS1, MMCHS_CON, BV(1)); // send init sequence
 	hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x00000000, 32); // send dummy command
-	uint32_t dummyCmdSent;
+	/*uint32_t dummyCmdSent;
 	do {
 		// wait until it returns 0x0
 		dummyCmdSent = BIT_TRIM_RIGHT(
 				(hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0)), 0);
-	} while (dummyCmdSent != 0);
+	} while (dummyCmdSent != 0);*/
 
 // wait for 1ms
 	util_ksleep(1);
@@ -609,15 +629,16 @@ uint32_t mmcsd_precard_identification() {
 	hal_bitmask_set(MMCHS1, MMCHS_CON, BV(0)); // set OD
 
 // send cmd0
-	cmdStatus = mmcsd_sendcmd(CMD0, 0x0, CMD0_INT_EN);
-	if (cmdStatus != 0)
+	cmdStatus = mmcsd_sendcmd(CMD0, cmdArg, CMD0_INT_EN);
+	if (cmdStatus != 0) {
 		return cmdStatus;
+	}
 
 // send cmd5 (fails if no sdio card found)
-	cmdStatus = mmcsd_sendcmd(CMD5, 0x0, CMD5_INT_EN);
-	if (cmdStatus == MMCHS_SUCCESS) {
+	cmdStatus = mmcsd_sendcmd(CMD5, cmdArg, CMD5_INT_EN);
+	if (cmdStatus == 0) {
 		printf("found sdio card. not yet implemented!\n");
-		return cmdStatus;
+		return MMCHS_ERROR_UNSUPPORTED;
 	}
 
 // Found SDIO-Card
@@ -633,15 +654,16 @@ uint32_t mmcsd_precard_identification() {
 	uint32_t cmd8Status = mmcsd_sendcmd(CMD8, CMD8_ARG, CMD8_INT_EN);
 	if (cmd8Status == MMCHS_SUCCESS) {
 		//uint32_t value_rsp10 = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(31)), 31);
-		uint32_t value_rsp10 = hal_get_register(MMCHS1, MMCHS_RSP10);
+		uint32_t value_rsp10 = hal_get_address_value(MMCHS1, MMCHS_RSP10);
 		if (value_rsp10 != CMD8_ARG) {
 			printf("MMCSD: EFI Device error! Possible no card available?\n");
+			return MMCHS_ERROR_DEVICE;
 		}
 
 		// supports sector mode, high capacity flag
 		cmd8Supported = 1;
 	} else {
-		printf("CMD8 fails. Not an sd2.0 card.\n");
+		//printf("CMD8 fails. Not an sd2.0 card.\n");
 	}
 
 // soft reset
@@ -659,27 +681,25 @@ uint32_t mmcsd_precard_identification() {
 		// send cmd55
 		uint32_t cmd55Status = mmcsd_sendcmd(CMD55, 0x0, CMD55_INT_EN);
 		if (cmd55Status == MMCHS_SUCCESS) {
-			response = BIT_TRIM_RIGHT(
-					(hal_get_address_value(MMCHS1, MMCHS_RSP10) & BV(30)), 30);
-			printf("succesfully detected sdcard. cmd5 response: %x\n",
-					response);
+			//printf("succesfully detected sdcard. cmd5 response: %x\n", response);
 			cardInfo.CardType = SD_CARD;
 
 			//cmd8Supported = 1;
 			// send ACMD41 command
 			uint32_t cmdArg = ((uint32_t *) &(cardInfo.OCRData))[0];
-			if (cmd8Supported)
+			if (cmd8Supported) {
 				cmdArg |= HCS;
+			}
 
-			uint32_t cmd41Status = mmcsd_sendcmd(ACMD41, cmdArg,
-			ACMD41_INT_EN);
-			if (cmd41Status != 0)
+			uint32_t cmd41Status = mmcsd_sendcmd(ACMD41, cmdArg, ACMD41_INT_EN);
+			if (cmd41Status != 0) {
 				return cmd41Status;
+			}
 
 			((uint32_t *) &(cardInfo.OCRData))[0] = hal_get_address_value(
 					MMCHS1,
 					MMCHS_RSP10); //hal_get_register(MMCHS1, MMCHS_RSP10);
-			printf("SD card detected: OCR: %x\n", cardInfo.OCRData);
+			//printf("SD card detected: OCR: %x\n", cardInfo.OCRData);
 
 		} else {
 			cardInfo.CardType = MMC_CARD;
@@ -712,17 +732,21 @@ uint32_t mmcsd_precard_identification() {
 	} while (loopCount < MAX_RETRY);
 
 // send cmd2 to gather information about how to read sd card
-	cmdStatus = mmcsd_sendcmd(CMD2, 0x0, CMD2_INT_EN);
-	if (cmdStatus != 0)
+	cmdArg = 0;
+	cmdStatus = mmcsd_sendcmd(CMD2, cmdArg, CMD2_INT_EN);
+	if (cmdStatus != 0) {
 		return cmdStatus;
+	}
 
 // parse card information
 	mmcsd_card_parse_cid();
 
 // send cmd3
-	cmdStatus = mmcsd_sendcmd(CMD3, 0x0, CMD3_INT_EN);
-	if (cmdStatus != 0)
+	cmdArg = 0;
+	cmdStatus = mmcsd_sendcmd(CMD3, cmdArg, CMD3_INT_EN);
+	if (cmdStatus != 0) {
 		return cmdStatus;
+	}
 
 	cardInfo.RCA = (hal_get_address_value(MMCHS1, MMCHS_RSP10) >> 16); //(MMCHS_REG(MMCHS_RSP10) >> 16);
 
@@ -833,7 +857,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 
 		// check if cmd is completed (CC)
 		if ((mmcStatus & BV(0)) == 1) {
-			hal_bitmask_set(MMCHS1, MMCHS_STAT, BV(0));
+			hal_bitmask_write(MMCHS1, MMCHS_STAT, BV(0), 32);
 			break;
 		}
 
@@ -841,7 +865,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 	}
 
 	if (repeatSend == MAX_RETRY) {
-		printf("MMCHS send command timeout\n");
+		//printf("MMCHS send command timeout\n");
 		return MMCHS_ERROR;
 	}
 
@@ -850,7 +874,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 
 void mmcsd_softreset() {
 // set softreset bit to 1
-	hal_bitmask_set(MMCHS1, MMCHS_SYSCONFIG, BV(1));
+	hal_bitmask_write(MMCHS1, MMCHS_SYSCONFIG, BV(1), 32);
 // wait for reset done
 	while ((hal_get_address_value(MMCHS1, MMCHS_SYSSTATUS) & BV(0)) != 1) {
 	}

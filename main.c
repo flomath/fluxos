@@ -10,10 +10,7 @@
 #include "src/system/hal/omap3530/timer/timer.h"
 #include "src/system/hal/omap3530/prcm/percm.h"
 #include "src/system/scheduler/scheduler.h"
-
 #include "src/system/hal/omap3530/mmcsd/mmcsd.h"
-
-#include "src/system/filesystem/fat/filesystem.h"
 
 interrupt_callback timer_irq;
 
@@ -21,7 +18,9 @@ void test(void);
 void test2(void);
 void uart_process(void);
 
-#pragma TASK(main)
+int buffy[128];
+
+//#pragma TASK(main)
 void main(void) {
 
 	// Set up interrupts
@@ -44,17 +43,23 @@ void main(void) {
 	//scheduler_addProcess(uart_process);
 	//uart_driver_init(9600);
 
-	mmcsd_initialize();
+
 
 	//struct fat16_filesystem fs;
 	//fat_open_filesystem(&fs, cardInfo);
 
-	int buffy[128] = {0};
+	/*int buffy[128] = {0};
 
 	mmcsd_read(0, buffy, sizeof(buffy));
 	mmcsd_read(1, buffy, sizeof(buffy));
-	mmcsd_read(2, buffy, sizeof(buffy));
+	mmcsd_read(2, buffy, sizeof(buffy));*/
 
+	int status;
+	do {
+		status = mmcsd_initialize();
+	} while (status != 0);
+
+	mmcsd_read(0, buffy, sizeof(buffy));
 	//mmcsd_card_detect();
 
 	// Enable interrupts globally

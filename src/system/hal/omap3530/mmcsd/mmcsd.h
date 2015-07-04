@@ -78,9 +78,9 @@ typedef volatile unsigned int * memory_mapped_io_t;
 #define MMCHS_CMD55     55
 #define MMCHS_CMD41     41
 
-#define MAX_RETRY		500
-// (BADA_EN | CERR_EN | DEB_EN | DCRC_EN | DTO_EN | CIE_EN | CEB_EN | CCRC_EN | CTO_EN | BRR_EN | BWR_EN | TC_EN | CC_EN)
-#define MMCHS_IDENTIFY	((0x01 << 29) | (0x01 << 28) |  (0x01 << 22) | (0x01 << 21) | (0x01 << 20) | (0x01 << 19) | (0x01 << 18) | (0x01 << 17) | (0x01 << 16) | (0x01 << 5) | (0x01 << 4) | (0x01 << 1) | (0x01 << 0))
+#define MAX_RETRY		5000
+#define MMCHS_IDENTIFY (BADA_EN | CERR_EN | DEB_EN | DCRC_EN | DTO_EN | CIE_EN | CEB_EN | CCRC_EN | CTO_EN | BRR_EN | BWR_EN | TC_EN | CC_EN)
+//#define MMCHS_IDENTIFY	((0x01 << 29) | (0x01 << 28) |  (0x01 << 22) | (0x01 << 21) | (0x01 << 20) | (0x01 << 19) | (0x01 << 18) | (0x01 << 17) | (0x01 << 16) | (0x01 << 5) | (0x01 << 4) | (0x01 << 1) | (0x01 << 0))
 
 #define MMCHS_SUCCESS	0
 #define MMCHS_ERROR		1
@@ -122,7 +122,7 @@ uint32_t mmcsd_card_data();
 /**
  * configure card
  */
-void mmcsd_card_config();
+uint32_t mmcsd_card_config();
 
 /**
  * send a command
