@@ -73,10 +73,9 @@ static char* console_read(uint32_t* length)
     memset(line, 0, COMMAND_MAXLENGTH);
 
     // read input
-    int i;
     char c;
     int lineIndex = 0;
-    for (i = 0; i < COMMAND_MAXLENGTH; i++) {
+    while (lineIndex < COMMAND_MAXLENGTH) {
         //TODO: should whole input be read in syscall or really just each single char?
         syscall(SYS_READ, (uint32_t*)&c, 1);
 
@@ -86,7 +85,7 @@ static char* console_read(uint32_t* length)
         }
         //TODO: if input char == delete or other char which can "overwrite" other chars, handle it (arrow left...)
         // else if (...) {...}
-        else {
+        else if (c >= 'a' && c <= 'z') {
             //TODO: check for valid character
             line[lineIndex] = c;
             lineIndex++;

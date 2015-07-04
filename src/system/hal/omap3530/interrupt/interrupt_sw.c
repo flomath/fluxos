@@ -43,6 +43,7 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLe
 			if (paramLength == 2) {
 				sys_load_proc((uint32_t*)params[0], (size_t)params[1]);
 			}
+			break;
 		default:
 			break;
 	}
@@ -58,15 +59,12 @@ static void sys_print(char* message, unsigned int length)
 static void sys_read(uint32_t* c)
 {
 	// read only one char
-	while (1) {
-		int count = uart_driver_count();
-		if (count > 0) {
-			char buffer[1];
-			uart_driver_read(buffer, 1);
-			uart_driver_write(buffer, 1);
-			*c = buffer[0];
-			break;
-		}
+	int count = uart_driver_count();
+	if (count > 0) {
+		char buffer[1];
+		uart_driver_read(buffer, 1);
+		uart_driver_write(buffer, 1);
+		*c = buffer[0];
 	}
 }
 
