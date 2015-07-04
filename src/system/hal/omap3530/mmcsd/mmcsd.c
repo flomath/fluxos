@@ -7,37 +7,56 @@
 
 #include "mmcsd.h"
 
-uint32_t cardMediaChange = 0;
+uint32_t cardMediaChange = TRUE;
 CARD_INFO cardInfo;
 
-EFI_BLOCK_MEDIA mmchsMedia = { 1703, // wolfy media id
-		true,
-		false,
-		false,
-		false,
-		false, 512, 0 };
+EFI_BLOCK_MEDIA mmchsMedia = {
+	1703, // wolfy media id
+	true,
+	false,
+	false,
+	false,
+	false,
+	512,
+	0
+};
+
+/************************************/
+
+
+
+uint32_t mmcsd_read(uint32_t lba, void* buffer, size_t bufferSize) {
+	return mmcsd_read_write(lba, buffer, bufferSize, 0);
+}
+
+uint32_t mmcsd_write(uint32_t lba, void* buffer, size_t bufferSize) {
+	return mmcsd_read_write(lba, buffer, bufferSize, 1);
+}
 
 uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t operationType) {
-	uint32_t Status = MMCHS_SUCCESS;
-	uint32_t RetryCount = 0;
+	uint32_t cmdStatus = MMCHS_SUCCESS;
 	uint32_t BlockCount;
 	uint32_t BytesToBeTranferedThisPass = 0;
 	uint32_t BytesRemainingToBeTransfered;
 	//EFI_TPL    OldTpl;
 
-	if (cardMediaChange == 1) {
-		Status = mmcsd_card_detect();
-		if (Status != 0) {
-			mmchsMedia.MediaPresent = 0;
-			mmchsMedia.LastBlock = 0;
+	if (cardMediaChange == TRUE) {
+		cmdStatus = mmcsd_card_detect();
+		cardMediaChange = FALSE;
+
+		if (cmdStatus != 0) {
 			mmchsMedia.BlockSize = 512;
-			mmchsMedia.ReadOnly = 0;
+			mmchsMedia.ReadOnly = FALSE;
+			mmchsMedia.MediaPresent = FALSE;
+			mmchsMedia.LastBlock = 0;
+
+			return cmdStatus;
 		}
-		cardMediaChange = 0; // false
-	} else if (mmchsMedia.MediaPresent == 0) {
+	} else if (mmchsMedia.MediaPresent == FALSE) {
 		return MMCHS_NOMEDIA;
 	}
 
+	// detect errors and invalid parameters
 	if (buffer == NULL) {
 		return MMCHS_INVALIDPARAM;
 	}
@@ -48,7 +67,7 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 		return MMCHS_BADBFRSIZE;
 	}
 
-	// datalines are not in use
+	// datalines are not in use anymore?
 	int retries = 0;
 	while (retries++ < MAX_RETRY && ((hal_get_address_value(MMCHS1, MMCHS_PSTATE) & BV(0)) != 0));
 
@@ -64,36 +83,38 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 		BytesToBeTranferedThisPass = mmchsMedia.BlockSize;
 		BlockCount = BytesToBeTranferedThisPass / mmchsMedia.BlockSize;
 
-		Status = mmcsd_transfer_block(lba, buffer, operationType);
-		if (Status != 0)
-			return Status;
+		cmdStatus = mmcsd_transfer_block(lba, buffer, operationType);
+		if (cmdStatus != 0)
+			return cmdStatus;
 
 		BytesRemainingToBeTransfered -= BytesToBeTranferedThisPass;
 		lba += BlockCount;
 		buffer = (uint8_t *) buffer + mmchsMedia.BlockSize;
 	}
 
-	return Status;
+	return cmdStatus;
 }
 
 uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType) {
-	uint32_t status;
+	uint32_t cmdStatus;
 	uint32_t mmcStatus;
 	uint32_t retryCount = 0;
 	uint32_t cmd = 0;
 	uint32_t cmdInterruptEnable = 0;
 	uint32_t cmdArgument = 0;
 
-	// Determine operation
 	switch (operationType) {
-	case 0: // Single block read
-		cmd = CMD17;
-		cmdInterruptEnable = CMD18_INT_EN;
-		break;
-	case 1: // Single block Write
-		cmd = CMD24;
-		cmdInterruptEnable = CMD24_INT_EN;
-		break;
+		// Single block read
+		case 0:
+			cmd = CMD17;
+			cmdInterruptEnable = CMD18_INT_EN; // cmd18_int?
+			break;
+
+		// Single block Write
+		case 1:
+			cmd = CMD24;
+			cmdInterruptEnable = CMD24_INT_EN;
+			break;
 	}
 
 	// Set command argument based on the card access mode (Byte mode or Block mode)
@@ -103,16 +124,16 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 		cmdArgument = lba * mmchsMedia.BlockSize;
 	}
 
-	status = mmcsd_sendcmd(cmd, cmdArgument, cmdInterruptEnable);
-	if (status != 0) {
-		return status;
+	cmdStatus = mmcsd_sendcmd(cmd, cmdArgument, cmdInterruptEnable);
+	if (cmdStatus != 0) {
+		return cmdStatus;
 	}
 
 	// Read or Write data.
 	if (operationType == 0) {
-		status = omap3530_mmchs_read_block_data(buffer);
-		if (status != 0) {
-			return status;
+		cmdStatus = mmcsd_read_block_data(buffer);
+		if (cmdStatus != 0) {
+			return cmdStatus;
 		}
 	} else if (operationType == 1) {
 		/*status = omap3530_mmchs_write_block_data(buffer);
@@ -128,7 +149,7 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 		} while (mmcStatus == 0);
 
 		// If the transfer is complete (TC)
-		if (mmcStatus & BV(1)) {
+		if (BIT_TRIM_RIGHT( (mmcStatus & BV(1)), 1)) {
 			break;
 		}
 
@@ -150,15 +171,15 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 	return MMCHS_SUCCESS;
 }
 
-uint32_t omap3530_mmchs_read_block_data(void *buffer)
+uint32_t mmcsd_read_block_data(void *buffer)
 {
 	uint32_t mmcStatus;
 	uint32_t *dataBuffer = buffer;
 	uint32_t dataSize = mmchsMedia.BlockSize / 4;
 	uint32_t count;
-	uint32_t retryCount = 0;
+	uint32_t retries = 0;
 
-	while (retryCount < MAX_RETRY)
+	while (retries < MAX_RETRY)
 	{
 		do {
 			mmcStatus = MMCHS_REG(MMCHS_STAT);
@@ -176,25 +197,42 @@ uint32_t omap3530_mmchs_read_block_data(void *buffer)
 			}
 			break;
 		}
-		retryCount++;
+		retries++;
 	}
 
-	if (retryCount == MAX_RETRY)
-	{
+	if (retries == MAX_RETRY)
 		return MMCHS_TIMEOUT;
-	}
 
 	return MMCHS_SUCCESS;
 }
 
-void mmcsd_configure_clocks() {
+uint32_t mmcsd_initialize() {
 
-// configure interface and functional clocks
-// p. 3161
+	uint32_t cmdStatus;
+	// configure interface and functional clocks
+	// p. 3161
 	hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(24));
 	hal_bitmask_set(CORE_CM, CM_ICLKEN1_CORE, BV(24));
 
 	memset(&cardInfo, 0, sizeof(cardInfo));
+
+	if (cardMediaChange == TRUE) {
+		cmdStatus = mmcsd_card_detect();
+		cardMediaChange = FALSE;
+
+		if (cmdStatus != 0) {
+			mmchsMedia.BlockSize = 512;
+			mmchsMedia.ReadOnly = FALSE;
+			mmchsMedia.MediaPresent = FALSE;
+			mmchsMedia.LastBlock = 0;
+
+			return cmdStatus;
+		}
+	} else if (mmchsMedia.MediaPresent == FALSE) {
+		return MMCHS_NOMEDIA;
+	}
+
+	return MMCHS_SUCCESS;
 }
 
 uint32_t mmcsd_card_detect() {
@@ -307,9 +345,9 @@ uint32_t mmcsd_card_detect() {
 	mmcsd_card_config();
 
 // check media data
-//mmchsMedia.LastBlock    = (cardInfo.NumBlocks - 1);
+	mmchsMedia.LastBlock    = (cardInfo.NumOfBlocks - 1);
 	mmchsMedia.BlockSize = cardInfo.BlockSize;
-//gMMCHSMedia.ReadOnly     = (MmioRead32 (GPIO1_BASE + GPIO_DATAIN) & BIT23) == BIT23;
+	//mmchsMedia.ReadOnly     = (MmioRead32 (GPIO1_BASE + GPIO_DATAIN) & BIT23) == BIT23;
 	mmchsMedia.MediaPresent = true;
 	mmchsMedia.MediaId++;
 
@@ -529,7 +567,7 @@ void mmcsd_card_config() {
 		}
 	}
 
-// send cmd16 (block length)
+	// send cmd16 (block length)
 	arg = cardInfo.BlockSize;
 	mmcsd_sendcmd(CMD16, arg, CMD16_INT_EN);
 
@@ -692,194 +730,72 @@ uint32_t mmcsd_precard_identification() {
 	hal_bitmask_set(MMCHS1, MMCHS_HCTL, (0x6 << 9));	// sdvs_3v
 	mmcsd_change_clockfrequency(MMCHS_CLK_FRQCY400);
 
-// TODO: handle mmc card
-// if mmc card -> more than one card connected? if only 1 or all are identified, go on then
+	// TODO: handle mmc card
+	// if mmc card -> more than one card connected? if only 1 or all are identified, go on then
 
-// send cmd7
-//mmcsd_sendcmd(CMD7, 0x0, CMD7_INT_EN);
+	// send cmd7
+	//mmcsd_sendcmd(CMD7, 0x0, CMD7_INT_EN);
 
 	return MMCHS_SUCCESS;
 }
 
 void mmcsd_change_clockfrequency(uint32_t clockfrequency) {
-// see p. 3157
-// set CEN bit to 0x0 to not provide the clock to card
+	// see p. 3157
+	// set CEN bit to 0x0 to not provide the clock to card
 	hal_bitmask_clear(MMCHS1, MMCHS_SYSCTL, BV(2));
 
-// set clock divider
-// MMCi.MMCHS_SYSCTL[15:6]CLKD
+	// set clock divider
+	// MMCi.MMCHS_SYSCTL[15:6]CLKD
 	hal_bitmask_clear(MMCHS1, MMCHS_SYSCTL, (0x3FFUL << 6)); // clear bit 6 to 15
 	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, (clockfrequency << 6));
 
-// wait until clk is set and stable
+	// wait until clk is set and stable
 	while ( BIT_TRIM_RIGHT(
 			(hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(1)), 1)
 			!= 1) {
 	}
 
-// provide the clock to the card
+	// provide the clock to the card
 	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(2));
 }
 
 uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
-// see p.3151 resp. 3155
-// read/write transfer flow with polling and without DMA
+	// see p.3151 resp. 3155
+	// read/write transfer flow with polling and without DMA
 
-// until cmd lines are not in use anymore
+	// until cmd lines are not in use anymore
 	while ((hal_get_address_value(MMCHS1, MMCHS_PSTATE) & BV(0)) != 0) {
 	}
 
-// Set Blocksize and number of Blocks
+	// Set Blocksize and number of Blocks
 	hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(9), 32); // 512 bytes (block length)
-//hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(16)); // possible TODO: 0 no block transferred, 1 block (block count)
+	//hal_bitmask_write(MMCHS1, MMCHS_BLK, BV(16)); // possible TODO: 0 no block transferred, 1 block (block count)
 
-// reset timeout counter
+	// reset timeout counter
 	hal_bitmask_clear(MMCHS1, MMCHS_SYSCTL, (0xF << 16));
 	hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, (0xE << 16));
 
-// Set Bitfields in MMCHS_CON
-// set MIT, STR, but only for mmc cards (not gonna happen)
+	// Set Bitfields in MMCHS_CON
+	// set MIT, STR, but only for mmc cards (not gonna happen)
 
-// Clear status register
+	// Clear status register
 	hal_bitmask_write(MMCHS1, MMCHS_STAT, 0xFFFFFFFF, 32);
 
-// write MMCHS_CSRE if response type permits
-// set bit for error code card status
-//hal_bitmask_write(MMCHS1, MMCHS_CSRE, 0x00000000);
+	// write MMCHS_CSRE if response type permits
+	// set bit for error code card status
+	//hal_bitmask_write(MMCHS1, MMCHS_CSRE, 0x00000000);
 
-// MMCHS_ARG default
+	// MMCHS_ARG default
 	hal_bitmask_write(MMCHS1, MMCHS_ARG, arg, 32);
 
-// if interrupts are used: MMCHS_ISE
-// set to default?
+	// if interrupts are used: MMCHS_ISE
+	// set to default?
 	hal_bitmask_write(MMCHS1, MMCHS_IE, ie, 32);
 
-//hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
+	//hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
 
-// Write command
+	// Write command
 	hal_bitmask_write(MMCHS1, MMCHS_CMD, cmd, 32);
-
-// MMCHS_CMD and MMCHS_ISE
-	/*switch(cmd)
-	 {
-	 case 0:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00040001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00040001, 8);
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 8);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x00000000, 32);
-	 }
-	 break;
-
-	 case 1:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00050001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00050001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x01020000, 32);
-	 }
-	 break;
-
-	 case 2:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00070001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x02090000, 32);
-	 }
-	 break;
-
-	 case 3:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x100f0001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x031a0000, 32);
-	 }
-	 break;
-
-	 case 41:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, arg, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, ACMD41_INT_EN, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, ACMD41, 32);
-	 }
-	 break;
-
-	 case 5:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00050001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00050001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x05020000, 32);
-	 }
-	 break;
-
-	 case 6:
-	 {
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, ACMD6_INT_EN, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x00050001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 8);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, ACMD6, 32);
-	 }
-	 break;
-
-	 case 55:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x100f0001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x371a0000, 32);
-	 }
-	 break;
-
-	 case 7:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000000, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x100f0001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x071a0000, 32);
-	 }
-	 break;
-
-	 case 8:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ISE, 0x100f0001, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x81a0000, 32);
-	 }
-	 break;
-
-	 case 9:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000000, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x00070001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00010000, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x09090000, 32);
-	 }
-	 break;
-
-	 case 16:
-	 {
-	 //hal_bitmask_write(MMCHS1, MMCHS_CON, 0x00000020, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
-	 //hal_bitmask_write(MMCHS1, MMCHS_ARG, 0x00000200, 32);
-	 hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x101a0000, 32);
-	 }
-	 break;
-
-	 default:
-	 {
-	 printf("WARNING: tried to send unknown cmd to MMCSD\n");
-	 return;
-	 }
-	 }*/
 
 	int repeatSend = 0;
 	while (repeatSend < MAX_RETRY) {
@@ -891,9 +807,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 
 		// Ignore CRC errors on CMD2 and ACMD47, per relevant standards
 		// https://code.google.com/p/beagleboard-freebsd/source/browse/trunk/sys/arm/cortexa8/omap3/omap3_mmc.c?r=15#774
-		int val = BIT_TRIM_RIGHT((mmcStatus & BV(17)), 17);
-		if ((cmd == MMCHS_CMD2)
-				&& (BIT_TRIM_RIGHT( (mmcStatus & BV(17)), 17) != 0)) {
+		if ((cmd == CMD2) && (BIT_TRIM_RIGHT( (mmcStatus & BV(17)), 17) != 0)) {
 			mmcStatus &= ~(BV(17));
 			// clear ERRI if no other error is set
 			if ((mmcStatus & (0xFFFF0000)) == 0) {
@@ -902,8 +816,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 		}
 
 		// check error interrupt
-		if ( BIT_TRIM_RIGHT((mmcStatus & BV(15)), 15) != 0
-				&& BIT_TRIM_RIGHT((mmcStatus & BV(16)), 16) != 0) {
+		if ( BIT_TRIM_RIGHT((mmcStatus & BV(15)), 15) != 0 && BIT_TRIM_RIGHT((mmcStatus & BV(16)), 16) != 1) {
 			// Soft reset
 			hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
 			uint32_t softResetAllDone;
@@ -914,7 +827,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 						25);
 			} while (softResetAllDone != 0);
 
-			printf("error sending command: %x\n", mmcStatus);
+			printf("error sending command: (CTO: %i)\n", BIT_TRIM_RIGHT((mmcStatus & BV(16)), 16) );
 			return MMCHS_ERROR;
 		}
 
@@ -923,47 +836,6 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg, uint32_t ie) {
 			hal_bitmask_set(MMCHS1, MMCHS_STAT, BV(0));
 			break;
 		}
-
-		/*while( ( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0)) != 1) && ( BIT_TRIM_RIGHT((hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16)), 16) != 1)) { }
-		 int cc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(0);
-		 int cto = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(16);
-		 int ccrc = hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(17);
-
-		 // conflict occured on mmci_cmd line
-		 if (cto && ccrc)
-		 {
-		 // set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
-		 hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
-		 while( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1 ) { }
-		 }
-		 else
-		 {
-		 if (cto && !ccrc)
-		 {
-		 // set MMCHS_SYSCTL[25] SRC bit to 0x1 and wait until it returns 0x0
-		 hal_bitmask_set(MMCHS1, MMCHS_SYSCTL, BV(25));
-		 while( BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_SYSCTL) & BV(25)), 25) != 1 ) { }
-		 }
-		 else if (cc)
-		 {
-		 // read response type
-		 // RESP_TYPE = MMCHS_CMD[17:16]
-		 int RESP_TYPE = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_CMD) & (BV(17) | BV(16))), 16);
-
-		 // a response is waiting
-		 if(RESP_TYPE != 0x0)
-		 {
-		 // read MMCHS_RSP
-		 int mmchsResponse = hal_get_address_value(MMCHS1, MMCHS_RSP10);
-
-		 // read MMCHS_STAT CIE, CEB, CCRC and CERR
-		 int CIE = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(19)), 19);
-		 int CEB = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(18)), 18);
-		 int CCRC = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(17)), 16);
-		 int CERR = BIT_TRIM_RIGHT( (hal_get_address_value(MMCHS1, MMCHS_STAT) & BV(28)), 28);
-		 }
-		 }
-		 }*/
 
 		repeatSend++;
 	}

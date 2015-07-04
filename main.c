@@ -13,6 +13,8 @@
 
 #include "src/system/hal/omap3530/mmcsd/mmcsd.h"
 
+#include "src/system/filesystem/fat/filesystem.h"
+
 interrupt_callback timer_irq;
 
 void test(void);
@@ -42,13 +44,17 @@ void main(void) {
 	//scheduler_addProcess(uart_process);
 	//uart_driver_init(9600);
 
-	mmcsd_configure_clocks();
+	mmcsd_initialize();
+
+	//struct fat16_filesystem fs;
+	//fat_open_filesystem(&fs, cardInfo);
 
 	int buffy[128] = {0};
 
-	mmcsd_read_write(0, buffy, sizeof(buffy),0);
-	mmcsd_read_write(1, buffy, sizeof(buffy),0);
-	mmcsd_read_write(2, buffy, sizeof(buffy),0);
+	mmcsd_read(0, buffy, sizeof(buffy));
+	mmcsd_read(1, buffy, sizeof(buffy));
+	mmcsd_read(2, buffy, sizeof(buffy));
+
 	//mmcsd_card_detect();
 
 	// Enable interrupts globally

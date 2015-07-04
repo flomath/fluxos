@@ -15,6 +15,9 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define FALSE		0
+#define TRUE		1
+
 #define MMCHS1      0x4809C000
 #define MMCHS2      0x480B4000
 #define MMCHS3      0x480AD000
@@ -89,7 +92,7 @@ typedef volatile unsigned int * memory_mapped_io_t;
 /**
  * configure functional clocks
  */
-void mmcsd_configure_clocks();
+uint32_t mmcsd_initialize();
 
 /**
  * initialize mmc/sd controller
@@ -139,12 +142,57 @@ uint32_t mmcsd_read_write(uint32_t lba, void* buffer, size_t bufferSize, uint8_t
 
 uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType);
 
-uint32_t omap3530_mmchs_read_block_data(void *buffer);
+uint32_t mmcsd_read_block_data(void *buffer);
+
+uint32_t mmcsd_write(uint32_t lba, void* buffer, size_t bufferSize);
+
+uint32_t mmcsd_read(uint32_t lba, void* buffer, size_t bufferSize);
 
 /*
  * following definitions (defines only) by apple inc.
  * https://github.com/vathpela/edk2/
  */
+
+#define CMDI_MASK         (0x01 << 0)
+#define CMDI_ALLOWED      (0x0UL << 0)
+#define CMDI_NOT_ALLOWED  (0x01 << 0)
+#define DATI_MASK         (0x01 << 1)
+#define DATI_ALLOWED      (0x0UL << 1)
+#define DATI_NOT_ALLOWED  (0x01 << 1)
+#define BLEN_512BYTES     (0x200UL << 0)
+#define DTO_MASK          (0xFUL << 16)
+#define DTO_VAL           (0xEUL << 16)
+#define CCRC              (0x01 << 17)
+#define ERRI              (0x01 << 15)
+#define SRC_MASK          (0x01 << 25)
+#define SRC               (0x01 << 25)
+#define CTO               (0x01 << 16)
+#define CC                (0x01 << 0)
+#define TC                (0x01 << 1)
+#define BWR               (0x01 << 4)
+#define BRR               (0x01 << 5)
+#define ERRI              (0x01 << 15)
+#define CTO               (0x01 << 16)
+#define CCRC              (0x01 << 17)
+#define DTO               (0x01 << 20)
+#define DCRC              (0x01 << 21)
+#define DEB               (0x01 << 22)
+
+#define MMCHS_ERROR_DEVICE            3
+#define MMCHS_ERROR_UNSUPPORTED       4
+#define MMCHS_ERROR_INVALID           5
+#define MMCHS_ERROR_NO_MEDIA          6
+#define MMCHS_ERROR_INVALID_PARAMETER 7
+#define MMCHS_ERROR_BAD_BUFFER_SIZE   8
+#define MMCHS_ERROR_MEDIA_CHANGED     9
+
+#define MMCHS_STATUS_SUCCESS     0
+#define MMCHS_STATUS_LOAD_ERROR  1
+#define MMCHS_STATUS_TIMEOUT     2
+
+#define MMCHS_READ 0
+#define MMCHS_WRITE 1
+
 #define MMC_REFERENCE_CLK (96000000)
 #define CC_EN             (0x01 << 0)
 #define TC_EN             (0x01 << 1)
@@ -159,6 +207,7 @@ uint32_t omap3530_mmchs_read_block_data(void *buffer);
 #define DEB_EN            (0x01 << 22)
 #define CERR_EN           (0x01 << 28)
 #define BADA_EN           (0x01 << 29)
+#define SRD               (0x01 << 26)
 
 #define DE_ENABLE         (0x01 << 0)
  #define BCE_ENABLE        (0x01 << 1)
@@ -231,6 +280,14 @@ uint32_t omap3530_mmchs_read_block_data(void *buffer);
 
 #define HCS (0x01<< 30)
 
+
+
+uint32_t transferBlock(int lba, void* buffer, uint8_t operationType);
+uint32_t readWrite(int lba, void* buffer, size_t bufferSize, uint8_t operationType);
+uint32_t readBlockData(void* buffer);
+uint32_t sendCommand(int cmd, int cmdInterrupts, int arg);
+
+
 typedef enum {
   UNKNOWN_CARD,
   MMC_CARD,              //MMC card
@@ -298,9 +355,9 @@ typedef struct {
   uint32_t  READ_BL_LEN:        4; // Max. read data block length [83:80]
   uint32_t  CCC:                12;// Card command classes [95:84]
 
-  uint8_t   TRAN_SPEED          ;  // Max. bus clock frequency [103:96]
-  uint8_t   NSAC                ;  // Data read access-time 2 in CLK cycles (NSAC*100) [111:104]
-  uint8_t   TAAC                ;  // Data read access-time 1 [119:112]
+  uint8_t   TRAN_SPEED: 8          ;  // Max. bus clock frequency [103:96]
+  uint8_t   NSAC     : 8           ;  // Data read access-time 2 in CLK cycles (NSAC*100) [111:104]
+  uint8_t   TAAC    : 8            ;  // Data read access-time 1 [119:112]
 
   uint8_t   RESERVED_5:         6; // Reserved [125:120]
   uint8_t   CSD_STRUCTURE:      2; // CSD structure [127:126]
