@@ -38,7 +38,7 @@ void main(void) {
 	mmu_init();
 
 	// Add IRQ handler
-	interrupt_add_listener(40, &timer_irq);
+	interrupt_add_listener(29, &timer_irq);
 
 	gpt_timer_init(GPT_TIMER4, 500);
 	gpt_timer_start(GPT_TIMER4);
@@ -50,11 +50,12 @@ void main(void) {
 	//scheduler_addProcess(uart_process);
 
 	// Load process
-	uint32_t proc1[2] = {
+	/*uint32_t proc1[2] = {
 		(uint32_t)&appdata,
 		819
 	};
 	syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
+	 */
 
 	// Enable interrupts globally
 	interrupt_enable();
