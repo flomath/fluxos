@@ -8,6 +8,8 @@
 #include "console.h"
 #include <string.h>
 #include "../applications/audio/audio.h"
+#include "../system/ipc/semaphore.h"
+#include "../system/driver/uart/UartDriver.h"
 
 static void console_main(void);
 static void print(char* text);
@@ -15,6 +17,8 @@ static void newLine();
 static void println(char* text);
 static char* console_read(uint32_t* length);
 static void console_split_line(char* line, uint32_t length);
+
+static sem_t* console_uart_sem;
 
 void console_init()
 {
@@ -89,6 +93,8 @@ static void console_main()
 
     println("Welcome to FluxOS");
 
+    console_uart_sem = sem_get(UART_SEM);
+
     while (1) {
     	print("root@flux:/# ");
 
@@ -133,6 +139,7 @@ static char* console_read(uint32_t* length)
     int lineIndex = 0;
     while (lineIndex < COMMAND_MAXLENGTH) {
         //TODO: should whole input be read in syscall or really just each single char?
+    	sem_wait(console_uart_sem);
         syscall(SYS_READ, (uint32_t*)&c, 1);
 
         if (c != '\0') {

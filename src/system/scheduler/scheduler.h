@@ -48,6 +48,8 @@ void scheduler_killProcess(int processID);
  */
 PCB_t* scheduler_getCurrentProcess();
 
+int scheduler_getCurrentProcessId();
+
 /**
  * Disable scheduling
  */
@@ -57,5 +59,15 @@ void atom_begin(void);
  * Enable scheduling
  */
 void atom_end(void);
+
+/**
+ * Sets the process to suspend
+ */
+void scheduler_suspend(int pid);
+
+/**
+ * Sets the process to continue
+ */
+void scheduler_continue(int pid);
 
 #endif /* SRC_SYSTEM_HAL_COMMON_SCHEDULER_SCHEDULER_H_ */

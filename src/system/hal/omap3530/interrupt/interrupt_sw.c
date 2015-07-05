@@ -9,8 +9,10 @@
 #include "../../../scheduler/scheduler.h"
 #include "../../../driver/uart/UartDriver.h"
 #include "../../../scheduler/loader.h"
+#include "../../../ipc/semaphore.h"
 #include "../../../driver/mcbsp/McbspDriver.h"
 #include "../../../filesystem/ff.h"
+#include <string.h>
 
 static void sys_print(char* message);
 static void sys_read(uint32_t* c);
