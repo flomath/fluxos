@@ -11,7 +11,7 @@ MEMORY
 }
 
 stackSize = 0x20000;
-heapSize  = 0x20000;
+heapSize  = 0x40000;
 
 SECTIONS
 {

@@ -10,6 +10,9 @@
 
 #include "../system/system.h"
 
+#define COMMAND_MAXLENGTH   64
+#define COMMAND_MAXPARAMS   4
+
 /**
  * Initialize console
  */
@@ -24,6 +27,6 @@ void console_clear(void);
  * Process a given command
  * TODO: explanation
  */
-void console_command(int argc, char** argv);
+void console_command(char* cmd, int argc, char** argv);
 
 #endif //SRC_CONSOLE_CONSOLE_H
