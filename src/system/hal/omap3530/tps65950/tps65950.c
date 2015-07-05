@@ -10,7 +10,7 @@
 #include "../../common/hal.h"
 
 void tps_i2c_set(uint32_t address, uint32_t value) {
-	i2c_write8(I2C1, SCD_AUDIO_VOICE, address, value);
+	i2c_write(I2C1, SCD_AUDIO_VOICE, address, value);
 }
 
 void tps_audio_volume_down()
@@ -73,11 +73,9 @@ void tps_audio_setup(void)
 
 	// enable input mode: ADCL routed to TXL1, ADCR routed to TXR1
 	tps_i2c_set(TPS_ADCMICSEL, 0);
-
 	// enable softvolume
 	//tps_i2c_set(TPS_SOFTVOL_CTL, (0x1 << 0));
 	//tps_i2c_set(TPS_SOFTVOL_CTL, (0x0 << 5));	//< 1*0.8/FS
-
 	// enable 48kHz with codec
 	tps_i2c_set(TPS_CODEC_MODE, (APPL_RATE_48 | CODEECPDZ_ON | OPT_MODE) );
 }

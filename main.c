@@ -83,11 +83,11 @@ void test(void) {
 
 	while(1) {
 		printf("[1] Test sound\n");
-		play_sample();
+		audio_play_duck();
 		printf("[1] Sound test finished\n");
 
 		printf("[2] Test sound quiet\n");
-		play_sample();
+		//play_sample();
 		int x = 0;
 		x++;
 	}
