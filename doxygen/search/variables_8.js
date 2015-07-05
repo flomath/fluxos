@@ -1,11 +1,9 @@
 var searchData=
 [
-  ['pages',['pages',['../structmemory_region__t.html#ad4260d2523ef3e8244dfb4ac19e1184c',1,'memoryRegion_t']]],
-  ['pagesize',['pageSize',['../structmemory_region__t.html#a58790b956c35cf6b9f22fe293935f731',1,'memoryRegion_t']]],
-  ['pagetable',['pageTable',['../struct_p_c_b__t.html#a7f1adcc16bcff396ddfd99c68cb77295',1,'PCB_t']]],
-  ['pagetableaddress',['pageTableAddress',['../structmmu__l2__page_table__t.html#a23a63625aa8a7ed577d3b31ca3813e57',1,'mmu_l2_pageTable_t']]],
-  ['parity_5ftype',['parity_type',['../struct_u_a_r_t_configuration__t.html#aef001e001ebc868aaa72d7ee27e79cfa',1,'UARTConfiguration_t']]],
-  ['pc',['PC',['../struct_registers__t.html#aaba58ab5859bd2047075b25eb255eec6',1,'Registers_t']]],
-  ['pid',['pid',['../structsem__process__node.html#a262fc5b412910700eddfcbb4fe0a854b',1,'sem_process_node']]],
-  ['processid',['processID',['../struct_p_c_b__t.html#a8d6d2535a6c010be3cea123256938873',1,'PCB_t']]]
+  ['mdt',['MDT',['../struct_c_i_d.html#ae12a32a5139d5de333734c5acbc831b0',1,'CID']]],
+  ['mediaid',['MediaId',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a235d67521409dd5f038c290ddcd1af62',1,'EFI_BLOCK_MEDIA']]],
+  ['mediapresent',['MediaPresent',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a41329f39db5cd85488c70ddb29056ad1',1,'EFI_BLOCK_MEDIA']]],
+  ['memoryregions',['memoryRegions',['../memory_manager_8c.html#a81e357ae219f5cc2387a25de7e4fec21',1,'memoryManager.c']]],
+  ['mid',['MID',['../struct_c_i_d.html#a7941b5b173344c08b0f52ec2bfcca3a3',1,'CID']]],
+  ['mmchsmedia',['mmchsMedia',['../mmcsd_8c.html#af9b01baf0add4780663ef7da4f60c753',1,'mmcsd.c']]]
 ];

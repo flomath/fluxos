@@ -16,8 +16,11 @@ var searchData=
   ['parity_5ftype',['parity_type',['../struct_u_a_r_t_configuration__t.html#aef001e001ebc868aaa72d7ee27e79cfa',1,'UARTConfiguration_t']]],
   ['pc',['PC',['../struct_registers__t.html#aaba58ab5859bd2047075b25eb255eec6',1,'Registers_t']]],
   ['pcb_5ft',['PCB_t',['../struct_p_c_b__t.html',1,'']]],
-  ['per_5fcm',['PER_CM',['../omap3530_2clock_2clock_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'clock.h']]],
+  ['per_5fcm',['PER_CM',['../omap3530_2clock_2clock_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'PER_CM():&#160;clock.h'],['../percm_8h.html#a00d8dfdc00078f0f9f8269d68aed769f',1,'PER_CM():&#160;percm.h']]],
+  ['percm_2eh',['percm.h',['../percm_8h.html',1,'']]],
+  ['perm_5fwrite_5fprotect',['PERM_WRITE_PROTECT',['../struct_c_s_d.html#a40476391db293542deed8e2d0a982f74',1,'CSD::PERM_WRITE_PROTECT()'],['../struct_c_s_d___s_d_v2.html#a0a2b86412ea8b84cf01c9db1edd9770a',1,'CSD_SDV2::PERM_WRITE_PROTECT()']]],
   ['pid',['pid',['../structsem__process__node.html#a262fc5b412910700eddfcbb4fe0a854b',1,'sem_process_node']]],
+  ['pnm',['PNM',['../struct_c_i_d.html#a7ae55dc6720699e3df478bb1d4e7d0d9',1,'CID']]],
   ['process_2ec',['process.c',['../process_8c.html',1,'']]],
   ['process_2eh',['process.h',['../process_8h.html',1,'']]],
   ['process_5fblocked',['PROCESS_BLOCKED',['../process_8h.html#aa9a4d4b147a0225e616e4ea7e2e18f60a1089c50be0adf4207233c8101d55fb0b',1,'process.h']]],
@@ -31,6 +34,8 @@ var searchData=
   ['processid',['processID',['../struct_p_c_b__t.html#a8d6d2535a6c010be3cea123256938873',1,'PCB_t']]],
   ['processstate_5ft',['ProcessState_t',['../process_8h.html#aa9a4d4b147a0225e616e4ea7e2e18f60',1,'process.h']]],
   ['procfunc',['ProcFunc',['../scheduler_8h.html#a7ca175240b4e4bbf496b8242fa42bb1d',1,'scheduler.h']]],
+  ['prv',['PRV',['../struct_c_i_d.html#adeccb694db771562a24246fc63156222',1,'CID']]],
+  ['psn',['PSN',['../struct_c_i_d.html#a598c41df610e9dc88b7bf7ebe57efdb7',1,'CID']]],
   ['pt_5fl1',['PT_L1',['../omap3530_2mmu_2mmu_8h.html#ae698b8801a5f383311f984856604268c',1,'mmu.h']]],
   ['pt_5fl1_5fbit_5fmask',['PT_L1_BIT_MASK',['../omap3530_2mmu_2mmu_8h.html#afe0cbd0340abfe6bcfbd3e3952ca0a3b',1,'mmu.h']]],
   ['pt_5fl1_5fbit_5fmask_5fn',['PT_L1_BIT_MASK_N',['../omap3530_2mmu_2mmu_8h.html#abda27d8251237f033bdb2674eec3453f',1,'mmu.h']]],
@@ -41,5 +46,6 @@ var searchData=
   ['pt_5fl2_5fbit_5fmask',['PT_L2_BIT_MASK',['../omap3530_2mmu_2mmu_8h.html#afc4ad9bfea75c2332d4fa9b9d945a59c',1,'mmu.h']]],
   ['pt_5fl2_5fbit_5fshift',['PT_L2_BIT_SHIFT',['../omap3530_2mmu_2mmu_8h.html#ab72826591bf506df96d71d59b06f74be',1,'mmu.h']]],
   ['pt_5fl2_5fentries',['PT_L2_ENTRIES',['../omap3530_2mmu_2mmu_8h.html#a58b1b726902f9f1910b34b1da6e4f7f1',1,'mmu.h']]],
-  ['pt_5foffset_5finvalid',['PT_OFFSET_INVALID',['../omap3530_2mmu_2mmu_8h.html#a64392d04e8694066ae26a5f2aa02f3de',1,'mmu.h']]]
+  ['pt_5foffset_5finvalid',['PT_OFFSET_INVALID',['../omap3530_2mmu_2mmu_8h.html#a64392d04e8694066ae26a5f2aa02f3de',1,'mmu.h']]],
+  ['put_5ffat',['put_fat',['../ff_8c.html#abd4b6b071a8d728a88727051c12bc6d7',1,'ff.c']]]
 ];

@@ -1,8 +1,25 @@
 var searchData=
 [
+  ['c_5fsize_5fmult',['C_SIZE_MULT',['../struct_c_s_d.html#a174bf93aec36fccb99ffaadc34e6d310',1,'CSD']]],
+  ['c_5fsizehigh10',['C_SIZEHigh10',['../struct_c_s_d.html#a7e7ca523f48b7df723cf0ea7c86dcc98',1,'CSD']]],
+  ['c_5fsizehigh6',['C_SIZEHigh6',['../struct_c_s_d___s_d_v2.html#ae761ee2d9a234a3fab67902463fd5d05',1,'CSD_SDV2']]],
+  ['c_5fsizelow16',['C_SIZELow16',['../struct_c_s_d___s_d_v2.html#aeb9c1ef6ccd9d9281690f24201f8333e',1,'CSD_SDV2']]],
+  ['c_5fsizelow2',['C_SIZELow2',['../struct_c_s_d.html#a291af3d81b2800dd9873933467261af2',1,'CSD']]],
+  ['cardinfo',['cardInfo',['../mmcsd_8c.html#a6fdf4282970e71d4d82dc96437940a51',1,'mmcsd.c']]],
+  ['cardmediachanged',['cardMediaChanged',['../mmcsd_8c.html#abc29a2b5a7db72283571e5e666229fc7',1,'mmcsd.c']]],
+  ['cardtype',['CardType',['../struct_c_a_r_d___i_n_f_o.html#ac73e02477e52cd46abda5bef07fdb800',1,'CARD_INFO']]],
   ['cb',['CB',['../structmemory_region__t.html#aed3712976f707b4ede7888ce76dcfe73',1,'memoryRegion_t::CB()'],['../structmmu__l1__section__t.html#aa0a6b0fddc1f303b82cb7b7dae1634a7',1,'mmu_l1_section_t::CB()'],['../structmmu__l2__page_table__t.html#a4a3d8037660354ea54f1ecde58408956',1,'mmu_l2_pageTable_t::CB()']]],
+  ['ccc',['CCC',['../struct_c_s_d.html#a2f5a50b6f1907366c9f8648ad2973ea2',1,'CSD::CCC()'],['../struct_c_s_d___s_d_v2.html#ad1936b3cb38404c8383a9373ff7a2ffc',1,'CSD_SDV2::CCC()']]],
   ['char_5flength',['char_length',['../struct_u_a_r_t_configuration__t.html#a95cb8115770edf963c800921bcfe0160',1,'UARTConfiguration_t']]],
+  ['ciddata',['CIDData',['../struct_c_a_r_d___i_n_f_o.html#a36362381fa1814619be58d114a9e4349',1,'CARD_INFO']]],
+  ['clockfrequencyselect',['ClockFrequencySelect',['../struct_c_a_r_d___i_n_f_o.html#a6643c275d27f19bd929805a564e18236',1,'CARD_INFO']]],
+  ['clust',['clust',['../struct_f_i_l.html#aa41312aba551b9a6d1c9d3c8c7d2734b',1,'FIL::clust()'],['../struct_d_i_r.html#acfbb8ba2d6e73b6f999ceffd1857c190',1,'DIR::clust()']]],
   ['contexts',['contexts',['../scheduler_8c.html#abf41e9f5d7f8d90eb647e7cfe415c096',1,'scheduler.c']]],
+  ['copy',['COPY',['../struct_c_s_d.html#af49ea2b970b4b3d1e3734f9fba895e7b',1,'CSD::COPY()'],['../struct_c_s_d___s_d_v2.html#abaec450530b399521ff7505c6b4d79a5',1,'CSD_SDV2::COPY()']]],
   ['count',['count',['../struct_mutex.html#ada9889937079a5053ee01b31cdc47b7c',1,'Mutex']]],
-  ['cpsr',['CPSR',['../struct_registers__t.html#ae3674bbe4184241394068eb02bccc375',1,'Registers_t']]]
+  ['cpsr',['CPSR',['../struct_registers__t.html#ae3674bbe4184241394068eb02bccc375',1,'Registers_t']]],
+  ['crc',['CRC',['../struct_c_i_d.html#a1f16e319c5beb0e42498c32196d062e9',1,'CID::CRC()'],['../struct_c_s_d.html#a09bd59007b978aeeb265d7598a7e5ca4',1,'CSD::CRC()'],['../struct_c_s_d___s_d_v2.html#ac88396151e905cada114c94d179afc23',1,'CSD_SDV2::CRC()']]],
+  ['csd_5fstructure',['CSD_STRUCTURE',['../struct_c_s_d.html#a72c8faef9b74e2c7260662c99b2292ae',1,'CSD::CSD_STRUCTURE()'],['../struct_c_s_d___s_d_v2.html#a4c51f8dce7a5648a1ee2eb3e445cd04f',1,'CSD_SDV2::CSD_STRUCTURE()']]],
+  ['csddata',['CSDData',['../struct_c_a_r_d___i_n_f_o.html#a5544d6f2cfaf26e2c275a8029bd9bed4',1,'CARD_INFO']]],
+  ['csize',['csize',['../struct_f_a_t_f_s.html#a504a1175f6dcc9a854b9da94463bd108',1,'FATFS']]]
 ];

@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['sem_5fnode',['sem_node',['../structsem__node.html',1,'']]],
-  ['sem_5fprocess_5fnode',['sem_process_node',['../structsem__process__node.html',1,'']]],
-  ['sem_5ft',['sem_t',['../structsem__t.html',1,'']]]
+  ['memoryregion_5ft',['memoryRegion_t',['../structmemory_region__t.html',1,'']]],
+  ['mmu_5fl1_5fsection_5ft',['mmu_l1_section_t',['../structmmu__l1__section__t.html',1,'']]],
+  ['mmu_5fl2_5fpagetable_5ft',['mmu_l2_pageTable_t',['../structmmu__l2__page_table__t.html',1,'']]],
+  ['mutex',['Mutex',['../struct_mutex.html',1,'']]]
 ];

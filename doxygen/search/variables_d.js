@@ -1,4 +1,32 @@
 var searchData=
 [
-  ['uart_5fdriver_5fcallback_5fmethod',['uart_driver_callback_method',['../_uart_driver_8c.html#a5f1926a1299cd0581077d63eaf94d036',1,'UartDriver.c']]]
+  ['r0',['R0',['../struct_registers__t.html#aa64f6cf6a3dada5e744a95de09999f54',1,'Registers_t']]],
+  ['r1',['R1',['../struct_registers__t.html#abd73b74af149da109624752131cc697c',1,'Registers_t']]],
+  ['r10',['R10',['../struct_registers__t.html#af2bcd5d2a2b7e656f80ba88f5e13c3bb',1,'Registers_t']]],
+  ['r11',['R11',['../struct_registers__t.html#a16ae600828fae456e3324e4848c54d59',1,'Registers_t']]],
+  ['r12',['R12',['../struct_registers__t.html#ac05a4f8733ff7f3f01a91b582c142963',1,'Registers_t']]],
+  ['r2',['R2',['../struct_registers__t.html#a859ed1fabc2d2be82f1c92f037d9b520',1,'Registers_t']]],
+  ['r2w_5ffactor',['R2W_FACTOR',['../struct_c_s_d.html#a8b7c7263b384e157b4cf69d3d29f590a',1,'CSD::R2W_FACTOR()'],['../struct_c_s_d___s_d_v2.html#a759b97ac44af01d7dbe6495cd12a4021',1,'CSD_SDV2::R2W_FACTOR()']]],
+  ['r3',['R3',['../struct_registers__t.html#a4a67d953529716c12ee37dc403e3d2c8',1,'Registers_t']]],
+  ['r4',['R4',['../struct_registers__t.html#a65b72055f3643670f27f24dcbdfc8a9d',1,'Registers_t']]],
+  ['r5',['R5',['../struct_registers__t.html#a8dfc5d6c3330d7d7f767a1940a93b573',1,'Registers_t']]],
+  ['r6',['R6',['../struct_registers__t.html#a94d104922d2bf719a98ab5681ecb30f2',1,'Registers_t']]],
+  ['r7',['R7',['../struct_registers__t.html#a40a9eb4dd04475b915bedb8791547ab8',1,'Registers_t']]],
+  ['r8',['R8',['../struct_registers__t.html#a9855169b5ef8b11b8384bedab7551d67',1,'Registers_t']]],
+  ['r9',['R9',['../struct_registers__t.html#a3aadfca56b4d47e88ac2b6638af9eea3',1,'Registers_t']]],
+  ['rca',['RCA',['../struct_c_a_r_d___i_n_f_o.html#ad21e08a6342b36ee3086566cf4cf5f30',1,'CARD_INFO']]],
+  ['read_5fbl_5flen',['READ_BL_LEN',['../struct_c_s_d.html#a7d02803da915b170c83163695f13c299',1,'CSD::READ_BL_LEN()'],['../struct_c_s_d___s_d_v2.html#a17f899b1fa62a3231dbb4d74bcaa886e',1,'CSD_SDV2::READ_BL_LEN()']]],
+  ['read_5fbl_5fpartial',['READ_BL_PARTIAL',['../struct_c_s_d.html#a7a7d3534b22fdbe659e17f8d94c0152b',1,'CSD::READ_BL_PARTIAL()'],['../struct_c_s_d___s_d_v2.html#aa920a07519f85b7a3b4734715762018e',1,'CSD_SDV2::READ_BL_PARTIAL()']]],
+  ['read_5fblk_5fmisalign',['READ_BLK_MISALIGN',['../struct_c_s_d.html#ae504d3412ec9cb89691a1b7ba61d6c28',1,'CSD::READ_BLK_MISALIGN()'],['../struct_c_s_d___s_d_v2.html#a717f971942f7c2fecafd04c9463b5c55',1,'CSD_SDV2::READ_BLK_MISALIGN()']]],
+  ['readonly',['ReadOnly',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a8b604f3006956c4d6e1e742baaeb9e48',1,'EFI_BLOCK_MEDIA']]],
+  ['registers',['registers',['../struct_p_c_b__t.html#a2b5aa508126f11dac6570253a4953696',1,'PCB_t']]],
+  ['removablemedia',['RemovableMedia',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a6c8a8100ea336628de7a12ea707519af',1,'EFI_BLOCK_MEDIA']]],
+  ['reserved',['reserved',['../structpage__t.html#ac66affd886b1e83a57abfba041dfa722',1,'page_t']]],
+  ['reserved0',['Reserved0',['../struct_o_c_r.html#aa824bfb66e344a2fb6e94fbffbd090cc',1,'OCR']]],
+  ['reserved_5f1',['RESERVED_1',['../struct_o_c_r.html#a88cf3b88d9ea565fb705158fa5c598aa',1,'OCR::RESERVED_1()'],['../struct_c_i_d.html#a24f3ca1451cc48dd70019add79f8df0a',1,'CID::RESERVED_1()'],['../struct_c_s_d.html#aeeb43188a086cfe6f358be5149aff3a6',1,'CSD::RESERVED_1()'],['../struct_c_s_d___s_d_v2.html#a94b6bc41e01ffa826b36fee352331689',1,'CSD_SDV2::RESERVED_1()']]],
+  ['reserved_5f2',['RESERVED_2',['../struct_c_s_d.html#a718e7d5aa97c620643301de9b68266bd',1,'CSD::RESERVED_2()'],['../struct_c_s_d___s_d_v2.html#ab8d7d6590199fadfb07c3aa1200bcc98',1,'CSD_SDV2::RESERVED_2()']]],
+  ['reserved_5f3',['RESERVED_3',['../struct_c_s_d.html#a0c8b7e3efb00d65d331dc4bb131e54e5',1,'CSD::RESERVED_3()'],['../struct_c_s_d___s_d_v2.html#aeb229dc50b5d536fd6be9f780ddf868f',1,'CSD_SDV2::RESERVED_3()']]],
+  ['reserved_5f4',['RESERVED_4',['../struct_c_s_d.html#aa97b1bfa842dcc8bb4c45c7a4fc7227f',1,'CSD::RESERVED_4()'],['../struct_c_s_d___s_d_v2.html#acdfc8fb7ce6f06fc996ecfec91b0fb07',1,'CSD_SDV2::RESERVED_4()']]],
+  ['reserved_5f5',['RESERVED_5',['../struct_c_s_d.html#a3108c889e04b5e3bfa7aa0f7ac9fa974',1,'CSD::RESERVED_5()'],['../struct_c_s_d___s_d_v2.html#a498a37e2b308b0e72c42f9e7edb959c1',1,'CSD_SDV2::RESERVED_5()']]],
+  ['reserved_5f6',['RESERVED_6',['../struct_c_s_d___s_d_v2.html#a0ae81649ee2625e50ddf1f27927d484e',1,'CSD_SDV2']]]
 ];

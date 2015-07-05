@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uartconfiguration_5ft',['UARTConfiguration_t',['../struct_u_a_r_t_configuration__t.html',1,'']]]
+  ['ocr',['OCR',['../struct_o_c_r.html',1,'']]]
 ];

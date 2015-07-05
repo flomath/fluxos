@@ -1,10 +1,15 @@
 var searchData=
 [
-  ['schedulercurrentrunningprocess',['SchedulerCurrentRunningProcess',['../scheduler_8c.html#abbb7675414ae716974a0fffbf26e191b',1,'scheduler.c']]],
-  ['sectionaddress',['sectionAddress',['../structmmu__l1__section__t.html#a239904bbf1204e2f21396d78d406963b',1,'mmu_l1_section_t']]],
-  ['sem',['sem',['../structsem__node.html#aaaa02e0805e5d3236001ad91c2ea86cb',1,'sem_node']]],
-  ['size',['size',['../struct_p_c_b__t.html#a93946052113ee7e90745332dd3628fcd',1,'PCB_t']]],
-  ['sp',['SP',['../struct_registers__t.html#af480483f058a97f77b90a32dd3e4082a',1,'Registers_t']]],
-  ['state',['state',['../struct_p_c_b__t.html#a4ab8d1008641219f3d02f1ac61465961',1,'PCB_t']]],
-  ['stop_5fbit',['stop_bit',['../struct_u_a_r_t_configuration__t.html#aa49a956e599b816be1a98d2046de7547',1,'UARTConfiguration_t']]]
+  ['pages',['pages',['../structmemory_region__t.html#ad4260d2523ef3e8244dfb4ac19e1184c',1,'memoryRegion_t']]],
+  ['pagesize',['pageSize',['../structmemory_region__t.html#a58790b956c35cf6b9f22fe293935f731',1,'memoryRegion_t']]],
+  ['pagetable',['pageTable',['../struct_p_c_b__t.html#a7f1adcc16bcff396ddfd99c68cb77295',1,'PCB_t']]],
+  ['pagetableaddress',['pageTableAddress',['../structmmu__l2__page_table__t.html#a23a63625aa8a7ed577d3b31ca3813e57',1,'mmu_l2_pageTable_t']]],
+  ['parity_5ftype',['parity_type',['../struct_u_a_r_t_configuration__t.html#aef001e001ebc868aaa72d7ee27e79cfa',1,'UARTConfiguration_t']]],
+  ['pc',['PC',['../struct_registers__t.html#aaba58ab5859bd2047075b25eb255eec6',1,'Registers_t']]],
+  ['perm_5fwrite_5fprotect',['PERM_WRITE_PROTECT',['../struct_c_s_d.html#a40476391db293542deed8e2d0a982f74',1,'CSD::PERM_WRITE_PROTECT()'],['../struct_c_s_d___s_d_v2.html#a0a2b86412ea8b84cf01c9db1edd9770a',1,'CSD_SDV2::PERM_WRITE_PROTECT()']]],
+  ['pid',['pid',['../structsem__process__node.html#a262fc5b412910700eddfcbb4fe0a854b',1,'sem_process_node']]],
+  ['pnm',['PNM',['../struct_c_i_d.html#a7ae55dc6720699e3df478bb1d4e7d0d9',1,'CID']]],
+  ['processid',['processID',['../struct_p_c_b__t.html#a8d6d2535a6c010be3cea123256938873',1,'PCB_t']]],
+  ['prv',['PRV',['../struct_c_i_d.html#adeccb694db771562a24246fc63156222',1,'CID']]],
+  ['psn',['PSN',['../struct_c_i_d.html#a598c41df610e9dc88b7bf7ebe57efdb7',1,'CID']]]
 ];

@@ -110,30 +110,30 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">   36</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">volatile</span> uint32_t* <a class="code" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a>;</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;uint32_t <a class="code" href="hal_8h.html#aff44a732b939e031ef81b40f55e7e178">hal_bitmask_write</a>(uint32_t port, uint8_t offset, uint32_t mask, uint8_t size);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;uint32_t <a class="code" href="hal_8h.html#a857ef2aeb4632afaf5e1e7ac0657b7a2">hal_bitmask_write</a>(uint32_t port, uint32_t offset, uint32_t mask, uint8_t size);</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="hal_8h.html#a249461662e4968aeb232c79073fe4767">hal_bitmask_set</a>(uint32_t port, uint8_t offset, uint32_t mask);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> <a class="code" href="hal_8h.html#a551b1a1c7a669df10dc149983be7157c">hal_bitmask_set</a>(uint32_t port, uint32_t offset, uint32_t mask);</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span> <a class="code" href="hal_8h.html#a7bcf0889832c179d4f63189da959ca55">hal_bitmask_clear</a>(uint32_t port, uint8_t offset, uint32_t mask);</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keywordtype">void</span> <a class="code" href="hal_8h.html#a97dccb336cd1265ce05ca4dfa0f81c1c">hal_bitmask_clear</a>(uint32_t port, uint32_t offset, uint32_t mask);</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;uint32_t <a class="code" href="hal_8h.html#aa7501e0431addaf00f53fd7536d4fd7d">hal_get_address_value</a>(uint32_t port, uint8_t offset);</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;uint32_t <a class="code" href="hal_8h.html#ab3c87ff0ee906326c21ebc9b97160923">hal_get_address_value</a>(uint32_t port, uint32_t offset);</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div>
-<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="hal_8h.html#ad177b1979f179610225cf168650800c0">   68</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a> <a class="code" href="hal_8h.html#ad177b1979f179610225cf168650800c0">hal_get_register</a>(uint32_t port, uint8_t offset)</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="line" href="hal_8h.html#a980f36f76888814e43bf613c28071a3f">   68</a></span>&#160;<span class="keyword">inline</span> <a class="code" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a> <a class="code" href="hal_8h.html#a980f36f76888814e43bf613c28071a3f">hal_get_register</a>(uint32_t port, uint32_t offset)</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordflow">return</span> (<a class="code" href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a>)(port + offset);</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;}</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_HAL_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="hal_8h_html_ad177b1979f179610225cf168650800c0"><div class="ttname"><a href="hal_8h.html#ad177b1979f179610225cf168650800c0">hal_get_register</a></div><div class="ttdeci">mmio_t hal_get_register(uint32_t port, uint8_t offset)</div><div class="ttdef"><b>Definition:</b> hal.h:68</div></div>
-<div class="ttc" id="hal_8h_html_a7bcf0889832c179d4f63189da959ca55"><div class="ttname"><a href="hal_8h.html#a7bcf0889832c179d4f63189da959ca55">hal_bitmask_clear</a></div><div class="ttdeci">void hal_bitmask_clear(uint32_t port, uint8_t offset, uint32_t mask)</div><div class="ttdef"><b>Definition:</b> hal.c:50</div></div>
+<div class="ttc" id="hal_8h_html_a857ef2aeb4632afaf5e1e7ac0657b7a2"><div class="ttname"><a href="hal_8h.html#a857ef2aeb4632afaf5e1e7ac0657b7a2">hal_bitmask_write</a></div><div class="ttdeci">uint32_t hal_bitmask_write(uint32_t port, uint32_t offset, uint32_t mask, uint8_t size)</div><div class="ttdef"><b>Definition:</b> hal.c:16</div></div>
 <div class="ttc" id="hal_8h_html_a88eb76b411d187997612c7d2eafac931"><div class="ttname"><a href="hal_8h.html#a88eb76b411d187997612c7d2eafac931">mmio_t</a></div><div class="ttdeci">volatile uint32_t * mmio_t</div><div class="ttdef"><b>Definition:</b> hal.h:36</div></div>
-<div class="ttc" id="hal_8h_html_aa7501e0431addaf00f53fd7536d4fd7d"><div class="ttname"><a href="hal_8h.html#aa7501e0431addaf00f53fd7536d4fd7d">hal_get_address_value</a></div><div class="ttdeci">uint32_t hal_get_address_value(uint32_t port, uint8_t offset)</div><div class="ttdef"><b>Definition:</b> hal.c:10</div></div>
-<div class="ttc" id="hal_8h_html_a249461662e4968aeb232c79073fe4767"><div class="ttname"><a href="hal_8h.html#a249461662e4968aeb232c79073fe4767">hal_bitmask_set</a></div><div class="ttdeci">void hal_bitmask_set(uint32_t port, uint8_t offset, uint32_t mask)</div><div class="ttdef"><b>Definition:</b> hal.c:43</div></div>
-<div class="ttc" id="hal_8h_html_aff44a732b939e031ef81b40f55e7e178"><div class="ttname"><a href="hal_8h.html#aff44a732b939e031ef81b40f55e7e178">hal_bitmask_write</a></div><div class="ttdeci">uint32_t hal_bitmask_write(uint32_t port, uint8_t offset, uint32_t mask, uint8_t size)</div><div class="ttdef"><b>Definition:</b> hal.c:16</div></div>
+<div class="ttc" id="hal_8h_html_ab3c87ff0ee906326c21ebc9b97160923"><div class="ttname"><a href="hal_8h.html#ab3c87ff0ee906326c21ebc9b97160923">hal_get_address_value</a></div><div class="ttdeci">uint32_t hal_get_address_value(uint32_t port, uint32_t offset)</div><div class="ttdef"><b>Definition:</b> hal.c:10</div></div>
+<div class="ttc" id="hal_8h_html_a980f36f76888814e43bf613c28071a3f"><div class="ttname"><a href="hal_8h.html#a980f36f76888814e43bf613c28071a3f">hal_get_register</a></div><div class="ttdeci">mmio_t hal_get_register(uint32_t port, uint32_t offset)</div><div class="ttdef"><b>Definition:</b> hal.h:68</div></div>
+<div class="ttc" id="hal_8h_html_a551b1a1c7a669df10dc149983be7157c"><div class="ttname"><a href="hal_8h.html#a551b1a1c7a669df10dc149983be7157c">hal_bitmask_set</a></div><div class="ttdeci">void hal_bitmask_set(uint32_t port, uint32_t offset, uint32_t mask)</div><div class="ttdef"><b>Definition:</b> hal.c:43</div></div>
+<div class="ttc" id="hal_8h_html_a97dccb336cd1265ce05ca4dfa0f81c1c"><div class="ttname"><a href="hal_8h.html#a97dccb336cd1265ce05ca4dfa0f81c1c">hal_bitmask_clear</a></div><div class="ttdeci">void hal_bitmask_clear(uint32_t port, uint32_t offset, uint32_t mask)</div><div class="ttdef"><b>Definition:</b> hal.c:50</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 5 2015 16:15:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 18:46:14 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

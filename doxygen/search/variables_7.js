@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['name',['name',['../structsem__t.html#a215ec5a38f71117293503f8130667315',1,'sem_t']]],
-  ['newpc',['newPC',['../struct_p_c_b__t.html#a6d01a0ad63e1be024766bede9b5c98ef',1,'PCB_t']]],
-  ['next',['next',['../structsem__process__node.html#affb0c7aae36493e81328fe12f9339e1f',1,'sem_process_node::next()'],['../structsem__node.html#a395ed926089b073e86dd47b921841271',1,'sem_node::next()']]],
-  ['numpages',['numPages',['../structmemory_region__t.html#a23fa8ea80e2618432c66ac528a7b7339',1,'memoryRegion_t']]],
-  ['numpagesreserved',['numPagesReserved',['../structmemory_region__t.html#a2e8ed2641355001ec979efd4f20b6325',1,'memoryRegion_t']]]
+  ['last_5fclust',['last_clust',['../struct_f_a_t_f_s.html#ad315def289218e26ab78ff90fde700d1',1,'FATFS']]],
+  ['lastblock',['LastBlock',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a5599917b2957d499c6379bd3debfbade',1,'EFI_BLOCK_MEDIA']]],
+  ['logicalblocksperphysicalblock',['LogicalBlocksPerPhysicalBlock',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a1326b9f4013a61fbaab09a235d139801',1,'EFI_BLOCK_MEDIA']]],
+  ['logicalpartition',['LogicalPartition',['../struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html#a061a89865835a76e3a3f7f2d42cd4b2c',1,'EFI_BLOCK_MEDIA']]],
+  ['lr',['LR',['../struct_registers__t.html#a3b278bea96f91904f3614cfee77f0843',1,'Registers_t']]]
 ];

@@ -80,12 +80,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_5d8ef43cc1a8ddd0d3ff97ad61cca1fe.html">src</a></li><li class="navelem"><a class="el" href="dir_273057130add0ac733a89b1df953db8b.html">system</a></li><li class="navelem"><a class="el" href="dir_1938b1ac32f73d80ea359d4b4811d550.html">hal</a></li><li class="navelem"><a class="el" href="dir_500c0da1a5118f391f20c2048ceaebc2.html">omap3530</a></li><li class="navelem"><a class="el" href="dir_a5e8028ac07249a4c41f1dfd9a13b01c.html">mmcsd</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_d501334aeb1b78ad67cd3c72c37b1e87.html">system</a></li><li class="navelem"><a class="el" href="dir_3bbc96a91658c6a996646fdd7a67b8bb.html">hal</a></li><li class="navelem"><a class="el" href="dir_d784b17ef40b1aeb6d895316d5f2aa89.html">omap3530</a></li><li class="navelem"><a class="el" href="dir_b0e9fa0f0d96768f4b6b0fd900e68ca3.html">mmcsd</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">mmcsd.c File Reference</div>  </div>
 </div><!--header-->
@@ -94,18 +95,103 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a67b9c7967ce30f1fc97f2d1a56dcfbc8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a67b9c7967ce30f1fc97f2d1a56dcfbc8">mmcsd_init</a> ()</td></tr>
-<tr class="separator:a67b9c7967ce30f1fc97f2d1a56dcfbc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ff64e67bb8a3de4d78ffdbc63404d9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a8ff64e67bb8a3de4d78ffdbc63404d9e">mmcsd_softreset</a> ()</td></tr>
-<tr class="separator:a8ff64e67bb8a3de4d78ffdbc63404d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82df75c6661b663c7b360e6330512edd"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a82df75c6661b663c7b360e6330512edd">mmcsd_initialize</a> ()</td></tr>
+<tr class="separator:a82df75c6661b663c7b360e6330512edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4585b5b593b02487de796267795754c5"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a4585b5b593b02487de796267795754c5">mmcsd_card_detect</a> ()</td></tr>
+<tr class="separator:a4585b5b593b02487de796267795754c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff009efcc6cbeb55193339392ef66f06"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#aff009efcc6cbeb55193339392ef66f06">mmcsd_change_clockfrequency</a> (uint32_t clockfrequency)</td></tr>
+<tr class="separator:aff009efcc6cbeb55193339392ef66f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5818111c6679887b0a3cc442abe0ca36"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a5818111c6679887b0a3cc442abe0ca36">mmcsd_precard_identification</a> ()</td></tr>
+<tr class="separator:a5818111c6679887b0a3cc442abe0ca36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5982ea5eef60626b5c8290bf93f16f19"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a5982ea5eef60626b5c8290bf93f16f19">mmcsd_sendcmd</a> (uint32_t cmd, uint32_t arg)</td></tr>
+<tr class="separator:a5982ea5eef60626b5c8290bf93f16f19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1df816c5e83131f593884dfd8b6330a"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#ad1df816c5e83131f593884dfd8b6330a">mmcsd_card_data</a> ()</td></tr>
+<tr class="separator:ad1df816c5e83131f593884dfd8b6330a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac898521594e82946752928143a59c0ae"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#ac898521594e82946752928143a59c0ae">mmcsd_card_config</a> ()</td></tr>
+<tr class="separator:ac898521594e82946752928143a59c0ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ef82d2f2ef967665ba8976e0de977ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a9ef82d2f2ef967665ba8976e0de977ac">mmcsd_card_parse_cid</a> ()</td></tr>
+<tr class="separator:a9ef82d2f2ef967665ba8976e0de977ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae5c0e298d18a6044a89d3ad694e20e3"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#aae5c0e298d18a6044a89d3ad694e20e3">mmcsd_read</a> (uint32_t lba, void *buffer, size_t bufferSize)</td></tr>
+<tr class="separator:aae5c0e298d18a6044a89d3ad694e20e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a861b988aab4b160be15595940e7001c4"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a861b988aab4b160be15595940e7001c4">mmcsd_write</a> (uint32_t lba, void *buffer, size_t bufferSize)</td></tr>
+<tr class="separator:a861b988aab4b160be15595940e7001c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5eb80480182ca31815314986c86c8b78"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a5eb80480182ca31815314986c86c8b78">mmcsd_read_write</a> (uint32_t lba, void *buffer, size_t bufferSize, uint8_t operationType)</td></tr>
+<tr class="separator:a5eb80480182ca31815314986c86c8b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4aa836e1aaf5ff37076ce4760ba9c52"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#ae4aa836e1aaf5ff37076ce4760ba9c52">mmcsd_transfer_block</a> (uint32_t lba, void *buffer, uint8_t operationType)</td></tr>
+<tr class="separator:ae4aa836e1aaf5ff37076ce4760ba9c52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23d8fb0abab21fad17d56ea8bd492a28"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a23d8fb0abab21fad17d56ea8bd492a28">mmcsd_read_block_data</a> (void *buffer)</td></tr>
+<tr class="separator:a23d8fb0abab21fad17d56ea8bd492a28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0a48f2430830fe4f6faabe878754f17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#ad0a48f2430830fe4f6faabe878754f17">mmcsd_calculate_card_clk</a> (uint32_t *ClockFrequencySelect)</td></tr>
+<tr class="separator:ad0a48f2430830fe4f6faabe878754f17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d65386f281506f4e27ad2be3098db93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_a_r_d___i_n_f_o.html">CARD_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a8d65386f281506f4e27ad2be3098db93">mmcsd_get_card_info</a> ()</td></tr>
+<tr class="separator:a8d65386f281506f4e27ad2be3098db93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8586dae6e6f00014c9189fb4ba361b61"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a8586dae6e6f00014c9189fb4ba361b61">mmcsd_get_card_status</a> ()</td></tr>
+<tr class="separator:a8586dae6e6f00014c9189fb4ba361b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:abc29a2b5a7db72283571e5e666229fc7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#abc29a2b5a7db72283571e5e666229fc7">cardMediaChanged</a> = <a class="el" href="system_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a></td></tr>
+<tr class="separator:abc29a2b5a7db72283571e5e666229fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fdf4282970e71d4d82dc96437940a51"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_c_a_r_d___i_n_f_o.html">CARD_INFO</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#a6fdf4282970e71d4d82dc96437940a51">cardInfo</a></td></tr>
+<tr class="separator:a6fdf4282970e71d4d82dc96437940a51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9b01baf0add4780663ef7da4f60c753"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html">EFI_BLOCK_MEDIA</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="mmcsd_8c.html#af9b01baf0add4780663ef7da4f60c753">mmchsMedia</a></td></tr>
+<tr class="separator:af9b01baf0add4780663ef7da4f60c753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a67b9c7967ce30f1fc97f2d1a56dcfbc8"></a>
+<a class="anchor" id="ad0a48f2430830fe4f6faabe878754f17"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void mmcsd_init </td>
+          <td class="memname">void mmcsd_calculate_card_clk </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>ClockFrequencySelect</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="ac898521594e82946752928143a59c0ae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_card_config </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>configure card </p>
+
+</div>
+</div>
+<a class="anchor" id="ad1df816c5e83131f593884dfd8b6330a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_card_data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>get card specific data </p>
+
+</div>
+</div>
+<a class="anchor" id="a4585b5b593b02487de796267795754c5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_card_detect </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -116,26 +202,334 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a8ff64e67bb8a3de4d78ffdbc63404d9e"></a>
+<a class="anchor" id="a9ef82d2f2ef967665ba8976e0de977ac"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void mmcsd_softreset </td>
+          <td class="memname">void mmcsd_card_parse_cid </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>soft-reset the mmc/sd controller </p>
+<p>parse card <a class="el" href="struct_c_i_d.html">CID</a> info </p>
 
+</div>
+</div>
+<a class="anchor" id="aff009efcc6cbeb55193339392ef66f06"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void mmcsd_change_clockfrequency </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>clockfrequency</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>change the mmc/sd output clock frequency </p>
+
+</div>
+</div>
+<a class="anchor" id="a8d65386f281506f4e27ad2be3098db93"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_c_a_r_d___i_n_f_o.html">CARD_INFO</a> mmcsd_get_card_info </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a8586dae6e6f00014c9189fb4ba361b61"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_get_card_status </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a82df75c6661b663c7b360e6330512edd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_initialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>configure functional clocks </p>
+
+</div>
+</div>
+<a class="anchor" id="a5818111c6679887b0a3cc442abe0ca36"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_precard_identification </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>pre card identifaction procedure </p>
+
+</div>
+</div>
+<a class="anchor" id="aae5c0e298d18a6044a89d3ad694e20e3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_read </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>lba</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bufferSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a23d8fb0abab21fad17d56ea8bd492a28"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_read_block_data </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5eb80480182ca31815314986c86c8b78"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_read_write </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>lba</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bufferSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>operationType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a5982ea5eef60626b5c8290bf93f16f19"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_sendcmd </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>arg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>send a command a command starts an operation (serially transfered from sd host ctrl to the card on the mmci_cmd line) </p>
+
+</div>
+</div>
+<a class="anchor" id="ae4aa836e1aaf5ff37076ce4760ba9c52"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_transfer_block </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>lba</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>operationType</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a861b988aab4b160be15595940e7001c4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t mmcsd_write </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>lba</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>bufferSize</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a6fdf4282970e71d4d82dc96437940a51"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_c_a_r_d___i_n_f_o.html">CARD_INFO</a> cardInfo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="abc29a2b5a7db72283571e5e666229fc7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t cardMediaChanged = <a class="el" href="system_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="af9b01baf0add4780663ef7da4f60c753"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_e_f_i___b_l_o_c_k___m_e_d_i_a.html">EFI_BLOCK_MEDIA</a> mmchsMedia</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
+<div class="line">    0, </div>
+<div class="line">    <span class="keyword">true</span>,</div>
+<div class="line">    <span class="keyword">false</span>,</div>
+<div class="line"></div>
+<div class="line">    <span class="keyword">false</span>,</div>
+<div class="line">    <span class="keyword">false</span>,</div>
+<div class="line">    <span class="keyword">false</span>,</div>
+<div class="line"></div>
+<div class="line">    512,</div>
+<div class="line">    0,</div>
+<div class="line"></div>
+<div class="line">    0,</div>
+<div class="line">    0</div>
+<div class="line">}</div>
+</div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Wed Jun 10 2015 07:48:20 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 18:46:14 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
