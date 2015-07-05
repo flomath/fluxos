@@ -12,6 +12,8 @@
 #include <cstdlib>
 #include "../../hal/omap3530/interrupt/interrupt.h"
 
+#define UART_SEM	"sem_uart"
+
 /**
  * Initialize the uart with the given configuration
  *

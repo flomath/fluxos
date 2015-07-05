@@ -8,6 +8,8 @@
 #include "UartDriver.h"
 #include "../../hal/omap3530/uart/uart.h"
 #include "../../hal/common/interrupt.h"
+#include "../../ipc/semaphore.h"
+#include "../../scheduler/scheduler.h"
 
 #define UART_DRIVER_DEVICE 			UART3
 #define UART_DRIVER_IRQ 			74
@@ -16,6 +18,8 @@
 void (*uart_driver_callback_method)(void) = NULL;
 static uint8_t uart_driver_buffer[UART_DRIVER_BUFFER_SIZE];
 static int uart_driver_buffer_pos = 0;
+
+static sem_t* uart_semaphore;
 
 void uart_driver_init(uint32_t baud_rate) {
 	// Create configuration
@@ -29,14 +33,19 @@ void uart_driver_init(uint32_t baud_rate) {
 
 	// Enable interrupts
 	interrupt_add_listener(UART_DRIVER_IRQ, &uart_driver_interrupt);
+
+	// Create a semaphore
+	uart_semaphore = sem_create(UART_SEM);
 }
 
 void uart_driver_write(char* data, size_t size) {
+	atom_begin();
 	uint8_t* current = (uint8_t*)data;
 	while (current < (uint8_t*)data + size) {
 		uart_write(UART_DRIVER_DEVICE, current);
 		++current;
 	}
+	atom_end();
 }
 
 void uart_driver_read(char* buffer, size_t size) {
@@ -97,6 +106,9 @@ void uart_driver_interrupt() {
 			uart_driver_buffer_pos = 0;
 		}
 		uart_driver_buffer[uart_driver_buffer_pos++] = received;
+
+		// Increase semaphore
+		sem_post(uart_semaphore);
 
 		// Call callback
 		if ( uart_driver_callback_method != NULL ) {

@@ -204,3 +204,27 @@ PCB_t* scheduler_getCurrentProcess()
 {
 	return &contexts[SchedulerCurrentRunningProcess];
 }
+
+int scheduler_getCurrentProcessId() {
+	return SchedulerCurrentRunningProcess;
+}
+
+void scheduler_suspend(int pid) {
+	if (pid > SCHEDULER_MAX_PROCESSES) {
+		return;
+	}
+
+	if (contexts[pid].state == PROCESS_RUNNING || contexts[pid].state == PROCESS_READY) {
+		contexts[pid].state = PROCESS_BLOCKED;
+	}
+}
+
+void scheduler_continue(int pid) {
+	if (pid > SCHEDULER_MAX_PROCESSES) {
+		return;
+	}
+
+	if (contexts[pid].state == PROCESS_BLOCKED) {
+		contexts[pid].state = PROCESS_READY;
+	}
+}
