@@ -8,7 +8,7 @@
 #ifndef SRC_SYSTEM_HAL_HAL_H_
 #define SRC_SYSTEM_HAL_HAL_H_
 
-#include <stdint.h>
+#include "../../system.h"
 
 /**
  * Bitshift
@@ -43,7 +43,7 @@ typedef volatile uint32_t* mmio_t;
  * @param mask		The value to write
  * @param size		The size of the register
  */
-uint32_t hal_bitmask_write(uint32_t port, uint32_t offset, uint32_t mask, uint32_t size);
+uint32_t hal_bitmask_write(uint32_t port, uint32_t offset, uint32_t mask, uint8_t size);
 
 /**
  * Enable a bit(mask) of given port and offset
@@ -65,6 +65,9 @@ uint32_t hal_get_address_value(uint32_t port, uint32_t offset);
  *
  * @internal
  */
-inline mmio_t hal_get_register(uint32_t port, uint32_t offset);
+inline mmio_t hal_get_register(uint32_t port, uint32_t offset)
+{
+ 	return (mmio_t)(port + offset);
+}
 
 #endif /* SRC_SYSTEM_HAL_HAL_H_ */

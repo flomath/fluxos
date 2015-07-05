@@ -9,6 +9,7 @@
 #define SRC_SYSTEM_HAL_COMMON_INTERRUPT_H_
 
 #include "../../scheduler/process.h"
+#include "interrupt_sw.h"
 
 typedef void interrupt_callback(Registers_t* context);
 

@@ -5,44 +5,61 @@
  *      Author: florian
  */
 
-
+#include <stdio.h>
 #include "scheduler.h"
 #include "../hal/omap3530/interrupt/interrupt.h"
+#include "process.h"
 
 /**
  * Array with all PCBs
  */
 PCB_t contexts[SCHEDULER_MAX_PROCESSES];
 int SchedulerCurrentRunningProcess = SCHEDULER_INVALID_ID;
+static bool_t atom = FALSE;
 
-char stacks[SCHEDULER_MAX_PROCESSES][1024];
+static void scheduler_killCurrentProcess(void);
+
+void atom_begin() {
+	atom = TRUE;
+}
+
+void atom_end() {
+	atom = FALSE;
+}
 
 void scheduler_addProcess(ProcFunc fct)
 {
-	mutex_lock();
-
 	int newProcessID = scheduler_getFreeProcessID();
 	if (newProcessID == SCHEDULER_INVALID_ID)
 	{
-		mutex_release();
+		return;
 	}
 
 	contexts[newProcessID].processID = newProcessID;
 	contexts[newProcessID].state = PROCESS_READY;
 	contexts[newProcessID].func = fct;
 
-	contexts[newProcessID].registers.SP = (uint32_t)(stacks[newProcessID]) + 1020;
+	// stack size 0x20000 - do not start at 0x20000 because of rom exceptions
+	contexts[newProcessID].registers.SP = (uint32_t) 0x10020000; //TODO: sp on different address?
 	contexts[newProcessID].registers.CPSR = 0b10000; // USER MODE
-	contexts[newProcessID].registers.LR = NULL; // Todo Set Process Exit Handler
+	contexts[newProcessID].registers.LR = (uint32_t)&scheduler_killCurrentProcess;
 	contexts[newProcessID].registers.PC = (uint32_t)(contexts[newProcessID].func) + 4;
+	mmu_create_process(&contexts[newProcessID]);
 }
 
 void scheduler_run(Registers_t* context)
 {
-	mutex_lock();
+	if (atom == TRUE) {
+		return;
+	}
+
+	atom_begin();
 
 	int nextProcess = scheduler_getNextProcess();
-	if(nextProcess == SCHEDULER_INVALID_ID) return;
+	if(nextProcess == SCHEDULER_INVALID_ID) {
+		atom_end();
+		return;
+	}
 
 	switch(contexts[nextProcess].state) {
 		case PROCESS_RUNNING: break;
@@ -96,16 +113,28 @@ void scheduler_run(Registers_t* context)
 			context->LR = contexts[SchedulerCurrentRunningProcess].registers.LR;
 			context->PC = contexts[SchedulerCurrentRunningProcess].registers.PC;
 			context->CPSR = contexts[SchedulerCurrentRunningProcess].registers.CPSR;
+
+			// if new pc (loading process) is set,
+			// set pc to new pc
+			if (contexts[SchedulerCurrentRunningProcess].newPC != 0) {
+				context->PC = contexts[SchedulerCurrentRunningProcess].newPC;
+				context->LR = (uint32_t)&scheduler_killCurrentProcess;
+				contexts[SchedulerCurrentRunningProcess].newPC = 0;
+			}
+
+//			printf("Process switch %i\n", contexts[SchedulerCurrentRunningProcess].processID);
+			mmu_switch_process(&contexts[SchedulerCurrentRunningProcess]);
 		} break;
 
 		default: break;
 	}
-	mutex_release();
+
+	atom_end();
 }
 
 int scheduler_getNextProcess()
 {
-	int nextProcess = SchedulerCurrentRunningProcess + 1;
+    int nextProcess = (SchedulerCurrentRunningProcess + 1) % SCHEDULER_MAX_PROCESSES;
 
 	while (nextProcess < SCHEDULER_MAX_PROCESSES && nextProcess != SchedulerCurrentRunningProcess)
 	{
@@ -123,13 +152,39 @@ int scheduler_getNextProcess()
 		nextProcess = nextProcess % SCHEDULER_MAX_PROCESSES;
 	}
 
+	if (contexts[SchedulerCurrentRunningProcess].state == PROCESS_READY) {
+		return SchedulerCurrentRunningProcess;
+	}
+
 	return SCHEDULER_INVALID_ID;
+}
+
+static void scheduler_killCurrentProcess()
+{
+	syscall(SYS_EXIT, 0, 0);
+
+	// wait until timer or other interrupt occurs
+	// needed for preventing process to jump back to ended routine
+	while(1) {}
 }
 
 void scheduler_killProcess(int processID)
 {
+	atom_begin();
+
+	if (contexts[processID].state == PROCESS_CREATED || contexts[processID].state == PROCESS_TERMINATED ) {
+		atom_end();
+		return;
+	}
+
 	contexts[processID].state = PROCESS_TERMINATED;
 	contexts[processID].func = NULL;
+
+	mmu_kill_process(&contexts[processID]);
+
+	contexts[processID].state = PROCESS_CREATED;
+
+	atom_end();
 }
 
 int scheduler_getFreeProcessID() 
@@ -143,4 +198,9 @@ int scheduler_getFreeProcessID()
 		}
 	}
 	return SCHEDULER_INVALID_ID;
+}
+
+PCB_t* scheduler_getCurrentProcess()
+{
+	return &contexts[SchedulerCurrentRunningProcess];
 }

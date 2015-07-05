@@ -33,8 +33,8 @@ uint32_t mmcsd_initialize() {
 
 	// configure interface and functional clocks
 	// p. 3161
-	hal_bitmask_set(CORE_CM, CM_ICLKEN1_CORE, BV(EN_MMC1));
-	hal_bitmask_set(CORE_CM, CM_FCLKEN_CORE, BV(EN_MMC1));
+	hal_bitmask_set(CM_ICLKEN1_CORE, 0x0, BV(EN_MMC1));
+	hal_bitmask_set(CM_FCLKEN1_CORE, 0x0, BV(EN_MMC1));
 
 	memset(&cardInfo, 0, sizeof(cardInfo));
 

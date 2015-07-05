@@ -8,12 +8,9 @@
 #ifndef SRC_SYSTEM_HAL_OMAP3530_MMCSD_H_
 #define SRC_SYSTEM_HAL_OMAP3530_MMCSD_H_
 
-#include "../../common/hal.h"
+#include "../../../system.h"
 #include "../clock/clock.h"
 #include "../../../../utils/sleep.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
 
 #define FALSE		        0
 #define TRUE		        1
