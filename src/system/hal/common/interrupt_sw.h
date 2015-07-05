@@ -11,6 +11,6 @@
 #include "../../system.h"
 #include "../../../api/syscall.h"
 
-void handle_interrupt_sw(uint32_t swiID, uint32_t params[], unsigned int paramLength);
+void handle_interrupt_sw(uint32_t swiID, uint32_t params[], uint32_t paramLength);
 
 #endif /* SRC_SYSTEM_HAL_COMMON_INTERRUPT_SW_H_ */

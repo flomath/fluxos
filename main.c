@@ -9,17 +9,36 @@
 #include "src/system/hal/common/interrupt_sw.h"
 #include "src/system/hal/omap3530/interrupt/interrupt.h"
 #include "src/system/hal/omap3530/timer/timer.h"
-#include "src/system/hal/omap3530/prcm/percm.h"
+#include "src/system/hal/omap3530/clock/clock.h"
 #include "src/system/scheduler/scheduler.h"
 #include "src/system/hal/omap3530/mmu/mmu.h"
+#include "src/system/hal/omap3530/tps65950/tps65950.h"
+#include "src/system/hal/omap3530/tps65950/tps_led.h"
 #include "src/system/scheduler/loader.h"
 #include "src/console/console.h"
+#include "src/applications/audio/audio.h"
+#include "src/system/hal/omap3530/mcbsp/mcbsp.h"
+#include "src/system/hal/omap3530/i2c/i2c.h"
 
 interrupt_callback timer_irq;
 
 void test(void);
 void test2(void);
 void uart_process(void);
+
+void util_ksleep(uint32_t time)
+{
+	int i;
+
+	// this is approximately 1ms, at least on beagleboard c3 w/ no cache on
+	while (time--) {
+		for (i=0;i<1000;i++) {
+			asm ("\t mov r0, r0");
+			asm ("\t mov r0, r0");
+			asm ("\t mov r0, r0");
+		}
+	}
+}
 
 #pragma TASK(main)
 void main(void) {
@@ -31,6 +50,14 @@ void main(void) {
 
 	// initialise LED
 	gpio_driver_init();
+
+	// Enable sound
+	mcbsp2_enable();
+	mcbsp_init_master2(MCBSP2);
+	//i2c1_enable();
+	//i2c_init(I2C1);
+	tps_led_setup();
+	tps_audio_setup();
 
 	// initialise MMU
 	mmu_init();
@@ -50,11 +77,17 @@ void main(void) {
 	// Enable interrupts globally
 	interrupt_enable();
 
+	util_ksleep(2000);
+
+	syscall(SYS_PRINT, (uint32_t*)"boot kernel finished\r\n", 1);
+
 	//uart_driver_write("hallo nino", 10);
 	//syscall(SYS_PRINT, (uint32_t*)"hallo nino", 10);
 
 	// call software interrupt
 	//syscall(SYS_DEBUG, 0);
+
+	//test();
 
 	// Execute
 	while(1) {
@@ -67,19 +100,25 @@ void test(void) {
 	int a = 1;
 	a++;
 
-	printf("%i\n", a);
+	//printf("%i\n", a);
 	char* test = "test";
 	syscall(SYS_PRINT, (uint32_t*)test, 5);
 
 	a++;
-	printf("%i\n", a);
+	//printf("%i\n", a);
 
 	while(1) {
-		printf("[1] task test\n");
+		printf("[1] Test sound\n");
+		audio_play_duck();
+		printf("[1] Sound test finished\n");
+
+		printf("[2] Test sound quiet\n");
+		//play_sample();
 		int x = 0;
 		x++;
 	}
 }
+
 void test2(void) {
 	while(1) {
 		printf("[2] task test\n");

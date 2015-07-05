@@ -7,6 +7,7 @@
 
 #include "console.h"
 #include <string.h>
+#include "../applications/audio/audio.h"
 
 static void console_main(void);
 static void print(char* text);
@@ -33,12 +34,19 @@ void console_command(char* cmd, int argc, char* argv[])
     //TODO: free cmd and argv
 	if (strcmp(cmd, "echo") == 0) {
 		println(argv[0]);
-	} else if (strcmp(cmd, "greetings") == 0) {
+	}
+
+	if (strcmp(cmd, "greetings") == 0) {
 		uint32_t proc1[2] = {
 			(uint32_t)&appdata,
 			820
 		};
 		syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
+	}
+
+	if (strcmp(cmd, "playduck") == 0) {
+		//syscall(SYS_START_PROC, (uint32_t*)0xE92D400E, 0);
+		syscall(SYS_START_PROC, (uint32_t*)&audio_play_duck, 0);
 	}
 
 	int i;
