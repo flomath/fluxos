@@ -9,7 +9,8 @@
 #include "../../common/hal.h"
 #include "../../common/mmu/mmu.h"
 #include "interrupt.h"
-
+#include "../../../scheduler/scheduler.h"
+#include "../../../scheduler/scheduler.h"
 
 #include "../timer/timer.h"
 

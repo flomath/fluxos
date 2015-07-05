@@ -40,4 +40,9 @@
 #define CONTROL				0x48002274
 #define CONTROL_DEVCONF0	0x004
 
+// CORE
+//TODO: after merging check this one important!!!
+//#define CM_FCLKEN_CORE    0x000
+//#define CM_ICLKEN1_CORE   0x010
+
 #endif /* SRC_SYSTEM_HAL_OMAP3530_CLOCK_CLOCK_H_ */

@@ -21,6 +21,8 @@
 #define SYS_AUDIO_PLAYL  50
 #define SYS_AUDIO_PLAYR  51
 
+#define SYS_READ_FILE 	60
+
 #pragma SWI_ALIAS(syscall, 0)
 void syscall(uint32_t swiID, uint32_t params[], uint32_t paramLength);
 

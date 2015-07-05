@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include "../api/syscall.h"
 #include <string.h>
+#include <stdbool.h>
 
 #ifndef NULL
 #define NULL ((void*) 0)

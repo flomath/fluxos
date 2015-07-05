@@ -5,8 +5,8 @@
  *      Author: florian
  */
 
-#ifndef SRC_TOOLS_MUTEX_H_
-#define SRC_TOOLS_MUTEX_H_
+#ifndef SRC_UTILS_MUTEX_H_
+#define SRC_UTILS_MUTEX_H_
 
 typedef struct Mutex {
 	int count;
@@ -15,4 +15,4 @@ typedef struct Mutex {
 int mutex_lock(); // Mutex P()
 int mutex_release(); 	// Mutex V()
 
-#endif /* SRC_TOOLS_MUTEX_H_ */
+#endif /* SRC_UTILS_MUTEX_H_ */

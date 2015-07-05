@@ -11,7 +11,7 @@
 #include "process.h"
 #include "../hal/omap3530/mmu/mmu.h"
 #include <stdlib.h>
-#include "../../tools/mutex.h"
+#include "../../utils/mutex.h"
 
 #define		SCHEDULER_MAX_PROCESSES 50
 #define		SCHEDULER_INVALID_ID	-1

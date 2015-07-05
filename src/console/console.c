@@ -49,8 +49,32 @@ void console_command(char* cmd, int argc, char* argv[])
 	}
 
 	if (strcmp(cmd, "playduck") == 0) {
-		//syscall(SYS_START_PROC, (uint32_t*)0xE92D400E, 0);
 		syscall(SYS_START_PROC, (uint32_t*)&audio_play_duck, 0);
+	}
+
+	//TODO: first of all do dynamic buffer
+	//TODO: second check if file is a binary
+	//TODO: third work with mount, opendir, readfile, ...
+	if (strcmp(cmd, "start") == 0) {
+		char buffer[1024];
+		uint32_t bufferSize = 1024;
+		uint32_t params[3] = {
+				(uint32_t) argv[0],
+				(uint32_t) buffer,
+				(uint32_t) &bufferSize
+
+		};
+		syscall(SYS_READ_FILE, params, 3);
+
+		printf("%s", buffer);
+
+		if ( bufferSize > 0 ) {
+			uint32_t proc[2] = {
+					(uint32_t) buffer,
+					bufferSize
+			};
+			syscall(SYS_LOAD_PROC, proc, 2);
+		}
 	}
 
 	int i;
@@ -127,7 +151,7 @@ static char* console_read(uint32_t* length)
 			}
 			//TODO: if input char == delete or other char which can "overwrite" other chars, handle it (arrow left...)
 			// else if (...) {...}
-			else if ((c >= 'a' && c <= 'z') || c == ' ') {
+			else if ((c >= 'a' && c <= 'z') || c == ' ' || c == '/' || c == '.') {
 				//TODO: check for valid character
 				line[lineIndex] = c;
 				lineIndex++;

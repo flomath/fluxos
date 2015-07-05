@@ -43,8 +43,6 @@ void kernel_boot()
 
 	// Enable interrupts globally
 	interrupt_enable();
-
-
 }
 
 static void timer_irq(Registers_t* context)

@@ -8,7 +8,7 @@
 #ifndef SRC_SYSTEM_KERNEL_H_
 #define SRC_SYSTEM_KERNEL_H_
 
-#include "../tools/sleep.h"
+#include "../utils/sleep.h"
 #include "hal/omap3530/timer/timer.h"
 #include "hal/omap3530/interrupt/interrupt.h"
 #include "driver/uart/UartDriver.h"
@@ -18,6 +18,7 @@
 
 #include "driver/mcbsp/McbspDriver.h"
 #include "../console/console.h"
+#include "hal/omap3530/mmcsd/mmcsd.h"
 
 void kernel_boot();
 static void kernel_enable_audio();
