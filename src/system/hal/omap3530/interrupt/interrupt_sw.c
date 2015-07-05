@@ -10,10 +10,12 @@
 #include "../../../driver/uart/UartDriver.h"
 #include "../../../scheduler/loader.h"
 #include "../../../driver/mcbsp/McbspDriver.h"
+#include "../../../filesystem/ff.h"
 
 static void sys_print(char* message);
 static void sys_read(uint32_t* c);
 static void sys_load_proc(uint32_t* address, size_t size);
+static void sys_read_file(char* fileName, char* buffer, uint32_t* bufferSize);
 
 void handle_interrupt_sw(uint32_t swiID, uint32_t params[], uint32_t paramLength)
 {
@@ -60,6 +62,10 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], uint32_t paramLength
 			mcbsp_driver_play_right((uint32_t)params);
 			break;
 
+		// Filesystem
+		case SYS_READ_FILE:
+			sys_read_file((char*)params[0], (char*)params[1], (uint32_t*)params[2]);
+			break;
 		default:
 			break;
 	}
@@ -89,4 +95,39 @@ static void sys_read(uint32_t* c)
 static void sys_load_proc(uint32_t* address, size_t size)
 {
 	loader_load_process(address, size);
+}
+
+static void sys_read_file(char* fileName, char* buffer, uint32_t* bufferSize)
+{
+	//TODO: actually using file with path
+
+	// Read binary file at once
+	FATFS fs;
+	fs.drv = 0;
+
+	//TODO: check if we have to close mounted one?
+	f_mount(&fs, "", 1);
+
+	FILINFO fno;
+
+	DIR dp;
+	//TODO: add RESULT
+	f_opendir(&dp, "/\0");
+	f_readdir(&dp, &fno);
+	FIL file;
+	//TODO: only on root path!
+	f_open(&file, fileName, FA_READ);
+
+	unsigned ptr;
+
+	ptr = f_tell(&file); // get read-pointer
+	f_read(&file, buffer, (uint32_t)bufferSize, &ptr); // read 4 byte
+	*bufferSize = ptr;
+	uart_driver_write(buffer, strlen(buffer));
+	ptr = f_eof(&file); // check if eof is reached - ptr != 0, if it is so go back
+	f_lseek(&file, 0); // set read-pointer to the beginning of the file
+	ptr = f_tell(&file);
+
+	f_close(&file);
+	f_closedir(&dp);
 }

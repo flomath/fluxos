@@ -833,3 +833,19 @@ void mmcsd_calculate_card_clk(uint32_t *ClockFrequencySelect) {
 	//Calculate Clock divider value to program in MMCHS_SYSCTL[CLKD] field.
 	*ClockFrequencySelect = ((MMC_REFERENCE_CLK / Frequency) + 1);
 }
+
+CARD_INFO mmcsd_get_card_info()
+{
+	return cardInfo;
+}
+
+uint32_t mmcsd_get_card_status()
+{
+	if(cardMediaChanged){
+		return MMCHS_ERROR_TIMEOUT;
+	}
+	if(!mmchsMedia.MediaPresent){
+		return MMCHS_ERROR_LOAD;
+	}
+	return MMCHS_SUCCESS;
+}

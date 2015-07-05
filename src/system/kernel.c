@@ -41,17 +41,6 @@ void kernel_boot()
 	// lets sleep for a while
 	util_ksleep(1000);
 
-	// enable mmcsd
-	int buffy[128];
-	int status;
-	do {
-		status = mmcsd_initialize();
-	} while (status != 0);
-
-	mmcsd_read(0, buffy, sizeof(buffy));
-
-	util_ksleep(1000);
-
 	// Enable interrupts globally
 	interrupt_enable();
 }

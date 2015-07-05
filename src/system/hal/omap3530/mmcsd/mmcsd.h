@@ -281,6 +281,8 @@ uint32_t mmcsd_write(uint32_t lba, void* buffer, size_t bufferSize);
 
 uint32_t mmcsd_read(uint32_t lba, void* buffer, size_t bufferSize);
 
+uint32_t mmcsd_get_card_status();
+
 /**
  * Structures
  */
@@ -424,5 +426,7 @@ typedef struct  {
   CID       CIDData;
   CSD       CSDData;
 } CARD_INFO;
+
+CARD_INFO mmcsd_get_card_info();
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_MMCSD_H_ */
