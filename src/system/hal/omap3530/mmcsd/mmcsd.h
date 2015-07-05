@@ -139,9 +139,9 @@
 #define CLKD                6         ///< Clock frequency select
 #define MMCHS_CLK_FRQCY80	(0x258 << CLKD) ///< 80 kHz
 #define MMCHS_CLK_FRQCY400	(0xF0  << CLKD) ///< 400 kHz
-#define DTO                 16        ///< Data timeout counter value and busy timeout
-#define DTO_FULL            (0xF << DTO)
-#define DTO_27              (0xE << DTO) ///< TCF x 2^27
+#define DTO_COUNTER         16        ///< Data timeout counter value and busy timeout
+#define DTO_FULL            (0xF << DTO_COUNTER)
+#define DTO_27              (0xE << DTO_COUNTER) ///< TCF x 2^27
 #define SRC                 25        ///< Software reset for mmci_cmd line. This bit is set to 1 for reset and released RW to 0 when completed
 #define SRD                 26        ///< Software reset for mmci_dat line. This bit is set to 1 for reset and released RW to 0 when completed
 #define MMC_REFERENCE_CLK   (96000000)

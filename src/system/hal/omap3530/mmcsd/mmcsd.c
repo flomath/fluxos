@@ -180,19 +180,11 @@ void mmcsd_change_clockfrequency(uint32_t clockfrequency) {
 
 uint32_t mmcsd_precard_identification() {
 	// p. 3147
-	int cmdArg = 0;
 	uint32_t cmdStatus;
 	uint8_t cmd8Supported = 0;
 
 	// activate all interrupts
-	hal_bitmask_write(MMCHS1, MMCHS_IE, 0x0, 32);		//TODO: clear needed?
-	hal_bitmask_set(MMCHS1, MMCHS_IE, BV(BADA_ENABLE) + BV(CERR_ENABLE) +
-										BV(DEB_ENABLE) + BV(DCRC_ENABLE) +
-										BV(DTO_ENABLE) + BV(CIE_ENABLE) +
-										BV(CEB_ENABLE) + BV(CCRC_ENABLE) +
-										BV(CTO_ENABLE) + BV(BRR_ENABLE) +
-										BV(BWR_ENABLE) + BV(TC_ENABLE) +
-										BV(CC_ENABLE));
+	hal_bitmask_write(MMCHS1, MMCHS_IE, (BV(BADA_ENABLE) | BV(CERR_ENABLE) | BV(DEB_ENABLE) | BV(DCRC_ENABLE) | BV(DTO_ENABLE) | BV(CIE_ENABLE) | BV(CEB_ENABLE) | BV(CCRC_ENABLE) | BV(CTO_ENABLE) | BV(BRR_ENABLE) | BV(BWR_ENABLE) | BV(TC_ENABLE) | BV(CC_ENABLE)), 32);
 
 	// begin initialization
 	hal_bitmask_set(MMCHS1, MMCHS_CON, BV(INIT)); 	// send init sequence
@@ -263,6 +255,7 @@ uint32_t mmcsd_precard_identification() {
 
 	// do until card is not busy anymore
 	int retryCount = 0;
+	uint32_t acmd41Arg;
 	do {
 		// send cmd55
 		cmdStatus = mmcsd_sendcmd(CMD55, 0x0);
@@ -271,9 +264,9 @@ uint32_t mmcsd_precard_identification() {
 			cardInfo.CardType = SD_CARD;
 
 			// send ACMD41 command
-			uint32_t acmd41Arg = ((uint32_t *) &(cardInfo.OCRData))[0];
+			acmd41Arg = ((uint32_t*) &(cardInfo.OCRData))[0];
 			if (cmd8Supported) {
-				cmdArg |= BV(HCS);
+				acmd41Arg |= BV(HCS);
 			}
 
 			uint32_t cmd41Status = mmcsd_sendcmd(ACMD41, acmd41Arg);
@@ -411,12 +404,12 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg) {
 			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x101a0000, 32);
 			break;
 		case CMD17:
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x107F0013, 32);
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x111a0000, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x107F0023, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x113A0010, 32);
 			break;
 		case CMD24:
-			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x107F0012, 32);
-			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x181a0000, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x107F0013, 32);
+			hal_bitmask_write(MMCHS1, MMCHS_CMD, 0x183A0000, 32);
 			break;
 		case CMD55:
 			hal_bitmask_write(MMCHS1, MMCHS_IE, 0x100f0001, 32);
@@ -432,7 +425,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg) {
 			break;
 		default:
 			printf("WARNING: tried to send unknown cmd to MMCSD\n");
-			return MMCHS_ERROR;
+			return MMCHS_ERROR_UNSUPPORTED;
 	}
 
 	int retryCount = 0;
@@ -464,7 +457,7 @@ uint32_t mmcsd_sendcmd(uint32_t cmd, uint32_t arg) {
 			} while (softResetDone != 0);
 
 			printf("error sending command: (CTO: %i)\n", BIT_TRIM_RIGHT((mmcStatus & BV(CTO)), CTO) );
-			return MMCHS_ERROR;
+			return MMCHS_ERROR_DEVICE;
 		}
 
 		// check if cmd is completed (CC)
@@ -550,7 +543,6 @@ uint32_t mmcsd_card_config() {
 	}
 
 	if (cardInfo.CardType != UNKNOWN_CARD && cardInfo.CardType != MMC_CARD) {
-		//TODO: arg right?
 		status = mmcsd_sendcmd(CMD55, arg);
 		if (status == 0) {
 			status = mmcsd_sendcmd(ACMD6, 0x2);
@@ -562,7 +554,6 @@ uint32_t mmcsd_card_config() {
 	}
 
 	// send cmd16 (block length)
-	//TODO: check if blocksize == 0x200
 	arg = cardInfo.BlockSize;
 	status = mmcsd_sendcmd(CMD16, arg);
 	if (status != 0) {
@@ -654,7 +645,6 @@ uint32_t mmcsd_transfer_block(uint32_t lba, void* buffer, uint8_t operationType)
 	uint32_t cmdStatus;
 	uint32_t mmcStatus;
 	uint32_t cmd = 0;
-	uint32_t cmdInterruptEnable = 0;
 	uint32_t cmdArgument = 0;
 
 	switch (operationType) {
