@@ -13,6 +13,7 @@
 #define SYS_DEBUG		10
 #define SYS_EXIT	    20
 #define SYS_PRINT       30
+#define SYS_READ        31
 #define SYS_LOAD_PROC   40
 
 #pragma SWI_ALIAS(syscall, 0)

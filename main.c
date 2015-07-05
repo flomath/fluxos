@@ -21,8 +21,6 @@ void test(void);
 void test2(void);
 void uart_process(void);
 
-extern char appdata[];
-
 #pragma TASK(main)
 void main(void) {
 	// Set up interrupts
@@ -48,13 +46,6 @@ void main(void) {
 	//scheduler_addProcess(test);
 	//scheduler_addProcess(test2);
 	//scheduler_addProcess(uart_process);
-
-	// Load process
-	uint32_t proc1[2] = {
-		(uint32_t)&appdata,
-		820
-	};
-	syscall(SYS_LOAD_PROC, proc1, 2); // Program Data + Main offset
 
 	// Enable interrupts globally
 	interrupt_enable();
