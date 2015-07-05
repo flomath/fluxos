@@ -54,44 +54,25 @@
 #define I2C_CON1	0x8603	///< [15] I2C EN Module Enabled; [10] MST Master Mode; [9] TRX Transmitter Mode; [1] STP Stop condition queried; [0] STT Start condition queried
 #define I2C_CON2	0x8403	///< [15] I2C EN Module Enabled; [10] MST Master Mode; [9] = 0 TRX Receiver Mode; [1] STP Stop condition queried; [0] STT Start condition queried
 
-/**
- * Enable the I²C device 1
- */
-void i2c1_enable(void);
 
 /**
- * Enable the I²C device 2
+ * Read from the device
+ * @param i2c The I2C module
+ * @param slave_address The slave address
+ * @param addr The address of the register of the module
+ * @param buffer Reference to the buffer to write in
+ * @param length Length of buffer
  */
-void i2c2_enable(void);
-
-/**
- * Enable the I²C device 3
- */
-void i2c3_enable(void);
-
-/**
- * Initialize the I²C device
- * @param i2c The I²C device to initialize
- */
-void i2c_init(uint32_t i2c);
+void i2c_read(uint32_t i2c, uint8_t slave_address, uint8_t addr, uint8_t *buffer, size_t length);
 
 /**
  * Write the 8 bit data to the i2c device
  * @param i2c The I2C module
  * @param slave_address The slave address
  * @param data The data to write
- * @param address
+ * @param address The address of the register of the module
  */
-void i2c_write8(uint32_t i2c, uint8_t slave_address, uint8_t address, uint8_t data);
-
-/**
- * Write the data to the i2c device
- * @param i2c The I2C module
- * @param slave_address The slave address
- * @param data The data to write
- * @param length The length of data
- */
-void i2c_write(uint32_t i2c, uint8_t slave_address, uint8_t* data, size_t length);
+void i2c_write(uint32_t i2c, uint8_t slave_address, uint8_t address, uint8_t data);
 
 /**
  * Sends the data
@@ -109,9 +90,5 @@ static void i2c_send_cmd(uint32_t i2c, uint16_t con, uint8_t slave_address, uint
  */
 static bool_t i2c_wait(uint32_t i2c);
 
-/**
- * Read from thevice
- */
-void i2c_read(uint32_t i2c, uint8_t slave_address, uint8_t addr, uint8_t *buffer, size_t count);
 
 #endif

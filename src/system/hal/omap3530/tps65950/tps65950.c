@@ -12,7 +12,7 @@
 #include "../../common/hal.h"
 
 static void tps_register_write(uint32_t address, uint32_t value) {
-	i2c_write8(I2C1, SCD_AUDIO_VOICE, address, value);
+	i2c_write(I2C1, SCD_AUDIO_VOICE, address, value);
 }
 
 void tps_init(void) {
@@ -80,22 +80,8 @@ void tps_init(void) {
 }
 
 void tps_led_init(void) {
-	uint8_t buffer[5] = {0};
-	i2c_read(I2C1, SCD_LED, LED_EN, buffer, 5);
-
-	int i;
-	for (i=0;i<5;i++) {
-		printf("Before: %d\n", buffer[i]);
-	}
-
 	// Disable the H-Bridge
-	i2c_write8(I2C1, SCD_LED, VIBRA_CTL, 0);
+	i2c_write(I2C1, SCD_LED, VIBRA_CTL, 0);
 	// Enable the LED and PWM
-	i2c_write8(I2C1, SCD_LED, LED_EN, BV(0) | BV(5));
-
-	i2c_read(I2C1, SCD_LED, LED_EN, buffer, 5);
-
-	for (i=0;i<5;i++) {
-		printf("After: %d\n", buffer[i]);
-	}
+	i2c_write(I2C1, SCD_LED, LED_EN, BV(0) | BV(5));
 }
