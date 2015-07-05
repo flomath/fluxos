@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['target',['target',['../structenv__t.html#ae95ff80404d470f77064cc7f30adbd6c',1,'env_t']]],
-  ['time',['time',['../structenv__t.html#a8a9d8896ec374d40545e53f8ab1a5494',1,'env_t']]],
-  ['type',['type',['../structmmu__l1__section__t.html#ac692161d2a727a81f80bc61b3f282871',1,'mmu_l1_section_t::type()'],['../structmmu__l2__page_table__t.html#a71e182b34aab4277ea59c2f60d02e65d',1,'mmu_l2_pageTable_t::type()']]]
+  ['schedulercurrentrunningprocess',['SchedulerCurrentRunningProcess',['../scheduler_8c.html#abbb7675414ae716974a0fffbf26e191b',1,'scheduler.c']]],
+  ['sectionaddress',['sectionAddress',['../structmmu__l1__section__t.html#a239904bbf1204e2f21396d78d406963b',1,'mmu_l1_section_t']]],
+  ['sem',['sem',['../structsem__node.html#aaaa02e0805e5d3236001ad91c2ea86cb',1,'sem_node']]],
+  ['size',['size',['../struct_p_c_b__t.html#a93946052113ee7e90745332dd3628fcd',1,'PCB_t']]],
+  ['sp',['SP',['../struct_registers__t.html#af480483f058a97f77b90a32dd3e4082a',1,'Registers_t']]],
+  ['state',['state',['../struct_p_c_b__t.html#a4ab8d1008641219f3d02f1ac61465961',1,'PCB_t']]],
+  ['stop_5fbit',['stop_bit',['../struct_u_a_r_t_configuration__t.html#aa49a956e599b816be1a98d2046de7547',1,'UARTConfiguration_t']]]
 ];

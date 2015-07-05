@@ -27,6 +27,7 @@ var searchData=
   ['uart_5fscr_5freg',['UART_SCR_REG',['../omap3530_2uart_2uart_8h.html#a791e639c0e47652089189897af023d4f',1,'uart.h']]],
   ['uart_5fscr_5frx_5ftrig_5fgran',['UART_SCR_RX_TRIG_GRAN',['../omap3530_2uart_2uart_8h.html#a0e5b8cf76fa1040711a4a35adba8699e',1,'uart.h']]],
   ['uart_5fscr_5ftx_5ftrig_5fgran',['UART_SCR_TX_TRIG_GRAN',['../omap3530_2uart_2uart_8h.html#a173f2143a077157ef30698c647136232',1,'uart.h']]],
+  ['uart_5fsem',['UART_SEM',['../_uart_driver_8h.html#a65e6907aee64da0ac9cfa28ddc1a04ee',1,'UartDriver.h']]],
   ['uart_5fsysc_5freg',['UART_SYSC_REG',['../omap3530_2uart_2uart_8h.html#ae65dcf40391cbe86179016dd6e88d9f7',1,'uart.h']]],
   ['uart_5fsyss_5freg',['UART_SYSS_REG',['../omap3530_2uart_2uart_8h.html#a16ef34d9df0bc00edfd8575040102d47',1,'uart.h']]],
   ['uart_5fthr_5freg',['UART_THR_REG',['../omap3530_2uart_2uart_8h.html#ad42c25195fdc535f8d397668e0f873c6',1,'uart.h']]],

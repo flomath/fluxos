@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['procfunc',['ProcFunc',['../scheduler_8h.html#a7ca175240b4e4bbf496b8242fa42bb1d',1,'scheduler.h']]]
+  ['node_5ft',['node_t',['../semaphore_8h.html#ac42db7bf209514dd467721d42fdd18f1',1,'semaphore.h']]]
 ];

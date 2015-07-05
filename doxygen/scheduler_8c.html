@@ -114,6 +114,12 @@ Functions</h2></td></tr>
 <tr class="separator:a771519df21e85420554b4b14a3cb984c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a649b1cd03812f20a213420df3e94d775"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_p_c_b__t.html">PCB_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#a649b1cd03812f20a213420df3e94d775">scheduler_getCurrentProcess</a> ()</td></tr>
 <tr class="separator:a649b1cd03812f20a213420df3e94d775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed4ca5e11121de98b8789b1035a36d2a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#aed4ca5e11121de98b8789b1035a36d2a">scheduler_getCurrentProcessId</a> ()</td></tr>
+<tr class="separator:aed4ca5e11121de98b8789b1035a36d2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad787c69ad137c33dafd487335f578d54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#ad787c69ad137c33dafd487335f578d54">scheduler_suspend</a> (int pid)</td></tr>
+<tr class="separator:ad787c69ad137c33dafd487335f578d54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9446780fdc300df710fa9f48a06c0635"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="scheduler_8c.html#a9446780fdc300df710fa9f48a06c0635">scheduler_continue</a> (int pid)</td></tr>
+<tr class="separator:a9446780fdc300df710fa9f48a06c0635"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -174,6 +180,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a9446780fdc300df710fa9f48a06c0635"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void scheduler_continue </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the process to continue </p>
+
+</div>
+</div>
 <a class="anchor" id="a649b1cd03812f20a213420df3e94d775"></a>
 <div class="memitem">
 <div class="memproto">
@@ -187,6 +210,21 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Get current process </p>
+
+</div>
+</div>
+<a class="anchor" id="aed4ca5e11121de98b8789b1035a36d2a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int scheduler_getCurrentProcessId </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -255,6 +293,23 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ad787c69ad137c33dafd487335f578d54"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void scheduler_suspend </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets the process to suspend </p>
+
+</div>
+</div>
 <h2 class="groupheader">Variable Documentation</h2>
 <a class="anchor" id="abf41e9f5d7f8d90eb647e7cfe415c096"></a>
 <div class="memitem">
@@ -284,7 +339,7 @@ Variables</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 5 2015 15:58:38 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 16:15:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
