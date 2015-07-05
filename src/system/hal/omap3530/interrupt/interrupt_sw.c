@@ -11,7 +11,7 @@
 #include "../../../scheduler/loader.h"
 #include "../../../driver/mcbsp/McbspDriver.h"
 
-static void sys_print(char* message, uint32_t length);
+static void sys_print(char* message);
 static void sys_read(uint32_t* c);
 static void sys_load_proc(uint32_t* address, size_t size);
 
@@ -28,7 +28,7 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], uint32_t paramLength
 			printf("debug swi called\n");
 			break;
 		case SYS_PRINT:
-			sys_print((char*) params, paramLength);
+			sys_print((char*) params);
 			break;
 		case SYS_READ:
 			sys_read((uint32_t*) params);
@@ -67,9 +67,9 @@ void handle_interrupt_sw(uint32_t swiID, uint32_t params[], uint32_t paramLength
 	atom_end();
 }
 
-static void sys_print(char* message, uint32_t length)
+static void sys_print(char* message)
 {
-	uart_driver_write(message, length);
+	uart_driver_write(message, strlen(message));
 }
 
 static void sys_read(uint32_t* c)

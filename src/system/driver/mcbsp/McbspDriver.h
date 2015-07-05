@@ -10,7 +10,10 @@
 
 #include "../../system.h"
 #include "../../hal/omap3530/mcbsp/mcbsp.h"
+#include "../../hal/omap3530/tps65950/tps65950.h"
+#include "../../hal/omap3530/tps65950/tps_led.h"
 
+void mcsbp_driver_init();
 void mcbsp_driver_play_left(uint32_t data);
 void mcbsp_driver_play_right(uint32_t data);
 
