@@ -89,15 +89,13 @@ void irq_handler(void) {
 	}
 
 	// Load the context
+	//TODO: check if it jumps back correctly
 	__context_load();
 }
 
 #pragma INTERRUPT(dabt_handler, DABT)
 interrupt void dabt_handler(void) {
 	mmu_dabt_handler();
-
-	// restores both the PC and the CPSR, and retries the aborted instruction
-//	asm(" SUBS PC, R14, #8");
 }
 
 #pragma INTERRUPT(fiq_handler, FIQ)
@@ -111,8 +109,8 @@ interrupt void pabt_handler(void) {
 }
 
 #pragma INTERRUPT(swi_handler, SWI)
-interrupt void swi_handler(uint32_t swiID, uint32_t params[]) {
-	handle_interrupt_sw(swiID, params);
+interrupt void swi_handler(uint32_t swiID, uint32_t params[], unsigned int paramLength) {
+	handle_interrupt_sw(swiID, params, paramLength);
 }
 
 #pragma INTERRUPT(udef_handler, UDEF)

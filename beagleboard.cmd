@@ -11,7 +11,7 @@ MEMORY
 }
 
 stackSize = 0x20000;
-heapSize  = 0x20000;
+heapSize  = 0x40000;
 
 SECTIONS
 {
@@ -53,4 +53,7 @@ SECTIONS
         __stackSvc = .;
         . = . + stackSize;
     }
+
+    /* Application Test Data */
+    .DDR0_TEST_P   >  DDR0
 }

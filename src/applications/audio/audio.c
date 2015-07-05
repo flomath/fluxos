@@ -83,12 +83,8 @@ void audio_play_wave(int frequency, int channels, int length) {
 			int amplitude = (at - amplitude_start) * j / duration + amplitude_start;
 			int v = (st * 2 - frequency) * amplitude / frequency;
 
-			// Send signal on both channels
-			while ((hal_get_address_value(MCBSP2, MCBSPLP_SPCR2_REG) & MCBSP_XRDY) == 0);
-			hal_bitmask_write(MCBSP2, MCBSPLP_DXR_REG, channels & 1 ? v : 0, 32);
-
-			while ((hal_get_address_value(MCBSP2, MCBSPLP_SPCR2_REG) & MCBSP_XRDY) == 0);
-			hal_bitmask_write(MCBSP2, MCBSPLP_DXR_REG, channels & 2 ? v : 0, 32);
+			syscall(SYS_AUDIO_PLAYL, (uint32_t*)(v), 1);
+			syscall(SYS_AUDIO_PLAYR, (uint32_t*)(v), 1);
 
 			st += 1;
 			if (st >= frequency) {
