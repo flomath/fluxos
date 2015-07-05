@@ -37,8 +37,8 @@ void main(void) {
 	// Enable sound
 	mcbsp2_enable();
 	mcbsp_init_master2(MCBSP2);
-	i2c1_enable();
-//	i2c_init(I2C2);
+	//i2c1_enable();
+	//i2c_init(I2C1);
 	tps_led_init();
 	tps_init();
 

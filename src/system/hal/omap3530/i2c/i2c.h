@@ -21,6 +21,8 @@
  * I2C interface seems to be I2C4
  */
 
+#define MMIO_WRITE16(addr, data) 	(*((volatile uint16_t *)(addr)) = data)
+
 #define EN_I2C1 15		///< Bit of CM_ICLKEN1_CORE and CM_FCLKEN1_CORE to enable I2C1
 #define EN_I2C2 16		///< Bit of CM_ICLKEN1_CORE and CM_FCLKEN1_CORE to enable I2C2
 #define EN_I2C3 17		///< Bit of CM_ICLKEN1_CORE and CM_FCLKEN1_CORE to enable I2C3
@@ -99,7 +101,7 @@ void i2c_write(uint32_t i2c, uint8_t slave_address, uint8_t* data, size_t length
  * @param data The data to write
  * @param length The length of data
  */
-static void i2c_execute(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8_t* data, size_t length);
+static void i2c_send_cmd(uint32_t i2c, uint16_t con, uint8_t slave_address, uint8_t* data, size_t length);
 
 /**
  * Wait until device is idle
