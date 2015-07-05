@@ -134,7 +134,7 @@ void scheduler_run(Registers_t* context)
 
 int scheduler_getNextProcess()
 {
-	int nextProcess = SchedulerCurrentRunningProcess + 1;
+    int nextProcess = (SchedulerCurrentRunningProcess + 1) % SCHEDULER_MAX_PROCESSES;
 
 	while (nextProcess < SCHEDULER_MAX_PROCESSES && nextProcess != SchedulerCurrentRunningProcess)
 	{
