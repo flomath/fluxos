@@ -8,33 +8,82 @@
 #include "audio.h"
 #include "../../system/hal/omap3530/mcbsp/mcbsp.h"
 
-env_t adsr[] = {
-	{ MAX, ((unsigned int)(SRATE * 0.05)) },
-	{ SUS, ((unsigned int)(SRATE * 0.05)) },
-	{ SUS, ((unsigned int)(SRATE * 0.2)) },
-	{ 0, ((unsigned int)(SRATE * 0.02)) }
+static char allmyducks[] = "CDEF2G2GxAxAxAxA4GxAxAxAxA4GFFFF2E2EGGGG4C";
+
+static int audio_frequencies[] = {
+		220.00,		///< A3
+		246.94,		///< B3
+		261.63,		///< C4
+		293.66,		///< D4
+		329.63,		///< E4
+		349.23,		///< F4
+		392.00,		///< G4
+		440.000,	///< A4
+		493.88,		///< B4
+		523.25,		///< C5
+		587.33,		///< D5
+		659.25,		///< E5
+		698.46,		///< F5
+		783.99		///< G5
 };
 
-void play_note(int wave_length, int channels, int length) {
-	int ampstart = 0;
+static int audio_get_frequency(char note, int level) {
+	return AUDIO_SAMPLE_RATE / audio_frequencies[note - 'A' + 7 * level];
+}
+
+void audio_play_duck() {
+	audio_play_notes(allmyducks);
+}
+
+void audio_play_notes(char* notes) {
+
+	int length = 128;
+	int level = 0;
+	while (*notes != '\0') {
+
+		if (*notes >= '0' && *notes <= '9') {
+			length = (*notes - '0') * 128;
+		} else if (*notes == 'x') {
+			++level;
+		} else {
+			audio_play_wave(audio_get_frequency(*notes, level), 3, length);
+			length = 128;
+			level = 0;
+		}
+
+		notes++;
+	}
+}
+
+static env_t adsr[] = {
+	{ MAX, ((unsigned int) (AUDIO_SAMPLE_RATE * 0.05)) },
+	{ SUS, ((unsigned int) (AUDIO_SAMPLE_RATE * 0.05)) },
+	{ SUS, ((unsigned int) (AUDIO_SAMPLE_RATE * 0.2)) },
+	{ 0, ((unsigned int) (AUDIO_SAMPLE_RATE * 0.02)) }
+};
+
+// Original author unknown, found this method a lot of times while googling
+// All thanks to you!
+void audio_play_wave(int frequency, int channels, int length) {
+	int amplitude_start = 0;
 	int st = 0;
 
 	int i;
 	for (i = 0; i < 4; i++) {
 		int at = adsr[i].target;
-		int dur = adsr[i].time;
-		int j;
+		int duration = adsr[i].time;
 
 		// Scale 'sustain' for note length
 		if (i == 2) {
-			dur = dur * length >> 8;
+			duration = duration * length >> 8;
 		}
 
-		for (j = 0; j < dur; j++) {
-			int amp = (at-ampstart) * j / dur + ampstart;
-			int v = (st*2 - wave_length) * amp / wave_length;
+		int j;
+		for (j = 0; j < duration; j++) {
+			int amplitude = (at - amplitude_start) * j / duration + amplitude_start;
+			int v = (st * 2 - frequency) * amplitude / frequency;
 
-			// send out 2 samples, left/right
+			// Send signal on both channels
 			while ((hal_get_address_value(MCBSP2, MCBSPLP_SPCR2_REG) & MCBSP_XRDY) == 0);
 			hal_bitmask_write(MCBSP2, MCBSPLP_DXR_REG, channels & 1 ? v : 0, 32);
 
@@ -42,43 +91,10 @@ void play_note(int wave_length, int channels, int length) {
 			hal_bitmask_write(MCBSP2, MCBSPLP_DXR_REG, channels & 2 ? v : 0, 32);
 
 			st += 1;
-			if (st >= wave_length) {
+			if (st >= frequency) {
 				st = 0;
 			}
 		}
-		ampstart = at;
-	}
-}
-
-char smoke[] = "GH2CGHI4CGH2CH4G";
-
-// wavelengths of various basic notes
-int ftable[] = {
-        (int)(SRATE / 220.000),  /* a3 */
-        (int)(SRATE / 246.942),
-        (int)(SRATE / 261.626),  /* c3 */
-        (int)(SRATE / 293.665),
-        (int)(SRATE / 329.628),
-        (int)(SRATE / 349.228),
-        (int)(SRATE / 195.998),  /* g2 */
-        (int)(SRATE / 233.080),  /* h3 */
-        (int)(SRATE / 277.180) 	 /* cis */
-};
-
-void play_sample(void) {
-	int i = 0;
-	while (i++ < 3) {
-		char *np = smoke;
-		char n;
-		int len = 256;
-
-		while ( (n = *np++) ) {
-			if (n >= '0' && n <= '9') {
-					len = (n - '0') * 128;
-			} else {
-					play_note(ftable[n - 'A'], 3, len);
-					len = 256;
-			}
-		}
+		amplitude_start = at;
 	}
 }
