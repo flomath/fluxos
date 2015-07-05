@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include "../../tools/mutex.h"
 
-#define		SCHEDULER_MAX_PROCESSES 8
+#define		SCHEDULER_MAX_PROCESSES 50
 #define		SCHEDULER_INVALID_ID	-1
 
 typedef void (*ProcFunc)();

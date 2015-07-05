@@ -105,7 +105,9 @@ interrupt void fiq_handler(void) {
 
 #pragma INTERRUPT(pabt_handler, PABT)
 interrupt void pabt_handler(void) {
-	printf("Not implemented: PABT\n");
+	PCB_t* currentProcess = scheduler_getCurrentProcess();
+    scheduler_killProcess(currentProcess->processID);
+    printf("PABT... PID %d killed\n", currentProcess->processID);
 }
 
 #pragma INTERRUPT(swi_handler, SWI)

@@ -232,6 +232,8 @@ void mmu_dabt_handler(void)
             scheduler_killProcess(currentProcess->processID);
             break;
         default:
+            scheduler_killProcess(currentProcess->processID);
+            printf("PID %d killed\n", currentProcess->processID);
             printf("Data Abort Exception! 0x%x\n", dataFaultStatus);
             break;
     }

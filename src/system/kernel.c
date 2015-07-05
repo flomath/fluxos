@@ -33,7 +33,7 @@ void kernel_boot()
 	// Add IRQ handler
 	interrupt_add_listener(40, &timer_irq);
 
-	gpt_timer_init(GPT_TIMER4, 500);
+	gpt_timer_init(GPT_TIMER4, 100);
 	gpt_timer_start(GPT_TIMER4);
 
 	syscall(SYS_PRINT, (uint32_t*)"system booted ...\r\n", 1);
