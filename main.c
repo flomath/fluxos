@@ -13,6 +13,7 @@
 #include "src/system/scheduler/scheduler.h"
 #include "src/system/hal/omap3530/mmu/mmu.h"
 #include "src/system/hal/omap3530/tps65950/tps65950.h"
+#include "src/system/hal/omap3530/tps65950/tps_led.h"
 #include "src/applications/audio/audio.h"
 #include "src/system/hal/omap3530/mcbsp/mcbsp.h"
 #include "src/system/hal/omap3530/i2c/i2c.h"
@@ -39,8 +40,8 @@ void main(void) {
 	mcbsp_init_master2(MCBSP2);
 	//i2c1_enable();
 	//i2c_init(I2C1);
-	tps_led_init();
-	tps_init();
+	tps_led_setup();
+	tps_audio_setup();
 
 	// initialise MMU
 	mmu_init();
@@ -84,6 +85,9 @@ void test(void) {
 		printf("[1] Test sound\n");
 		play_sample();
 		printf("[1] Sound test finished\n");
+
+		printf("[2] Test sound quiet\n");
+		play_sample();
 		int x = 0;
 		x++;
 	}

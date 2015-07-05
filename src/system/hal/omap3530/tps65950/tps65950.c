@@ -3,99 +3,81 @@
  *
  *  Created on: 02.07.2015
  *      Author: Philip
- *
- * All thanks to https://github.com/Wolfy42/itmOS
  */
 
 #include "tps65950.h"
 #include "../i2c/i2c.h"
 #include "../../common/hal.h"
 
-static void tps_register_write(uint32_t address, uint32_t value) {
+void tps_i2c_set(uint32_t address, uint32_t value) {
 	i2c_write8(I2C1, SCD_AUDIO_VOICE, address, value);
 }
 
-void tps_init(void) {
-
-	// turn it off to configure
-	tps_register_write(AV_CODEC_MODE, 0);
-
-	// page 725
-	// Audio mode: Select sampling frequence (Fs) -> set to 8 kHz
-	// Audio and voice option selection: Option 1: 2 RX and TX stereo audio paths
-	tps_register_write(AV_CODEC_MODE, APPL_RATE_8 | OPT_MODE);
-
-	// Audio/voice digital filter power control
-	tps_register_write(AV_OPTION, ARXR2_EN | ARXL2_EN | ATXR1_EN | ATXL1_EN);
-
-	// path selection
-	tps_register_write(AV_RX_PATH_SEL,  B_RXL1_SEL | B_RXR1_SEL);
-
-	// set system clock speed and enable the local clock
-	tps_register_write(AV_APLL_CTL, APLL_EN | APLL_INFREQ_26);
-
-	// left/right dacs enlabled
-	tps_register_write(AV_AVDAC_CTL, ADACL2_EN | ADACR2_EN);
-
-	// turn on left and right output
-	tps_register_write(AV_ARXL2_APGA_CTL, ARX1_PDZ | ARX1_DA_EN | (0x06 << B_ARX1_GAIN_SET));
-	tps_register_write(AV_ARXR2_APGA_CTL, ARX1_PDZ | ARX1_DA_EN | (0x06 << B_ARX1_GAIN_SET));
-
-	// headset output
-	tps_register_write(AV_HS_SEL, HSOL_AL2_EN | HSOR_AR2_EN);
-
-	// set digital gain to 0db
-	tps_register_write(AV_ARXL2PGA, 0x30 | (3<<6));              /* 0dB */
-	tps_register_write(AV_ARXR2PGA, 0x30 | (3<<6));              /* 0dB */
-
-	// set headset left/right gain (balance) to 0db each
-	tps_register_write(AV_HS_GAIN_SET, 0x0a);
-
-	// audio interface.  master mode, i2s format, 16 bit data
-	tps_register_write(AV_AUDIO_IF, AIF_FORMAT_CODEC | DATA_WIDTH_16 | AIF_EN);
-
-	// volume/effects
-	// set base boost effect
-	tps_register_write(AV_BOOST_CTL, 0);
-	// anti-pop paramters
-	tps_register_write(AV_HS_POPN_SET, VMID_EN | RAMP_DELAY_161ms | RAMP_EN);
-
-	// tramsit settings (audio in)
-	// left/right gain
-	tps_register_write(AV_ATXL1PGA, 0x0);
-	tps_register_write(AV_ATXR1PGA, 0x0);
-
-	// left/right ADC, and choose as TXx1
-	tps_register_write(AV_AVADC_CTL, ADCL_EN | ADCR_EN);
-	tps_register_write(AV_ADCMICSEL, 0);
-
-	// line in on beagle comes from AUX, also enable anti-pop and start
-	tps_register_write(AV_ANAMICL, 0x34 | AUXL_EN | OFFSET_CNCL_SEL_RXALL | CNCL_OFFSET_START);
-	tps_register_write(AV_ANAMICR, 0x14 | AUXR_EN);
-	tps_register_write(AV_ANAMIC_GAIN, (0<<3)|0);
-
-	// now power it up, with sample rate and option 1 (2x stereo audio paths in and out)
-	tps_register_write(AV_CODEC_MODE, APPL_RATE_8 | 0 | OPT_MODE);
-	tps_register_write(AV_CODEC_MODE, APPL_RATE_48 | CODECPDZ | OPT_MODE);
+void tps_audio_volume_down()
+{
+	tps_i2c_set(TPS_SOFTVOL_CTL, SOFTVOL_CTL_7);
+}
+void tps_audio_volume_up()
+{
+	tps_i2c_set(TPS_SOFTVOL_CTL, SOFTVOL_CTL_0);
 }
 
-void tps_led_init(void) {
-	uint8_t buffer[5] = {0};
-	i2c_read(I2C1, SCD_LED, LED_EN, buffer, 5);
+void tps_audio_setup(void)
+{
+	// see page 731 in TPS65950 OMAP Power Management and System Companion Device Silicon Revision 1.2 (version G)
 
-	int i;
-	for (i=0;i<5;i++) {
-		printf("Before: %d\n", buffer[i]);
-	}
+	// disable before setup
+	tps_i2c_set(TPS_CODEC_MODE, 0);
 
-	// Disable the H-Bridge
-	i2c_write8(I2C1, SCD_LED, VIBRA_CTL, 0);
-	// Enable the LED and PWM
-	i2c_write8(I2C1, SCD_LED, LED_EN, BV(0) | BV(5));
+	// select 8kHz Sampling frequency
+	// and stereo output (2 rx/tx)
+	tps_i2c_set(TPS_CODEC_MODE, (APPL_RATE_8 | OPT_MODE) );
 
-	i2c_read(I2C1, SCD_LED, LED_EN, buffer, 5);
+	// enable audio TX right 1 and left 1
+	tps_i2c_set(TPS_OPTION, (ATXR1_EN | ATXL1_EN) );
+	// enable audio RX right 2 and left 2
+	tps_i2c_set(TPS_OPTION, (ARXR2_EN | ARXL2_EN) );
 
-	for (i=0;i<5;i++) {
-		printf("After: %d\n", buffer[i]);
-	}
+	// select input RXL1 and RXR1
+	tps_i2c_set(TPS_RX_PATH_SEL,  (RXL1_SEL | RXR1_SEL) );
+
+	// audio PLL power control enable with 26MHz input frequency
+	tps_i2c_set(TPS_APLL_CTL, (APLL_EN | APLL_INFREQ_26MHZ) );
+
+	// enable the right and left voice DAC
+	tps_i2c_set(TPS_AVDAC_CTL, (ADACR2_EN | ADACL2_EN) );
+
+	// enable application mode output and set gain to 0dB
+	tps_i2c_set(TPS_ARXL2_APGA_CTL, (ARXL2_PDZ | ARXL2_DA_EN | ARXL2_GAIN_0DB) );
+	tps_i2c_set(TPS_ARXR2_APGA_CTL, (ARXL2_PDZ | ARXL2_DA_EN | ARXL2_GAIN_0DB) );
+
+	// enable headset amplifier output (left/right)
+	tps_i2c_set(TPS_HS_SEL, (HSOL_AL2_EN | HSOR_AR2_EN) );
+
+	// define gain control (set 0dB)
+	tps_i2c_set(TPS_ARXL2PGA, TPS_ARXL2PGA_GAIN0DB);
+	tps_i2c_set(TPS_ARXR2PGA, TPS_ARXL2PGA_GAIN0DB);
+
+	// headset amp gain to 0dB
+	tps_i2c_set(TPS_HS_GAIN_SET, 0x0a);
+
+	// enable audio serial interface with 16bit audio
+	tps_i2c_set(TPS_AUDIO_IF, (AIF_FORMAT_CODEC | DATA_WIDTH_16 | AIF_EN) );
+
+	// set gain for transmit audio to 0dB
+	tps_i2c_set(TPS_ATXL1PGA, 0x0);
+	tps_i2c_set(TPS_ATXR1PGA, 0x0);
+
+	// enable ADCL and ADCR
+	tps_i2c_set(TPS_AVADC_CTL, (ADCL_EN | ADCR_EN) );
+
+	// enable input mode: ADCL routed to TXL1, ADCR routed to TXR1
+	tps_i2c_set(TPS_ADCMICSEL, 0);
+
+	// enable softvolume
+	//tps_i2c_set(TPS_SOFTVOL_CTL, (0x1 << 0));
+	//tps_i2c_set(TPS_SOFTVOL_CTL, (0x0 << 5));	//< 1*0.8/FS
+
+	// enable 48kHz with codec
+	tps_i2c_set(TPS_CODEC_MODE, (APPL_RATE_48 | CODEECPDZ_ON | OPT_MODE) );
 }
