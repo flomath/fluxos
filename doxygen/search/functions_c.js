@@ -7,5 +7,5 @@ var searchData=
   ['scheduler_5fkillprocess',['scheduler_killProcess',['../scheduler_8c.html#a2b53edd112f79046fc16d1ff5af9741a',1,'scheduler_killProcess(int processID):&#160;scheduler.c'],['../scheduler_8h.html#a2b53edd112f79046fc16d1ff5af9741a',1,'scheduler_killProcess(int processID):&#160;scheduler.c']]],
   ['scheduler_5frun',['scheduler_run',['../scheduler_8c.html#a5c7ca6d2c8341f6cc7a27bd40e726d93',1,'scheduler_run(Registers_t *context):&#160;scheduler.c'],['../scheduler_8h.html#ab5f84a075fced7233d81a117affb54ee',1,'scheduler_run():&#160;scheduler.h']]],
   ['swi_5fhandler',['swi_handler',['../interrupt_8c.html#a8e964944b96f076f57fe3d12bfa8296d',1,'interrupt.c']]],
-  ['syscall',['syscall',['../syscall_8h.html#a315e3f55e41c7ba95ef7107b3f1f9707',1,'syscall.h']]]
+  ['syscall',['syscall',['../syscall_8h.html#aa457875416758034bbe193517ee35cac',1,'syscall.h']]]
 ];

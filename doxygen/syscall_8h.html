@@ -107,13 +107,43 @@ Macros</h2></td></tr>
 <tr class="separator:a6606b11bd07d2e36776e55a7f5284883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e5eb681d1b49a0e7f29aa65d87e1426"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a4e5eb681d1b49a0e7f29aa65d87e1426">SYS_LOAD_PROC</a>&#160;&#160;&#160;40</td></tr>
 <tr class="separator:a4e5eb681d1b49a0e7f29aa65d87e1426"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1ac968eeab2d0c16c0a0d0ba73bcff5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#ae1ac968eeab2d0c16c0a0d0ba73bcff5">SYS_START_PROC</a>&#160;&#160;&#160;41</td></tr>
+<tr class="separator:ae1ac968eeab2d0c16c0a0d0ba73bcff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af27c41d55cfc423a46dac5445e12c1b1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#af27c41d55cfc423a46dac5445e12c1b1">SYS_AUDIO_PLAYL</a>&#160;&#160;&#160;50</td></tr>
+<tr class="separator:af27c41d55cfc423a46dac5445e12c1b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7aa06b7cb01acd7b7f47f0e88598adfb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a7aa06b7cb01acd7b7f47f0e88598adfb">SYS_AUDIO_PLAYR</a>&#160;&#160;&#160;51</td></tr>
+<tr class="separator:a7aa06b7cb01acd7b7f47f0e88598adfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a315e3f55e41c7ba95ef7107b3f1f9707"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#a315e3f55e41c7ba95ef7107b3f1f9707">syscall</a> (uint32_t swiID, uint32_t params[], unsigned int paramLength)</td></tr>
-<tr class="separator:a315e3f55e41c7ba95ef7107b3f1f9707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa457875416758034bbe193517ee35cac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="syscall_8h.html#aa457875416758034bbe193517ee35cac">syscall</a> (uint32_t swiID, uint32_t params[], uint32_t paramLength)</td></tr>
+<tr class="separator:aa457875416758034bbe193517ee35cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="af27c41d55cfc423a46dac5445e12c1b1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SYS_AUDIO_PLAYL&#160;&#160;&#160;50</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a7aa06b7cb01acd7b7f47f0e88598adfb"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SYS_AUDIO_PLAYR&#160;&#160;&#160;51</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a2960ae20008f05da8cc0714f36365642"></a>
 <div class="memitem">
 <div class="memproto">
@@ -174,8 +204,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="ae1ac968eeab2d0c16c0a0d0ba73bcff5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define SYS_START_PROC&#160;&#160;&#160;41</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a315e3f55e41c7ba95ef7107b3f1f9707"></a>
+<a class="anchor" id="aa457875416758034bbe193517ee35cac"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -194,7 +236,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>paramLength</em>&#160;</td>
         </tr>
         <tr>
@@ -210,7 +252,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 5 2015 10:03:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 12:12:16 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

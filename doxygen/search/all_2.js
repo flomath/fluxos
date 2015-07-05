@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['b_5farx1_5fgain_5fset',['B_ARX1_GAIN_SET',['../tps65950_8h.html#abd00affabab64707e202ea2a46122e06',1,'tps65950.h']]],
   ['baude_5frate',['baude_rate',['../struct_u_a_r_t_configuration__t.html#a02f3a597aeddc064fe9fb92a9039c318',1,'UARTConfiguration_t']]],
   ['bit_5frange',['BIT_RANGE',['../hal_8h.html#a7b55ebeabdc14bc65cd4c53d4d7d087d',1,'hal.h']]],
   ['bit_5ftrim_5fleft',['BIT_TRIM_LEFT',['../hal_8h.html#a578376fc585025dafcbdde96cf197850',1,'hal.h']]],

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['registers_5ft',['Registers_t',['../struct_registers__t.html',1,'']]]
+  ['page_5ft',['page_t',['../structpage__t.html',1,'']]],
+  ['pcb_5ft',['PCB_t',['../struct_p_c_b__t.html',1,'']]]
 ];

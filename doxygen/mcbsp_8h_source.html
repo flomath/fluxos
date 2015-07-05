@@ -93,31 +93,54 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="comment"> *  Created on: 14.05.2015</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="comment"> *      Author: florian</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#ifndef SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a3eb04188739f7694474c034ee68f354e">   11</a></span>&#160;<span class="preprocessor">#define MCBSP1      0x48074000</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#ab07a19bee2fd1d0a343c607641d0109c">   12</a></span>&#160;<span class="preprocessor">#define MCBSP2      0x48096000</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a36764226be68e24fb9add778b1e4ee12">   13</a></span>&#160;<span class="preprocessor">#define MCBSP3      0x49022000</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a1866cb69f3becab9d9ec69028c775bdf">   14</a></span>&#160;<span class="preprocessor">#define MCBSP4      0x49026000</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a883862a698760ebd716648e676573f54">   17</a></span>&#160;<span class="preprocessor">#define MCBSPLP_DRR_REG     0x000 </span></div>
-<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a219ab487e68707208c7d6edba40f14c2">   18</a></span>&#160;<span class="preprocessor">#define MCBSPLP_DXR_REG     0x008 </span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define MCBSPLP_SPCR1_REG   0x014 </span></div>
-<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#afa6967492b0c8c8460606fa15ecd0b8c">   22</a></span>&#160;<span class="preprocessor">#define MCBSPLP_RCR1_REG    0x01C </span></div>
-<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a9b11ce641692f7e8df198b226a63f394">   23</a></span>&#160;<span class="preprocessor">#define MCBSPLP_XCR1_REG    0x024 </span></div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a489f71864ac31d476185e1d74b49e379">   24</a></span>&#160;<span class="preprocessor">#define MCBSPLP_SRGR1_REG   0x02C </span></div>
-<div class="line"><a name="l00025"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#ac3980ae7a0e591a3fb3e9768ee17d895">   25</a></span>&#160;<span class="preprocessor">#define MCBSPLP_MCR1_REG    0x034 </span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="comment"> *      Modified: philip (03.06.2015)</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#ifndef SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;../../common/hal.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a3eb04188739f7694474c034ee68f354e">   15</a></span>&#160;<span class="preprocessor">#define MCBSP1      0x48074000</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a0b5c855a991982bd3db7ab020335ef49">   16</a></span>&#160;<span class="preprocessor">#define MCBSP5      0x48096000</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#ab07a19bee2fd1d0a343c607641d0109c">   17</a></span>&#160;<span class="preprocessor">#define MCBSP2      0x49022000</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a36764226be68e24fb9add778b1e4ee12">   18</a></span>&#160;<span class="preprocessor">#define MCBSP3      0x49024000</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a1866cb69f3becab9d9ec69028c775bdf">   19</a></span>&#160;<span class="preprocessor">#define MCBSP4      0x49026000</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a883862a698760ebd716648e676573f54">   22</a></span>&#160;<span class="preprocessor">#define MCBSPLP_DRR_REG     0x000 </span></div>
+<div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a219ab487e68707208c7d6edba40f14c2">   23</a></span>&#160;<span class="preprocessor">#define MCBSPLP_DXR_REG     0x008 </span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#define MCBSPLP_SPCR1_REG   0x014 </span></div>
+<div class="line"><a name="l00027"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#aec3a46d1251272ab712df995dace4a48">   27</a></span>&#160;<span class="preprocessor">#define MCBSPLP_SPCR2_REG   0x010 </span></div>
+<div class="line"><a name="l00028"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#aebb1e32d3b37db819ab76e7eb80d5747">   28</a></span>&#160;<span class="preprocessor">#define MCBSPLP_PCR_REG     0x048 </span></div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#afa6967492b0c8c8460606fa15ecd0b8c">   29</a></span>&#160;<span class="preprocessor">#define MCBSPLP_RCR1_REG    0x01C </span></div>
+<div class="line"><a name="l00030"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#ad8ee6d4aaa7fa3d2853b0617c26e263e">   30</a></span>&#160;<span class="preprocessor">#define MCBSPLP_RCR2_REG    0x018 </span></div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a9b11ce641692f7e8df198b226a63f394">   31</a></span>&#160;<span class="preprocessor">#define MCBSPLP_XCR1_REG    0x024 </span></div>
+<div class="line"><a name="l00032"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a89c84934a32e436c7eea1046c4b6f87b">   32</a></span>&#160;<span class="preprocessor">#define MCBSPLP_XCR2_REG    0x020 </span></div>
+<div class="line"><a name="l00033"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a489f71864ac31d476185e1d74b49e379">   33</a></span>&#160;<span class="preprocessor">#define MCBSPLP_SRGR1_REG   0x02C </span></div>
+<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a08aff8603172800c2925dc6f7b6e77c4">   34</a></span>&#160;<span class="preprocessor">#define MCBSPLP_SRGR2_REG   0x028 </span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a6b9f1adcdad56a0bb2c0724d430e7c6d">   36</a></span>&#160;<span class="preprocessor">#define CONTROL_PADCONF_MCBSP2_FSX  0x4800213C</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a6c22ad7999362d5fa8eaf2b3171459fd">   37</a></span>&#160;<span class="preprocessor">#define CONTROL_PADCONF_MCBSP2_DR   0x48002140</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#ac3980ae7a0e591a3fb3e9768ee17d895">   39</a></span>&#160;<span class="preprocessor">#define MCBSPLP_MCR1_REG    0x034 </span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="mcbsp_8h.html#a29b269fb032c19f0ea5d9632a681867d">   41</a></span>&#160;<span class="preprocessor">#define MCBSP_XRDY          BV(1)</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="keywordtype">void</span> <a class="code" href="mcbsp_8h.html#a2a6a5c61e7298e71bf816b9308915c74">mcbsp2_enable</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> <a class="code" href="mcbsp_8h.html#a67d969c2759904cb3f36dbb0ec0c4f0b">mcbsp_init_master</a>(uint32_t mcbsp);</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">void</span> <a class="code" href="mcbsp_8h.html#a9c165d27a754dfee0a4e046775d86e51">mcbsp_init_master2</a>(uint32_t mcbsp);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_HAL_OMAP3530_MCBSP_MCBSP_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="mcbsp_8h_html_a67d969c2759904cb3f36dbb0ec0c4f0b"><div class="ttname"><a href="mcbsp_8h.html#a67d969c2759904cb3f36dbb0ec0c4f0b">mcbsp_init_master</a></div><div class="ttdeci">void mcbsp_init_master(uint32_t mcbsp)</div><div class="ttdef"><b>Definition:</b> mcbsp.c:90</div></div>
+<div class="ttc" id="mcbsp_8h_html_a2a6a5c61e7298e71bf816b9308915c74"><div class="ttname"><a href="mcbsp_8h.html#a2a6a5c61e7298e71bf816b9308915c74">mcbsp2_enable</a></div><div class="ttdeci">void mcbsp2_enable(void)</div><div class="ttdef"><b>Definition:</b> mcbsp.c:25</div></div>
+<div class="ttc" id="mcbsp_8h_html_a9c165d27a754dfee0a4e046775d86e51"><div class="ttname"><a href="mcbsp_8h.html#a9c165d27a754dfee0a4e046775d86e51">mcbsp_init_master2</a></div><div class="ttdeci">void mcbsp_init_master2(uint32_t mcbsp)</div><div class="ttdef"><b>Definition:</b> mcbsp.c:34</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 5 2015 10:03:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 12:12:16 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

@@ -15,6 +15,7 @@ var searchData=
   ['dabt_5fsync_5fext_5ftrans_5fno',['DABT_SYNC_EXT_TRANS_NO',['../omap3530_2mmu_2mmu_8h.html#a50c8cf11044d1b8b8357c7e117a27adc',1,'mmu.h']]],
   ['dabt_5ftrans_5fpage_5ffault',['DABT_TRANS_PAGE_FAULT',['../omap3530_2mmu_2mmu_8h.html#ac632c48c3b1df6b82624c7764c7ffc2e',1,'mmu.h']]],
   ['dabt_5ftrans_5fsection_5ffault',['DABT_TRANS_SECTION_FAULT',['../omap3530_2mmu_2mmu_8h.html#adaef570be44028405c8fddb9fdd1a712',1,'mmu.h']]],
+  ['data_5fwidth_5f16',['DATA_WIDTH_16',['../tps65950_8h.html#ab185f6981515b5483d81827032e4e54c',1,'tps65950.h']]],
   ['ddr0_5fend_5faddress',['DDR0_END_ADDRESS',['../omap3530_2mmu_2memory_manager_8h.html#aad29bb2f0a00bf02902304ed110e6e25',1,'memoryManager.h']]],
   ['ddr0_5fstart_5faddress',['DDR0_START_ADDRESS',['../omap3530_2mmu_2memory_manager_8h.html#a6e4f122c7ac68d879c9da0964ae62295',1,'memoryManager.h']]],
   ['domain',['domain',['../structmmu__l1__section__t.html#abd0bc21bdb5be3396fb8b0c97b85ba6d',1,'mmu_l1_section_t']]],
