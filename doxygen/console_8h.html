@@ -85,6 +85,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">console.h File Reference</div>  </div>
@@ -94,15 +95,47 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <p><a href="console_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a7cb14e2246aaa4028dbe9a50389252ae"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#a7cb14e2246aaa4028dbe9a50389252ae">COMMAND_MAXLENGTH</a>&#160;&#160;&#160;64</td></tr>
+<tr class="separator:a7cb14e2246aaa4028dbe9a50389252ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88283d5214c0d707fd6c710ad3465c2d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#a88283d5214c0d707fd6c710ad3465c2d">COMMAND_MAXPARAMS</a>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a88283d5214c0d707fd6c710ad3465c2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:acadd2a5d99d952e55a4580dbc8f8739d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#acadd2a5d99d952e55a4580dbc8f8739d">console_init</a> (void)</td></tr>
 <tr class="separator:acadd2a5d99d952e55a4580dbc8f8739d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa458c825fb8701dc71639422d2a03385"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#aa458c825fb8701dc71639422d2a03385">console_clear</a> (void)</td></tr>
 <tr class="separator:aa458c825fb8701dc71639422d2a03385"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4f474424eadcdf57e22d1c4f8cb0326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#ad4f474424eadcdf57e22d1c4f8cb0326">console_command</a> (int argc, char **argv)</td></tr>
-<tr class="separator:ad4f474424eadcdf57e22d1c4f8cb0326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1f29166a3e894f15c64e7f0444d26d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8h.html#ae1f29166a3e894f15c64e7f0444d26d5">console_command</a> (char *cmd, int argc, char **argv)</td></tr>
+<tr class="separator:ae1f29166a3e894f15c64e7f0444d26d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a class="anchor" id="a7cb14e2246aaa4028dbe9a50389252ae"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_MAXLENGTH&#160;&#160;&#160;64</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a class="anchor" id="a88283d5214c0d707fd6c710ad3465c2d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define COMMAND_MAXPARAMS&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="aa458c825fb8701dc71639422d2a03385"></a>
 <div class="memitem">
@@ -121,13 +154,19 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad4f474424eadcdf57e22d1c4f8cb0326"></a>
+<a class="anchor" id="ae1f29166a3e894f15c64e7f0444d26d5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void console_command </td>
           <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
         </tr>
@@ -168,7 +207,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 4 2015 15:10:52 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 10:03:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>

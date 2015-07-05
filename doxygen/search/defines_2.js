@@ -25,6 +25,8 @@ var searchData=
   ['coarse_5fsize',['COARSE_SIZE',['../omap3530_2mmu_2mmu_8h.html#a06d05f5d6af4ac4a2009515915b2ec91',1,'mmu.h']]],
   ['code_5fmain_5foffset',['CODE_MAIN_OFFSET',['../loader_8h.html#a804ab2dec2f8510e85a5cec10e66ae74',1,'loader.h']]],
   ['code_5fstart',['CODE_START',['../loader_8h.html#adaf9a6d4ff318ecf7c95b6c6c5fc5da4',1,'loader.h']]],
+  ['command_5fmaxlength',['COMMAND_MAXLENGTH',['../console_8h.html#a7cb14e2246aaa4028dbe9a50389252ae',1,'console.h']]],
+  ['command_5fmaxparams',['COMMAND_MAXPARAMS',['../console_8h.html#a88283d5214c0d707fd6c710ad3465c2d',1,'console.h']]],
   ['control_5fpadconf_5fsad2d_5fdmareq2',['CONTROL_PADCONF_SAD2D_DMAREQ2',['../scm_8h.html#ae658e906c24ad143d8faca7b0ea8bc0b',1,'scm.h']]],
   ['core_5fcm',['CORE_CM',['../omap3530_2clock_2clock_8h.html#affe4e43a58f1c2101d5a1b4a8abd2e84',1,'clock.h']]]
 ];

@@ -85,7 +85,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">console.c File Reference</div>  </div>
 </div><!--header-->
@@ -99,8 +100,13 @@ Functions</h2></td></tr>
 <tr class="separator:a463df5bcb42f4d4ad7d73c17c555e53d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54a293959bd682e2c2ec170f9a50011f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8c.html#a54a293959bd682e2c2ec170f9a50011f">console_clear</a> ()</td></tr>
 <tr class="separator:a54a293959bd682e2c2ec170f9a50011f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4f474424eadcdf57e22d1c4f8cb0326"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8c.html#ad4f474424eadcdf57e22d1c4f8cb0326">console_command</a> (int argc, char **argv)</td></tr>
-<tr class="separator:ad4f474424eadcdf57e22d1c4f8cb0326"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5aef59de44eb588385f0f53a88013eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8c.html#ab5aef59de44eb588385f0f53a88013eb">console_command</a> (char *cmd, int argc, char *argv[])</td></tr>
+<tr class="separator:ab5aef59de44eb588385f0f53a88013eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:adee13df25261a089f8e3d762fa46a710"><td class="memItemLeft" align="right" valign="top">char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="console_8c.html#adee13df25261a089f8e3d762fa46a710">appdata</a> []</td></tr>
+<tr class="separator:adee13df25261a089f8e3d762fa46a710"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a class="anchor" id="a54a293959bd682e2c2ec170f9a50011f"></a>
@@ -120,21 +126,27 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ad4f474424eadcdf57e22d1c4f8cb0326"></a>
+<a class="anchor" id="ab5aef59de44eb588385f0f53a88013eb"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void console_command </td>
           <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>argc</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char **&#160;</td>
-          <td class="paramname"><em>argv</em>&#160;</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em>[]&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -143,7 +155,6 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Process a given command TODO: explanation </p>
 
 </div>
 </div>
@@ -164,10 +175,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="adee13df25261a089f8e3d762fa46a710"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char appdata[]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sat Jul 4 2015 15:10:52 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 10:03:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
