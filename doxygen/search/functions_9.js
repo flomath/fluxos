@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loader_5fload_5fprocess',['loader_load_process',['../loader_8c.html#a2994edb21868ffce62230ce120562bf4',1,'loader_load_process(uint32_t *address, size_t size):&#160;loader.c'],['../loader_8h.html#a2994edb21868ffce62230ce120562bf4',1,'loader_load_process(uint32_t *address, size_t size):&#160;loader.c']]]
+  ['kernel_5fboot',['kernel_boot',['../kernel_8c.html#ae311d48d68711deb823943c6c14a9253',1,'kernel_boot():&#160;kernel.c'],['../kernel_8h.html#ae311d48d68711deb823943c6c14a9253',1,'kernel_boot():&#160;kernel.c']]]
 ];

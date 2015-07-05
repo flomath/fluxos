@@ -20,6 +20,8 @@ var searchData=
   ['sectionaddress',['sectionAddress',['../structmmu__l1__section__t.html#a239904bbf1204e2f21396d78d406963b',1,'mmu_l1_section_t']]],
   ['serialdriver_2eh',['SerialDriver.h',['../_serial_driver_8h.html',1,'']]],
   ['size',['size',['../struct_p_c_b__t.html#a93946052113ee7e90745332dd3628fcd',1,'PCB_t']]],
+  ['sleep_2ec',['sleep.c',['../sleep_8c.html',1,'']]],
+  ['sleep_2eh',['sleep.h',['../sleep_8h.html',1,'']]],
   ['small_5fpage',['SMALL_PAGE',['../omap3530_2mmu_2mmu_8h.html#ae22559ed6ac6374b80f74cfff5646296',1,'mmu.h']]],
   ['small_5fpage_5fbit_5fmask',['SMALL_PAGE_BIT_MASK',['../omap3530_2mmu_2mmu_8h.html#a05f12f3608794e0ca10a12d608e3d383',1,'mmu.h']]],
   ['small_5fpage_5fsize',['SMALL_PAGE_SIZE',['../omap3530_2mmu_2mmu_8h.html#a3d0ffb1de97be5d8d0509cc744781bc1',1,'mmu.h']]],

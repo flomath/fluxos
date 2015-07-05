@@ -58,5 +58,6 @@ var searchData=
   ['uartconfiguration_5ft',['UARTConfiguration_t',['../struct_u_a_r_t_configuration__t.html',1,'']]],
   ['uartdriver_2ec',['UartDriver.c',['../_uart_driver_8c.html',1,'']]],
   ['uartdriver_2eh',['UartDriver.h',['../_uart_driver_8h.html',1,'']]],
-  ['udef_5fhandler',['udef_handler',['../interrupt_8c.html#a646df06c0e98f32533f7b0563d525bb7',1,'interrupt.c']]]
+  ['udef_5fhandler',['udef_handler',['../interrupt_8c.html#a646df06c0e98f32533f7b0563d525bb7',1,'interrupt.c']]],
+  ['util_5fksleep',['util_ksleep',['../sleep_8c.html#a50f5087eed0c216b784009940d989426',1,'util_ksleep(uint32_t time):&#160;sleep.c'],['../sleep_8h.html#a50f5087eed0c216b784009940d989426',1,'util_ksleep(uint32_t time):&#160;sleep.c']]]
 ];

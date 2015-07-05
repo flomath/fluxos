@@ -100,17 +100,21 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#include &quot;../../system.h&quot;</span></div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#include &quot;../../hal/omap3530/mcbsp/mcbsp.h&quot;</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_mcbsp_driver_8h.html#a9b540952c9279e72ddee412d5a42a6c4">mcbsp_driver_play_left</a>(uint32_t data);</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_mcbsp_driver_8h.html#a86b4a286861ca8b822c8c3548871bdc7">mcbsp_driver_play_right</a>(uint32_t data);</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_DRIVER_MCBSP_MCBSPDRIVER_H_ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="_mcbsp_driver_8h_html_a9b540952c9279e72ddee412d5a42a6c4"><div class="ttname"><a href="_mcbsp_driver_8h.html#a9b540952c9279e72ddee412d5a42a6c4">mcbsp_driver_play_left</a></div><div class="ttdeci">void mcbsp_driver_play_left(uint32_t data)</div><div class="ttdef"><b>Definition:</b> McbspDriver.c:10</div></div>
-<div class="ttc" id="_mcbsp_driver_8h_html_a86b4a286861ca8b822c8c3548871bdc7"><div class="ttname"><a href="_mcbsp_driver_8h.html#a86b4a286861ca8b822c8c3548871bdc7">mcbsp_driver_play_right</a></div><div class="ttdeci">void mcbsp_driver_play_right(uint32_t data)</div><div class="ttdef"><b>Definition:</b> McbspDriver.c:20</div></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#include &quot;../../hal/omap3530/tps65950/tps65950.h&quot;</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#include &quot;../../hal/omap3530/tps65950/tps_led.h&quot;</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_mcbsp_driver_8h.html#a50e217dff90f942e1f2150a88e7e1c80">mcsbp_driver_init</a>();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_mcbsp_driver_8h.html#a9b540952c9279e72ddee412d5a42a6c4">mcbsp_driver_play_left</a>(uint32_t data);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keywordtype">void</span> <a class="code" href="_mcbsp_driver_8h.html#a86b4a286861ca8b822c8c3548871bdc7">mcbsp_driver_play_right</a>(uint32_t data);</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* SRC_SYSTEM_DRIVER_MCBSP_MCBSPDRIVER_H_ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="_mcbsp_driver_8h_html_a50e217dff90f942e1f2150a88e7e1c80"><div class="ttname"><a href="_mcbsp_driver_8h.html#a50e217dff90f942e1f2150a88e7e1c80">mcsbp_driver_init</a></div><div class="ttdeci">void mcsbp_driver_init()</div><div class="ttdef"><b>Definition:</b> McbspDriver.c:10</div></div>
+<div class="ttc" id="_mcbsp_driver_8h_html_a9b540952c9279e72ddee412d5a42a6c4"><div class="ttname"><a href="_mcbsp_driver_8h.html#a9b540952c9279e72ddee412d5a42a6c4">mcbsp_driver_play_left</a></div><div class="ttdeci">void mcbsp_driver_play_left(uint32_t data)</div><div class="ttdef"><b>Definition:</b> McbspDriver.c:18</div></div>
+<div class="ttc" id="_mcbsp_driver_8h_html_a86b4a286861ca8b822c8c3548871bdc7"><div class="ttname"><a href="_mcbsp_driver_8h.html#a86b4a286861ca8b822c8c3548871bdc7">mcbsp_driver_play_right</a></div><div class="ttdeci">void mcbsp_driver_play_right(uint32_t data)</div><div class="ttdef"><b>Definition:</b> McbspDriver.c:25</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Sun Jul 5 2015 12:12:16 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Sun Jul 5 2015 12:40:42 for Fluxos by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.9.1
 </small></address>
