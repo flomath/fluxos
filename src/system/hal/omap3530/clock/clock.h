@@ -34,7 +34,8 @@
 #define CM_CLKSTST_PER    0x04C
 
 // CORE
-#define CM_ICLKEN1_CORE   0x0010
-#define CM_FCLKEN_CORE    0x0000
+//TODO: after merging check this one important!!!
+#define CM_FCLKEN_CORE    0x000
+#define CM_ICLKEN1_CORE   0x010
 
 #endif /* SRC_SYSTEM_HAL_OMAP3530_CLOCK_CLOCK_H_ */
