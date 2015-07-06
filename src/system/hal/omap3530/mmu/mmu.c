@@ -213,6 +213,7 @@ void mmu_dabt_handler(void)
     switch(dataFaultStatus) {
         case DABT_ALIGN_FAULT:
             printf("Alignment fault!\n");
+            scheduler_killProcess(currentProcess->processID);
             break;
         case DABT_TRANS_SECTION_FAULT:
             // L2 needed
@@ -232,9 +233,9 @@ void mmu_dabt_handler(void)
             scheduler_killProcess(currentProcess->processID);
             break;
         default:
-            scheduler_killProcess(currentProcess->processID);
             printf("PID %d killed\n", currentProcess->processID);
             printf("Data Abort Exception! 0x%x\n", dataFaultStatus);
+            scheduler_killProcess(currentProcess->processID);
             break;
     }
 }

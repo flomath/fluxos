@@ -170,6 +170,7 @@ static void scheduler_killCurrentProcess()
 
 void scheduler_killProcess(int processID)
 {
+	//TODO: if function is not called from process directly, we have to schedule the next process after killing current one!
 	atom_begin();
 
 	if (contexts[processID].state == PROCESS_CREATED || contexts[processID].state == PROCESS_TERMINATED ) {

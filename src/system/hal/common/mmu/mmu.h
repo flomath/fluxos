@@ -54,8 +54,6 @@ void mmu_kill_process(PCB_t* process);
  * page tables have to be created
  * or
  * current process has to be killed
- *
- * TODO: Process needed?
  */
 void mmu_dabt_handler(void);
 

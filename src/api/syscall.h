@@ -23,6 +23,7 @@
 
 #define SYS_READ_FILE 	60
 
+//TODO: maybe a strucutre with params, length, status and all the stuff would be better
 #pragma SWI_ALIAS(syscall, 0)
 void syscall(uint32_t swiID, uint32_t params[], uint32_t paramLength);
 
