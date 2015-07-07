@@ -47,9 +47,9 @@ static page_t regionKernel[4095];           ///< ((KERNEL_END_ADDRESS-KERNEL_STA
 static page_t regionPageTables[1279];       ///< ((PAGE_TABLES_END_ADDRESS-PAGE_TABLES_START_ADDRESS)/4096)
 
 #define PROCESS_REGION						5
-#define PROCESS_START_ADDRESS			    0x00000000
+#define PROCESS_START_ADDRESS			    0x0001C000
 #define PROCESS_END_ADDRESS			        0x3EAFFFFF
-static page_t regionProcess[256767];        ///< ((PROCESS_END_ADDRESS-PROCESS_START_ADDRESS)/4096)
+static page_t regionProcess[256739];        ///< ((PROCESS_END_ADDRESS-PROCESS_START_ADDRESS)/4096)
 
 #define BOOT_ROM_EXCEPTIONS                 6
 #define BOOT_ROM_EXCEPTIONS_START_ADDRESS	0x00014000
