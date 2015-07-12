@@ -28,7 +28,7 @@ At the very end it jumps back to the new process, otherwise to the interrupted p
 
 ### Details
 
-The runtime of a process is about 100 ms. We chose this value because of the console and audio performance. Currently we don't use any audio buffer, which is why there are breaks in the output. With shorter runtimes there are more breaks, with longer runtimes the reaction time of a process is getting higher. Having a process runtime of 100 msis a good tradeoff between audio and input reaction time.
+The runtime of a process is about 100 ms. We chose this value because of the console and audio performance. Currently we don't use any audio buffer, which is why there are breaks in the output. With shorter runtimes there are more breaks, with longer runtimes the reaction time of a process is getting higher. Having a process runtime of 100 ms is a good tradeoff between audio and input reaction time.
 
 The scheduler supports currently only eight processes as we have not ever needed more to this time. However the number of processes can be easily extended.
 
