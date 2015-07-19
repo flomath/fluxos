@@ -26,9 +26,9 @@ SECTIONS
 ...
 ```
 
-The interrupt handlers are than defined in the [intvecs.asm](https://github.com/flomath/fluxos/blob/master/intvecs.asm) file. Ensure that the memory addresses are the same as referenced in the manual, table 25-10.
+The interrupt handlers are than defined in the [intvecs.asm](https://github.com/flomath/fluxos/blob/master/intvecs.asm) file. Ensure that the memory addresses are the same as referenced in the technial reference manual, table 25-10.
 
-The interrupt handlers can now be written in C. Use the `#pragma INTERRUPT(method_name, IRQ)` to ensure that the methods are correctly linked to the interrupts. Those handlers need to be extracted, because the allocated space for the RAM exception vectors is too small. Therefore the pragma `SET_CODE_SECTION` was used to set the code section of the handlers to the "[intvecs_impl](https://github.com/flomath/fluxos/blob/master/src/system/hal/omap3530/interrupt/interrupt.c#L65)".  
+The interrupt handlers can now be written in C. Use the `#pragma INTERRUPT(method_name, IRQ)` to ensure that the methods are correctly linked to the interrupts. Those handlers need to be extracted, because the allocated space for the RAM exception vectors is too small. Therefore the pragma `SET_CODE_SECTION` was used to set the code section of the handlers to "[intvecs_impl](https://github.com/flomath/fluxos/blob/master/src/system/hal/omap3530/interrupt/interrupt.c#L65)", which is a section located in the SRAM.  
 
 ```c
 #pragma SET_CODE_SECTION(".intvecs_impl")
@@ -51,9 +51,9 @@ Because we will enter the Interrupt System Mode whenever an interrupt occurs we 
 To activate an interrupt for a device, you will have to enable a bit in the MPU_INTC_INTCPS_MIR register. See table 10-4 in the OMAP reference and use our method `void interrupt_add_listener(uint32_t irq, interrupt_callback* listener)`.
 
 ### System call
-The seperation of proccess and OS space usually means that the process cannot access the OS space, because of the system mode. That means that an interface/API is needed to access OS space, a so called system call. 
+The seperation of proccess and OS space usually means that the process cannot access the OS space, because of the user/system mode. That means that an interface/API is needed to access OS space, a so called system call. 
 
-A system call is defined by the interrupt vectors. If such a system call is called, it does not run in the interrupt mode as usual, but does run in the system mode. The declaration of a function with pragma `SWI_ALIAS` is needed, that processes can call system calls.  
+A system call is defined by the interrupt vectors. If such a system call is called, it does not run in the interrupt mode as usual, but does run in the system mode. The declaration of a function in our case `syscall` is needed. This function is annotated with the pragma `SWI_ALIAS`.
 
 ```c
 #pragma SWI_ALIAS(syscall, 0)
