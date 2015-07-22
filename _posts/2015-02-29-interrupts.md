@@ -2,12 +2,12 @@
 layout: page
 title: "Interrupts"
 category: doc
-date: 2015-09-15 11:10:09
+date: 2014-01-05 11:10:09
 ---
 
 ## Interrupts
 
-The interrupt vectors must be defined in the [linker script](https://github.com/flomath/fluxos/blob/master/beagleboard.cmd). They will need their own memory section. 
+The interrupt vectors must be defined in the [linker script](https://github.com/flomath/fluxos/blob/master/beagleboard.cmd). They will need their own memory section.
 
 ```
 /** beagleboard.cmd **/
@@ -51,7 +51,7 @@ Because we will enter the Interrupt System Mode whenever an interrupt occurs we 
 To activate an interrupt for a device, you will have to enable a bit in the MPU_INTC_INTCPS_MIR register. See table 10-4 in the OMAP reference and use our method `void interrupt_add_listener(uint32_t irq, interrupt_callback* listener)`.
 
 ### System call
-The seperation of proccess and OS space usually means that the process cannot access the OS space, because of the system mode. That means that an interface/API is needed to access OS space, a so called system call. 
+The seperation of proccess and OS space usually means that the process cannot access the OS space, because of the system mode. That means that an interface/API is needed to access OS space, a so called system call.
 
 A system call is defined by the interrupt vectors. If such a system call is called, it does not run in the interrupt mode as usual, but does run in the system mode. The declaration of a function with pragma `SWI_ALIAS` is needed, that processes can call system calls.  
 
@@ -60,12 +60,11 @@ A system call is defined by the interrupt vectors. If such a system call is call
 void syscall(uint32_t swiID, uint32_t params[], uint32_t paramLength);
 ```
 
-The "swiID" is needed, to distinguish between different system calls. 
+The "swiID" is needed, to distinguish between different system calls.
 
-```c 
+```c
 #define SYS_DEBUG	    10
 #define SYS_EXIT        20
 #define SYS_PRINT       30
 #define SYS_READ        31
 ```
-
