@@ -2,7 +2,7 @@
 layout: page
 title: "Projectmanagement"
 category: doc
-date: 2015-11-27 10:39:52
+date: 2014-01-02 10:39:52
 ---
 
 ## Project management
@@ -37,4 +37,4 @@ Processes can play audio signals. Also the SD card is accessible and a minimalis
 ### Github
 Github not only offers us the possibility to create issues and use them as scrum tasks but, of course version control. The public repository can be accessed here [https://github.com/flomath/fluxos/](https://github.com/flomath/fluxos/).
 
-Every important module resp. bigger task was created using its own branch. This allowed us to independently work on different topics without interfering other team members with unfinished code or different configuration settings. In the end we created 12 different branches which of two are for documentation. All of the others are merged into the master branch using pull requests. 
+Every important module resp. bigger task was created using its own branch. This allowed us to independently work on different topics without interfering other team members with unfinished code or different configuration settings. In the end we created 12 different branches which of two are for documentation. All of the others are merged into the master branch using pull requests.

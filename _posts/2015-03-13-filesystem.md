@@ -2,7 +2,7 @@
 layout: page
 title: "Filesystem"
 category: doc
-date: 2015-09-13 11:10:09
+date: 2014-01-09 11:10:09
 ---
 
 ## Filesytem
@@ -26,9 +26,8 @@ get_fattime - Get current time
 
 + Detection of not only SD Card
 
-We only implemented the detection of a SD 1.x card. Other card types or versions like a SDIO card or a SD 2.x card have to be integrated into the process of detection. 
+We only implemented the detection of a SD 1.x card. Other card types or versions like a SDIO card or a SD 2.x card have to be integrated into the process of detection.
 
 + Write SD
 
 Currently only blocks of MMCs can be read, but not be written. Therefore the writing function `mmcsd_write_block_data` has to implemented.
-
