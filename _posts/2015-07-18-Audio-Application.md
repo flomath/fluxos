@@ -9,6 +9,21 @@ date: 2015-07-18 12:30:00
 
 ### Greetings
 
+```c
+/*
+ * main.c
+ */
+#include "../../src/api/syscall.h"
+#include <string.h>
+
+int main(void) {
+	char* data = "Hello from Process 1";
+	syscall(SYS_PRINT, (uint32_t*) data, strlen(data));
+	
+	return 0;
+}
+```
+
 ### Audio player
 The audio player application simple plays a song, the children's song "All my little ducklings". As described in the Audio section of this documentation, we are using a dual phase audio format. Therefore the AudioDriver offers two relevant methods to play sound: `mcbsp_driver_play_left()` and `mcbsp_driver_play_right()`. In the first version of the driver, the data is written without any buffer onto the audio device.
 
