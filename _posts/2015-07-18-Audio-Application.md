@@ -8,6 +8,7 @@ date: 2015-07-18 12:30:00
 ## Applications
 
 ### Greetings
+We implemented a simple application called "Greetings" which will be loaded as process. For this reason we created a `.bin` file and placed it onto the external SD-Card. The code below shows that it uses the syscall-API of fluxos to print a string.  Using the command `start greet.bin` on the console command line, it will be loaded and scheduled.
 
 ```c
 /*
