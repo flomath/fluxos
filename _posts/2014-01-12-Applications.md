@@ -2,12 +2,28 @@
 layout: page
 title: "Applications"
 category: doc
-date: 2015-07-18 12:30:00
+date: 2014-01-12 12:30:00
 ---
 
 ## Applications
 
 ### Greetings
+We implemented a simple application called "Greetings" which will be loaded as process. For this reason we created a `.bin` file and placed it onto the external SD-Card. The code below shows that it uses the syscall-API of fluxos to print a string.  Using the command `start greet.bin` on the console command line, it will be loaded and scheduled.
+
+```c
+/*
+ * main.c
+ */
+#include "../../src/api/syscall.h"
+#include <string.h>
+
+int main(void) {
+	char* data = "Hello from Process 1";
+	syscall(SYS_PRINT, (uint32_t*) data, strlen(data));
+	
+	return 0;
+}
+```
 
 ### Audio player
 The audio player application simple plays a song, the children's song "All my little ducklings". As described in the Audio section of this documentation, we are using a dual phase audio format. Therefore the AudioDriver offers two relevant methods to play sound: `mcbsp_driver_play_left()` and `mcbsp_driver_play_right()`. In the first version of the driver, the data is written without any buffer onto the audio device.

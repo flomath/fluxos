@@ -2,12 +2,12 @@
 layout: page
 title: "Interrupts"
 category: doc
-date: 2014-01-05 11:10:09
+date: 2014-01-06 11:10:09
 ---
 
 ## Interrupts
 
-The interrupt vectors must be defined in the [linker script](https://github.com/flomath/fluxos/blob/master/beagleboard.cmd). They will need their own memory section.
+The interrupt vectors must be defined in the [linker script](https://github.com/flomath/fluxos/blob/master/beagleboard.cmd). They need their own memory section:
 
 ```
 /** beagleboard.cmd **/
@@ -28,7 +28,7 @@ SECTIONS
 
 The interrupt handlers are than defined in the [intvecs.asm](https://github.com/flomath/fluxos/blob/master/intvecs.asm) file. Ensure that the memory addresses are the same as referenced in the technial reference manual, table 25-10.
 
-The interrupt handlers can now be written in C. Use the `#pragma INTERRUPT(method_name, IRQ)` to ensure that the methods are correctly linked to the interrupts. Those handlers need to be extracted, because the allocated space for the RAM exception vectors is too small. Therefore the pragma `SET_CODE_SECTION` was used to set the code section of the handlers to "[intvecs_impl](https://github.com/flomath/fluxos/blob/master/src/system/hal/omap3530/interrupt/interrupt.c#L65)", which is a section located in the SRAM.  
+The defined handlers can be written in C with the help of `#pragma INTERRUPT(method_name, IRQ)` to ensure that the methods are correctly linked. Those handlers need to be extracted to another memory section, because the allocated space for the RAM exception vectors is too small. Therefore the pragma `SET_CODE_SECTION` was used to set the code section of the handlers to "[intvecs_impl](https://github.com/flomath/fluxos/blob/master/src/system/hal/omap3530/interrupt/interrupt.c#L65)", which is a section located in the SRAM.  
 
 ```c
 #pragma SET_CODE_SECTION(".intvecs_impl")
@@ -45,10 +45,10 @@ interrupt void dabt_handler(void) {
 ...
 ```
 
-Because we will enter the Interrupt System Mode whenever an interrupt occurs we also need to define a [stack](https://github.com/flomath/fluxos/blob/interrupts/boot.asm) for this mode. If this is not done, we will receive Memory Abort Exceptions whenever we are trying to call a method in the ISR.
+Because we will enter the Interrupt System Mode whenever an interrupt occurs, we also need to define a [stack](https://github.com/flomath/fluxos/blob/interrupts/boot.asm) for this mode. If this is not done, we will receive Memory Abort Exceptions whenever we are trying to call a method in the ISR.
 
 ### Activate an IRQ
-To activate an interrupt for a device, you will have to enable a bit in the MPU_INTC_INTCPS_MIR register. See table 10-4 in the OMAP reference and use our method `void interrupt_add_listener(uint32_t irq, interrupt_callback* listener)`.
+To activate an interrupt for a device, a bit in the `MPU_INTC_INTCPS_MIR` register has to be enabled (table 10-4 OMAP35x reference guide) and the implemented function `void interrupt_add_listener(uint32_t irq, interrupt_callback* listener)` has to be called.
 
 ### System call
 The seperation of proccess and OS space usually means that the process cannot access the OS space, because of the user/system mode. That means that an interface/API is needed to access OS space, a so called system call.
